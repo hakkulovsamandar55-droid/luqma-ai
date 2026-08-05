@@ -101,6 +101,26 @@ export default function Home({ user, sana, onSanaChange, onAdd, onOpenMeal, refr
 
         <MacroCards summary={summary} />
 
+        {/* Ovqatlar ro'yxati — asosiy kontent, shuning uchun ekranning yuqori
+            qismida turadi. Suv va statistika ikkilamchi, pastda. */}
+        <div className="home-list-head">
+          <h2 className="section-title">
+            {bugunmi ? "Bugun iste'mol qilindi" : `${sanaSarlavha(sana)} — ovqatlar`}
+          </h2>
+          {meals.length > 0 && (
+            <span className="home-list-count">{meals.length} ta</span>
+          )}
+        </div>
+
+        <MealList meals={meals} onDelete={ovqatniOchir} onOpen={onOpenMeal} />
+
+        {meals.length === 0 && !yuklanmoqda && bugunmi && (
+          <button className="suggest-btn" onClick={onAdd}>
+            <SparkIcon size={17} />
+            Birinchi ovqatni qo'shish
+          </button>
+        )}
+
         <WaterCard
           suvMl={summary?.suv_ml || 0}
           limitMl={summary?.suv_limit_ml || user?.kunlik_suv_limit_ml || 2000}
@@ -120,24 +140,6 @@ export default function Home({ user, sana, onSanaChange, onAdd, onOpenMeal, refr
         </button>
 
         {statsOchiq && weekly && <WeeklyChart data={weekly} />}
-
-        <div className="home-list-head">
-          <h2 className="section-title">
-            {bugunmi ? "Bugun iste'mol qilindi" : `${sanaSarlavha(sana)} — ovqatlar`}
-          </h2>
-          {meals.length > 0 && (
-            <span className="home-list-count">{meals.length} ta</span>
-          )}
-        </div>
-
-        <MealList meals={meals} onDelete={ovqatniOchir} onOpen={onOpenMeal} />
-
-        {meals.length === 0 && !yuklanmoqda && bugunmi && (
-          <button className="suggest-btn" onClick={onAdd}>
-            <SparkIcon size={17} />
-            Birinchi ovqatni qo'shish
-          </button>
-        )}
       </div>
     </div>
   )

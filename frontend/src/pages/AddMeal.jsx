@@ -38,6 +38,42 @@ function Loading({ rasmUrl }) {
   )
 }
 
+/**
+ * Makrolarning kaloriyadagi ulushi — bitta yig'ma chiziq.
+ * Raqamlar pastda baribir tahrirlanadi, bu faqat vizual xulosa.
+ */
+function MacroSplit({ natija }) {
+  const p = (Number(natija.protein_g) || 0) * 4
+  const u = (Number(natija.uglevod_g) || 0) * 4
+  const y = (Number(natija.yog_g) || 0) * 9
+  const jami = p + u + y
+  if (jami <= 0) return null
+
+  const qismlar = [
+    { tur: 'protein', nom: 'Oqsil', ulush: (p / jami) * 100 },
+    { tur: 'carbs', nom: 'Uglevod', ulush: (u / jami) * 100 },
+    { tur: 'fat', nom: "Yog'", ulush: (y / jami) * 100 },
+  ]
+
+  return (
+    <div className="split">
+      <div className="split-bar">
+        {qismlar.map((q) => (
+          <span key={q.tur} className={`split-${q.tur}`} style={{ width: `${q.ulush}%` }} />
+        ))}
+      </div>
+      <div className="split-legend">
+        {qismlar.map((q) => (
+          <span key={q.tur} className="split-item">
+            <i className={`split-dot split-${q.tur}`} />
+            {q.nom} <b>{Math.round(q.ulush)}%</b>
+          </span>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 /** Tahrirlanadigan raqamli maydon. */
 function NumField({ label, value, onChange, unit, tur }) {
   return (
@@ -64,6 +100,7 @@ export default function AddMeal({ open, onClose, onSaved, sana }) {
   const [rasmUrl, setRasmUrl] = useState(null)
   const [matn, setMatn] = useState('')
   const [saqlanmoqda, setSaqlanmoqda] = useState(false)
+  const [saqlandi, setSaqlandi] = useState(false)
   const [favorites, setFavorites] = useState([])
   const [favSifatidaSaqla, setFavSifatidaSaqla] = useState(false)
 
@@ -77,6 +114,8 @@ export default function AddMeal({ open, onClose, onSaved, sana }) {
     setNatija(null)
     setMatn('')
     setFavSifatidaSaqla(false)
+    setSaqlanmoqda(false)
+    setSaqlandi(false)
     setRasmUrl((oldingi) => {
       if (oldingi) URL.revokeObjectURL(oldingi)
       return null
@@ -169,11 +208,15 @@ export default function AddMeal({ open, onClose, onSaved, sana }) {
       }
       haptic('success')
       onSaved()
-      onClose()
+      // Yopishdan oldin qisqa tasdiq animatsiyasi ko'rsatiladi.
+      setSaqlandi(true)
+      setTimeout(() => {
+        setSaqlandi(false)
+        onClose()
+      }, 1050)
     } catch (e) {
       haptic('error')
       showAlert(e.message)
-    } finally {
       setSaqlanmoqda(false)
     }
   }
@@ -205,6 +248,22 @@ export default function AddMeal({ open, onClose, onSaved, sana }) {
         <SparkIcon size={18} /> Tahlil qilish
       </button>
     ) : null
+
+  // Saqlangandan keyingi tasdiq — belgi chizilib chiqadi.
+  if (open && saqlandi) {
+    return (
+      <Sheet open title="Saqlandi" onClose={() => {}}>
+        <div className="saved">
+          <svg className="saved-mark" viewBox="0 0 52 52" aria-hidden="true">
+            <circle className="saved-ring" cx="26" cy="26" r="23" />
+            <path className="saved-tick" d="M15 27.5 22.5 35 38 19" />
+          </svg>
+          <div className="saved-title">Ovqat qo'shildi</div>
+          <p className="saved-text">Kunlik hisobingiz yangilandi</p>
+        </div>
+      </Sheet>
+    )
+  }
 
   return (
     <Sheet open={open} title={sarlavha} onClose={onClose} footer={footer}>
@@ -304,6 +363,12 @@ export default function AddMeal({ open, onClose, onSaved, sana }) {
           {rasmUrl && (
             <div className="result-photo">
               <img src={rasmUrl} alt="" />
+              {natija.ishonch > 0 && (
+                <span className="ai-badge">
+                  <StarIcon size={12} />
+                  AI {Math.round(natija.ishonch * 100)}% ishonch
+                </span>
+              )}
             </div>
           )}
 
@@ -318,10 +383,16 @@ export default function AddMeal({ open, onClose, onSaved, sana }) {
 
           {natija.ulush && <div className="result-portion">{natija.ulush}</div>}
 
+          {/* AI tavsiyasi — suhbat pufakchasi ko'rinishida */}
           {natija.izoh && (
-            <div className="result-note">
-              <SparkIcon size={15} />
-              <span>{natija.izoh}</span>
+            <div className="ai-bubble">
+              <span className="ai-avatar">
+                <SparkIcon size={15} />
+              </span>
+              <div className="ai-body">
+                <b>Luqma AI tavsiya qiladi</b>
+                <p>{natija.izoh}</p>
+              </div>
             </div>
           )}
 
@@ -330,6 +401,8 @@ export default function AddMeal({ open, onClose, onSaved, sana }) {
               AI bu taomga to'liq ishonchi komil emas — raqamlarni tekshirib chiqing.
             </div>
           )}
+
+          <MacroSplit natija={natija} />
 
           <NumField
             label="Kaloriya"

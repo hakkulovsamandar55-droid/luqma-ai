@@ -225,10 +225,12 @@
   gap: 12px;
 }
 
+/* Rasm — 16:9, kattaroq radius, ustida AI ishonch nishoni */
 .result-photo {
+  position: relative;
   width: 100%;
-  height: 148px;
-  border-radius: var(--r-lg);
+  aspect-ratio: 16 / 9;
+  border-radius: 24px;
   overflow: hidden;
   box-shadow: var(--shadow);
 }
@@ -240,6 +242,28 @@
   display: block;
 }
 
+.ai-badge {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 11px;
+  border-radius: 99px;
+  background: rgba(17, 17, 22, 0.62);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #fff;
+  font-size: 11.5px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.ai-badge svg {
+  color: #ffc44d;
+}
+
 .result-portion {
   font-size: 13px;
   color: var(--ink-3);
@@ -247,21 +271,173 @@
   padding-left: 2px;
 }
 
-.result-note {
+/* AI tavsiyasi — suhbat pufakchasi */
+.ai-bubble {
   display: flex;
   align-items: flex-start;
-  gap: 8px;
-  padding: 11px 13px;
-  border-radius: var(--r);
-  background: var(--accent-soft);
-  color: var(--accent-ink);
-  font-size: 13px;
-  line-height: 1.45;
+  gap: 10px;
 }
 
-.result-note svg {
+.ai-avatar {
   flex: 0 0 auto;
-  margin-top: 1px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--grad-accent);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(107, 78, 255, 0.32);
+}
+
+.ai-body {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  padding: 10px 14px 12px;
+  border-radius: 4px 16px 16px 16px;
+  background: var(--accent-soft);
+}
+
+/* Pufakchaning avatarga qaragan uchburchagi */
+.ai-body::before {
+  content: '';
+  position: absolute;
+  left: -5px;
+  top: 0;
+  width: 10px;
+  height: 12px;
+  background: var(--accent-soft);
+  clip-path: polygon(100% 0, 100% 100%, 0 0);
+}
+
+.ai-body b {
+  display: block;
+  font-size: 11.5px;
+  font-weight: 750;
+  color: var(--accent-ink);
+  letter-spacing: 0.1px;
+  margin-bottom: 2px;
+}
+
+.ai-body p {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+
+/* Makro ulushi — yig'ma chiziq */
+.split {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.split-bar {
+  display: flex;
+  height: 10px;
+  border-radius: 99px;
+  overflow: hidden;
+  background: var(--line);
+}
+
+.split-bar span {
+  height: 100%;
+  transition: width 0.6s cubic-bezier(0.22, 0.75, 0.24, 1);
+}
+
+.split-protein {
+  background: var(--grad-protein);
+}
+.split-carbs {
+  background: var(--grad-carbs);
+}
+.split-fat {
+  background: var(--grad-fat);
+}
+
+.split-legend {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.split-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: var(--ink-3);
+  font-weight: 600;
+}
+
+.split-item b {
+  color: var(--ink-2);
+  font-weight: 750;
+  font-variant-numeric: tabular-nums;
+}
+
+.split-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* Saqlash tasdig'i */
+.saved {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 26px 24px 40px;
+}
+
+.saved-mark {
+  width: 92px;
+  height: 92px;
+  margin-bottom: 18px;
+}
+
+.saved-ring {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2.5;
+  stroke-dasharray: 145;
+  stroke-dashoffset: 145;
+  animation: draw 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.saved-tick {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 40;
+  stroke-dashoffset: 40;
+  animation: draw 0.35s cubic-bezier(0.4, 0, 0.2, 1) 0.4s forwards;
+}
+
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.saved-title {
+  font-size: 19px;
+  font-weight: 780;
+  letter-spacing: -0.4px;
+  animation: fade-up 0.35s ease 0.6s both;
+}
+
+.saved-text {
+  margin: 4px 0 0;
+  font-size: 13.5px;
+  color: var(--ink-3);
+  animation: fade-up 0.35s ease 0.7s both;
 }
 
 .result-warn {

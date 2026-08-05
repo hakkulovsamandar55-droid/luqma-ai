@@ -15,7 +15,9 @@ export default function TabBar({ active, onNavigate, onAdd }) {
           }}
           aria-label="Bosh sahifa"
         >
-          <HomeIcon size={23} />
+          <span className="tab-icon">
+            <HomeIcon size={27} />
+          </span>
           <span>Asosiy</span>
         </button>
 
@@ -27,7 +29,7 @@ export default function TabBar({ active, onNavigate, onAdd }) {
           }}
           aria-label="Ovqat qo'shish"
         >
-          <PlusIcon size={27} />
+          <PlusIcon size={28} />
         </button>
 
         <button
@@ -38,7 +40,9 @@ export default function TabBar({ active, onNavigate, onAdd }) {
           }}
           aria-label="Sozlamalar"
         >
-          <GearIcon size={23} />
+          <span className="tab-icon">
+            <GearIcon size={27} />
+          </span>
           <span>Sozlamalar</span>
         </button>
       </div>

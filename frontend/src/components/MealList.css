@@ -1,9 +1,88 @@
-.meal-list {
+/* --- Timeline ------------------------------------------------------------ */
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-5);
+}
+
+.tl-group {
+  position: relative;
+  padding-left: 26px;
+}
+
+/* Guruhlarni bog'lab turuvchi vertikal chiziq */
+.tl-group::before {
+  content: '';
+  position: absolute;
+  left: 11px;
+  top: 26px;
+  bottom: 4px;
+  width: 2px;
+  border-radius: 2px;
+  background: linear-gradient(
+    to bottom,
+    var(--line) 0%,
+    var(--line) 70%,
+    transparent 100%
+  );
+}
+
+.tl-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.tl-dot {
+  position: absolute;
+  left: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--surface);
+  box-shadow: var(--shadow-sm), inset 0 0 0 1.5px var(--line);
+  display: grid;
+  place-items: center;
+  line-height: 0;
+}
+
+/* Kun davomiyligi: ertalab issiq, kunduz sariq, kechqurun binafsha */
+.tl-dot--nonushta {
+  color: #f2882b;
+}
+.tl-dot--tushlik {
+  color: #ffb020;
+}
+.tl-dot--kechki {
+  color: #7b62ff;
+}
+.tl-dot--gazak {
+  color: #2fbf71;
+}
+
+.tl-name {
+  font-size: 13.5px;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+  color: var(--ink-2);
+}
+
+.tl-kcal {
+  margin-left: auto;
+  font-size: var(--t-mini);
+  font-weight: 700;
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.tl-items {
   display: flex;
   flex-direction: column;
   gap: 9px;
 }
 
+/* --- Ovqat kartochkasi --------------------------------------------------- */
 .meal {
   position: relative;
   display: flex;
@@ -31,9 +110,9 @@
 
 .meal-thumb {
   flex: 0 0 auto;
-  width: 52px;
-  height: 52px;
-  border-radius: 14px;
+  width: 54px;
+  height: 54px;
+  border-radius: 15px;
   background: var(--accent-soft);
   color: var(--accent);
   display: grid;
@@ -54,8 +133,8 @@
 }
 
 .meal-name {
-  font-size: 15.5px;
-  font-weight: 650;
+  font-size: var(--t-body);
+  font-weight: 680;
   letter-spacing: -0.25px;
   white-space: nowrap;
   overflow: hidden;
@@ -65,32 +144,31 @@
 .meal-macros {
   display: flex;
   align-items: center;
-  gap: 4px;
-  font-size: 12.5px;
-  color: var(--ink-3);
-  margin-top: 3px;
+  gap: 5px;
+  margin-top: 5px;
+}
+
+/* Rangli tabletkalar — nuqtalardan ko'ra o'qilishi oson */
+.pill {
+  padding: 2px 7px;
+  border-radius: 99px;
+  font-size: 10.5px;
+  font-weight: 700;
   font-variant-numeric: tabular-nums;
+  line-height: 1.5;
 }
 
-.dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  display: inline-block;
+.pill--protein {
+  background: var(--protein-soft);
+  color: #d93a3f;
 }
-
-.dot:not(:first-child) {
-  margin-left: 5px;
+.pill--carbs {
+  background: var(--carbs-soft);
+  color: #b57708;
 }
-
-.dot--protein {
-  background: var(--protein);
-}
-.dot--carbs {
-  background: var(--carbs);
-}
-.dot--fat {
-  background: var(--fat);
+.pill--fat {
+  background: var(--fat-soft);
+  color: #1b7fc7;
 }
 
 .meal-right {
@@ -100,8 +178,8 @@
 }
 
 .meal-kcal {
-  font-size: 17px;
-  font-weight: 750;
+  font-size: 18px;
+  font-weight: 780;
   letter-spacing: -0.4px;
   font-variant-numeric: tabular-nums;
 }
@@ -136,8 +214,8 @@
 }
 
 .meal-empty-art {
-  width: 82px;
-  height: 82px;
+  width: 84px;
+  height: 84px;
   border-radius: 50%;
   background: var(--surface);
   color: var(--accent);
@@ -149,7 +227,7 @@
 
 .meal-empty-title {
   font-size: 17px;
-  font-weight: 700;
+  font-weight: 750;
   letter-spacing: -0.3px;
 }
 

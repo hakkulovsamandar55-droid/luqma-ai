@@ -100,9 +100,49 @@ export const FatIcon = (p) => (
   </Svg>
 )
 
+/* Olov — ikki tilli: pastki kichik til uni tomchidan ajratib turadi */
 export const FireIcon = (p) => (
   <Svg {...p}>
-    <path d="M12 3c.6 2.6-.6 4-2 5.4C8.3 10 7 11.6 7 14a5 5 0 0 0 10 0c0-1.8-.7-3-1.7-4.2-.5 1-1.3 1.5-2 1.6.8-2.4.3-5.4-1.3-8.4Z" />
+    <path
+      d="M13.1 1.8c.9 3.3-.3 5.1-1.9 6.7-1.9 1.9-4.2 3.6-4.2 6.6a7 7 0 0 0 .5 2.6c-.9-.9-1.5-2.2-1.5-3.6 0-.5 0-1 .2-1.4-1.4 1.3-2.2 3-2.2 4.8 0 3.6 3.6 6.5 8 6.5s8-2.9 8-6.5c0-2.7-1.5-4.7-3.2-6.5-.3 1.2-1.1 2-2 2.3 1.4-3.6.2-8.4-1.7-11.5Z"
+      fill="currentColor"
+      stroke="none"
+    />
+    <path
+      d="M12 13.4c1.2 1.6 1.9 2.8 1.9 3.9a2.6 2.6 0 0 1-5.2 0c0-1.1.7-2.3 1.9-3.9.3-.4.5-.7.7-1.1.2.4.4.7.7 1.1Z"
+      fill="#fff"
+      fillOpacity="0.42"
+      stroke="none"
+    />
+  </Svg>
+)
+
+/* --- Ovqat vaqti guruhlari (emoji o'rniga — har joyda bir xil chiziladi) --- */
+export const SunriseIcon = (p) => (
+  <Svg {...p}>
+    <path d="M12 4.5V7M5.6 7.6l1.8 1.8M18.4 7.6l-1.8 1.8" />
+    <path d="M7.5 15a4.5 4.5 0 0 1 9 0" />
+    <path d="M3 18.5h18" />
+  </Svg>
+)
+
+export const SunIcon = (p) => (
+  <Svg {...p}>
+    <circle cx="12" cy="12" r="4" />
+    <path d="M12 2.8v2M12 19.2v2M4.6 4.6l1.4 1.4M18 18l1.4 1.4M2.8 12h2M19.2 12h2M4.6 19.4 6 18M18 6l1.4-1.4" />
+  </Svg>
+)
+
+export const MoonIcon = (p) => (
+  <Svg {...p}>
+    <path d="M20 14.2A8.2 8.2 0 0 1 9.8 4 8.4 8.4 0 1 0 20 14.2Z" />
+  </Svg>
+)
+
+export const AppleIcon = (p) => (
+  <Svg {...p}>
+    <path d="M12 8.2c-1.2-1-3-1.3-4.4-.4C6 8.8 5.4 11 6 13.3c.6 2.3 2.2 4.8 3.9 5.5 1 .4 1.6 0 2.1 0s1.1.4 2.1 0c1.7-.7 3.3-3.2 3.9-5.5.6-2.3 0-4.5-1.6-5.5-1.4-.9-3.2-.6-4.4.4Z" />
+    <path d="M12 8.2V6.4a2.6 2.6 0 0 1 2.6-2.6" />
   </Svg>
 )
 
