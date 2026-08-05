@@ -1,0 +1,370 @@
+/* --- Manba tanlash ------------------------------------------------------- */
+.add-options {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.opt {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 14px;
+  border-radius: var(--r-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  text-align: left;
+  transition: transform 0.12s ease;
+}
+
+.opt:active {
+  transform: scale(0.985);
+}
+
+.opt-icon {
+  flex: 0 0 auto;
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  background: var(--surface-2);
+  color: var(--ink-2);
+  box-shadow: inset 0 0 0 1.4px var(--line);
+}
+
+.opt-icon--accent {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: none;
+}
+
+.opt-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.opt-text b {
+  font-size: 15.5px;
+  font-weight: 680;
+  letter-spacing: -0.25px;
+}
+
+.opt-text small {
+  font-size: 12.5px;
+  color: var(--ink-3);
+}
+
+/* --- Sevimlilar ---------------------------------------------------------- */
+.favs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.fav {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border-radius: 99px;
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ink-2);
+  max-width: 100%;
+}
+
+.fav:active {
+  transform: scale(0.96);
+}
+
+.fav svg {
+  color: var(--carbs);
+  flex: 0 0 auto;
+}
+
+.fav-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fav-kcal {
+  color: var(--ink-3);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  flex: 0 0 auto;
+}
+
+/* --- Matnli kiritish ----------------------------------------------------- */
+.add-manual {
+  padding-top: 4px;
+}
+
+.tf {
+  display: block;
+}
+
+.tf-label {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 620;
+  color: var(--ink-3);
+  margin-bottom: 6px;
+}
+
+.tf input {
+  width: 100%;
+  min-height: 52px;
+  padding: 0 15px;
+  border-radius: var(--r);
+  border: none;
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  outline: none;
+  font-weight: 600;
+  transition: box-shadow 0.16s ease;
+}
+
+.tf input:focus {
+  box-shadow: 0 0 0 2px var(--accent);
+}
+
+.hint {
+  font-size: 12.5px;
+  color: var(--ink-3);
+  margin: 9px 2px 0;
+  line-height: 1.5;
+}
+
+/* --- Tahlil animatsiyasi ------------------------------------------------- */
+.analyzing {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 12px 16px 22px;
+}
+
+.analyzing-photo {
+  position: relative;
+  width: 168px;
+  height: 168px;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  margin-bottom: 18px;
+}
+
+.analyzing-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Yuqoridan pastga yuruvchi "skaner" chizig'i */
+.analyzing-scan {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 42%;
+  background: linear-gradient(
+    to bottom,
+    rgba(107, 78, 255, 0) 0%,
+    rgba(107, 78, 255, 0.28) 65%,
+    rgba(107, 78, 255, 0.75) 100%
+  );
+  animation: scan 1.5s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+}
+
+@keyframes scan {
+  0% {
+    top: -42%;
+  }
+  100% {
+    top: 100%;
+  }
+}
+
+.analyzing-spinner {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 3.5px solid var(--line);
+  border-top-color: var(--accent);
+  animation: spin 0.85s linear infinite;
+  margin: 24px 0 20px;
+}
+
+.analyzing-title {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.analyzing-text {
+  font-size: 13px;
+  color: var(--ink-3);
+  max-width: 280px;
+  margin: 7px 0 0;
+  line-height: 1.5;
+}
+
+/* --- Natija -------------------------------------------------------------- */
+.result {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.result-photo {
+  width: 100%;
+  height: 148px;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+.result-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.result-portion {
+  font-size: 13px;
+  color: var(--ink-3);
+  margin-top: -6px;
+  padding-left: 2px;
+}
+
+.result-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 11px 13px;
+  border-radius: var(--r);
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.result-note svg {
+  flex: 0 0 auto;
+  margin-top: 1px;
+}
+
+.result-warn {
+  padding: 11px 13px;
+  border-radius: var(--r);
+  background: #fff5e6;
+  color: #a9660d;
+  font-size: 12.5px;
+  line-height: 1.45;
+}
+
+.result-macros {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+/* --- Raqamli maydon ------------------------------------------------------ */
+.nf {
+  display: block;
+  min-width: 0;
+}
+
+.nf-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 620;
+  color: var(--ink-3);
+  margin-bottom: 5px;
+}
+
+.nf-input {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--surface);
+  border-radius: var(--r);
+  box-shadow: var(--shadow-sm);
+  padding: 0 12px;
+  min-height: 52px;
+  transition: box-shadow 0.16s ease;
+}
+
+.nf-input:focus-within {
+  box-shadow: 0 0 0 2px var(--accent);
+}
+
+.nf-input input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: none;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  font-variant-numeric: tabular-nums;
+  /* number input strelkalarini yashiramiz */
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.nf-input input::-webkit-outer-spin-button,
+.nf-input input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.nf-unit {
+  font-size: 12px;
+  color: var(--ink-3);
+  font-weight: 600;
+  flex: 0 0 auto;
+}
+
+.nf--protein .nf-label {
+  color: var(--protein);
+}
+.nf--carbs .nf-label {
+  color: var(--carbs);
+}
+.nf--fat .nf-label {
+  color: var(--fat);
+}
+
+/* --- Sevimlilarga qo'shish toggle ---------------------------------------- */
+.fav-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 46px;
+  border-radius: var(--r);
+  background: transparent;
+  color: var(--ink-3);
+  font-size: 14px;
+  font-weight: 620;
+  box-shadow: inset 0 0 0 1.5px var(--line);
+  transition: all 0.16s ease;
+}
+
+.fav-toggle.is-on {
+  background: var(--carbs-soft);
+  color: #b3700f;
+  box-shadow: inset 0 0 0 1.5px var(--carbs);
+}

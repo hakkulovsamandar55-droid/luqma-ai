@@ -1,0 +1,258 @@
+/* ==========================================================================
+   Luqma AI — dizayn tizimi
+   Palitra: oq/och kulrang fon, to'q siyoh (ink) va binafsha aksent
+   ========================================================================== */
+
+:root {
+  /* Fon va sirtlar */
+  --bg: #f4f4f7;
+  --surface: #ffffff;
+  --surface-2: #fafafc;
+
+  /* Matn */
+  --ink: #111116;
+  --ink-2: #55555f;
+  --ink-3: #9a9aa6;
+
+  /* Brend */
+  --accent: #6b4eff;
+  --accent-soft: #efecff;
+  --accent-ink: #4a32d1;
+
+  /* Makro ranglari */
+  --protein: #ff6b6b;
+  --protein-soft: #ffeded;
+  --carbs: #f2a33c;
+  --carbs-soft: #fff3e2;
+  --fat: #3fb6f0;
+  --fat-soft: #e6f5fd;
+  --water: #48c5d8;
+
+  /* Holat */
+  --ok: #2fbf71;
+  --warn: #f0902b;
+  --danger: #e8474b;
+
+  /* Chegara va soya */
+  --line: #ececf1;
+  --shadow-sm: 0 1px 2px rgba(17, 17, 22, 0.04);
+  --shadow: 0 2px 12px rgba(17, 17, 22, 0.06);
+  --shadow-lg: 0 8px 28px rgba(17, 17, 22, 0.12);
+  --shadow-float: 0 6px 20px rgba(107, 78, 255, 0.34);
+
+  /* Radius */
+  --r-sm: 12px;
+  --r: 16px;
+  --r-lg: 20px;
+  --r-xl: 26px;
+
+  /* Layout */
+  --tabbar-h: 68px;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+
+  --font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  overscroll-behavior-y: none;
+}
+
+#root {
+  min-height: 100%;
+}
+
+button {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: 16px; /* iOS zoom oldini oladi */
+  color: inherit;
+}
+
+/* --- Umumiy layout ------------------------------------------------------- */
+.app {
+  max-width: 560px;
+  margin: 0 auto;
+  min-height: 100vh;
+  padding: calc(var(--safe-top) + 8px) 16px
+    calc(var(--tabbar-h) + var(--safe-bottom) + 24px);
+}
+
+.page-title {
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: -0.9px;
+  margin: 8px 0 14px;
+}
+
+.section-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink-2);
+  margin: 22px 0 10px;
+  letter-spacing: -0.2px;
+}
+
+.card {
+  background: var(--surface);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow);
+  padding: 16px;
+}
+
+.muted {
+  color: var(--ink-3);
+}
+
+/* --- Tugmalar ------------------------------------------------------------ */
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 52px;
+  padding: 0 18px;
+  border-radius: var(--r);
+  font-size: 16px;
+  font-weight: 650;
+  transition: transform 0.12s ease, opacity 0.12s ease;
+}
+
+.btn:active {
+  transform: scale(0.975);
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: default;
+  transform: none;
+}
+
+.btn-primary {
+  background: var(--ink);
+  color: #fff;
+}
+
+.btn-accent {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: var(--shadow-float);
+}
+
+.btn-soft {
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--ink-2);
+  box-shadow: inset 0 0 0 1.5px var(--line);
+}
+
+.btn-danger {
+  background: #fdecec;
+  color: var(--danger);
+}
+
+/* --- Animatsiyalar ------------------------------------------------------- */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes sheet-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse-soft {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(6px);
+  }
+}
+
+.fade-up {
+  animation: fade-up 0.32s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

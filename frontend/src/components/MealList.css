@@ -1,0 +1,169 @@
+.meal-list {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.meal {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  background: var(--surface);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.meal-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 6px 11px 11px;
+  text-align: left;
+  min-width: 0;
+  transition: background 0.15s ease;
+}
+
+.meal-main:active {
+  background: var(--surface-2);
+}
+
+.meal-thumb {
+  flex: 0 0 auto;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.meal-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.meal-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.meal-name {
+  font-size: 15.5px;
+  font-weight: 650;
+  letter-spacing: -0.25px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.meal-macros {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12.5px;
+  color: var(--ink-3);
+  margin-top: 3px;
+  font-variant-numeric: tabular-nums;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot:not(:first-child) {
+  margin-left: 5px;
+}
+
+.dot--protein {
+  background: var(--protein);
+}
+.dot--carbs {
+  background: var(--carbs);
+}
+.dot--fat {
+  background: var(--fat);
+}
+
+.meal-right {
+  text-align: right;
+  flex: 0 0 auto;
+  padding-right: 4px;
+}
+
+.meal-kcal {
+  font-size: 17px;
+  font-weight: 750;
+  letter-spacing: -0.4px;
+  font-variant-numeric: tabular-nums;
+}
+
+.meal-time {
+  font-size: 11.5px;
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.meal-del {
+  flex: 0 0 auto;
+  width: 44px;
+  display: grid;
+  place-items: center;
+  color: var(--ink-3);
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.meal-del:active {
+  background: #fdecec;
+  color: var(--danger);
+}
+
+/* --- Bo'sh holat --------------------------------------------------------- */
+.meal-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 26px 24px 4px;
+}
+
+.meal-empty-art {
+  width: 82px;
+  height: 82px;
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--accent);
+  display: grid;
+  place-items: center;
+  box-shadow: var(--shadow);
+  margin-bottom: 14px;
+}
+
+.meal-empty-title {
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+}
+
+.meal-empty-text {
+  font-size: 13.5px;
+  color: var(--ink-3);
+  margin: 6px 0 0;
+  max-width: 270px;
+  line-height: 1.5;
+}
+
+.meal-empty-arrow {
+  margin-top: 16px;
+  color: var(--accent);
+  opacity: 0.65;
+  animation: bob 1.7s ease-in-out infinite;
+}

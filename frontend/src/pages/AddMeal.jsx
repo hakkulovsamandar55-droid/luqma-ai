@@ -1,0 +1,379 @@
+import { useEffect, useRef, useState } from 'react'
+import Sheet from '../components/Sheet'
+import {
+  CameraIcon,
+  CheckIcon,
+  GalleryIcon,
+  PencilIcon,
+  SparkIcon,
+  StarIcon,
+} from '../components/Icons'
+import { api, toApiDate } from '../lib/api'
+import { haptic, showAlert } from '../lib/telegram'
+import './AddMeal.css'
+
+const BOSQICH = { TANLASH: 'tanlash', MATN: 'matn', YUKLASH: 'yuklash', NATIJA: 'natija' }
+
+/** AI tahlil qilayotgan paytdagi holat. */
+function Loading({ rasmUrl }) {
+  return (
+    <div className="analyzing">
+      {rasmUrl ? (
+        <div className="analyzing-photo">
+          <img src={rasmUrl} alt="" />
+          <div className="analyzing-scan" />
+        </div>
+      ) : (
+        <div className="analyzing-spinner" />
+      )}
+      <div className="analyzing-title">
+        <SparkIcon size={17} />
+        AI tahlil qilmoqda...
+      </div>
+      <p className="analyzing-text">
+        Taom aniqlanmoqda va ozuqaviy qiymati hisoblanmoqda. Bu bir necha soniya
+        oladi.
+      </p>
+    </div>
+  )
+}
+
+/** Tahrirlanadigan raqamli maydon. */
+function NumField({ label, value, onChange, unit, tur }) {
+  return (
+    <label className={`nf ${tur ? `nf--${tur}` : ''}`}>
+      <span className="nf-label">{label}</span>
+      <span className="nf-input">
+        <input
+          type="number"
+          inputMode="decimal"
+          min="0"
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          onFocus={(e) => e.target.select()}
+        />
+        <span className="nf-unit">{unit}</span>
+      </span>
+    </label>
+  )
+}
+
+export default function AddMeal({ open, onClose, onSaved, sana }) {
+  const [bosqich, setBosqich] = useState(BOSQICH.TANLASH)
+  const [natija, setNatija] = useState(null)
+  const [rasmUrl, setRasmUrl] = useState(null)
+  const [matn, setMatn] = useState('')
+  const [saqlanmoqda, setSaqlanmoqda] = useState(false)
+  const [favorites, setFavorites] = useState([])
+  const [favSifatidaSaqla, setFavSifatidaSaqla] = useState(false)
+
+  const cameraRef = useRef(null)
+  const galleryRef = useRef(null)
+
+  // Har ochilganda toza holatdan boshlaymiz.
+  useEffect(() => {
+    if (!open) return
+    setBosqich(BOSQICH.TANLASH)
+    setNatija(null)
+    setMatn('')
+    setFavSifatidaSaqla(false)
+    setRasmUrl((oldingi) => {
+      if (oldingi) URL.revokeObjectURL(oldingi)
+      return null
+    })
+    api.getFavorites().then(setFavorites).catch(() => {})
+  }, [open])
+
+  // Sheet yopilganda blob URL ni bo'shatamiz.
+  useEffect(() => () => rasmUrl && URL.revokeObjectURL(rasmUrl), [rasmUrl])
+
+  async function rasmniTahlilQil(file) {
+    if (!file) return
+    const oldindanKorish = URL.createObjectURL(file)
+    setRasmUrl(oldindanKorish)
+    setBosqich(BOSQICH.YUKLASH)
+    haptic('light')
+
+    try {
+      const r = await api.analyzeImage(file)
+      setNatija(r)
+      setBosqich(BOSQICH.NATIJA)
+      haptic('success')
+    } catch (e) {
+      haptic('error')
+      showAlert(e.message)
+      setBosqich(BOSQICH.TANLASH)
+    }
+  }
+
+  async function matnniTahlilQil() {
+    const qiymat = matn.trim()
+    if (qiymat.length < 2) return
+    setBosqich(BOSQICH.YUKLASH)
+    try {
+      const r = await api.analyzeText(qiymat)
+      setNatija(r)
+      setBosqich(BOSQICH.NATIJA)
+      haptic('success')
+    } catch (e) {
+      haptic('error')
+      showAlert(e.message)
+      setBosqich(BOSQICH.MATN)
+    }
+  }
+
+  function favoritdanQosh(fav) {
+    haptic('light')
+    setNatija({
+      taom_nomi: fav.taom_nomi,
+      ulush: fav.ulush,
+      kaloriya: fav.kaloriya,
+      protein_g: fav.protein_g,
+      yog_g: fav.yog_g,
+      uglevod_g: fav.uglevod_g,
+      rasm_yoli: null,
+      manba: 'favorite',
+    })
+    setBosqich(BOSQICH.NATIJA)
+  }
+
+  async function saqla() {
+    if (!natija?.taom_nomi?.trim()) {
+      showAlert('Taom nomini kiriting')
+      return
+    }
+    setSaqlanmoqda(true)
+    const payload = {
+      taom_nomi: natija.taom_nomi.trim(),
+      ulush: natija.ulush || null,
+      kaloriya: Math.round(Number(natija.kaloriya) || 0),
+      protein_g: Number(natija.protein_g) || 0,
+      yog_g: Number(natija.yog_g) || 0,
+      uglevod_g: Number(natija.uglevod_g) || 0,
+      rasm_yoli: natija.rasm_yoli || null,
+      manba: natija.manba || 'ai',
+      sana: sana ? toApiDate(sana) : undefined,
+    }
+
+    try {
+      await api.createMeal(payload)
+      if (favSifatidaSaqla) {
+        await api.addFavorite({
+          taom_nomi: payload.taom_nomi,
+          ulush: payload.ulush,
+          kaloriya: payload.kaloriya,
+          protein_g: payload.protein_g,
+          yog_g: payload.yog_g,
+          uglevod_g: payload.uglevod_g,
+        })
+      }
+      haptic('success')
+      onSaved()
+      onClose()
+    } catch (e) {
+      haptic('error')
+      showAlert(e.message)
+    } finally {
+      setSaqlanmoqda(false)
+    }
+  }
+
+  const sarlavha = {
+    [BOSQICH.TANLASH]: "Ovqat qo'shish",
+    [BOSQICH.MATN]: 'Qo\'lda kiritish',
+    [BOSQICH.YUKLASH]: 'Tahlil qilinmoqda',
+    [BOSQICH.NATIJA]: 'Natijani tekshiring',
+  }[bosqich]
+
+  const footer =
+    bosqich === BOSQICH.NATIJA ? (
+      <button className="btn btn-primary" onClick={saqla} disabled={saqlanmoqda}>
+        {saqlanmoqda ? (
+          'Saqlanmoqda...'
+        ) : (
+          <>
+            <CheckIcon size={19} /> Saqlash
+          </>
+        )}
+      </button>
+    ) : bosqich === BOSQICH.MATN ? (
+      <button
+        className="btn btn-primary"
+        onClick={matnniTahlilQil}
+        disabled={matn.trim().length < 2}
+      >
+        <SparkIcon size={18} /> Tahlil qilish
+      </button>
+    ) : null
+
+  return (
+    <Sheet open={open} title={sarlavha} onClose={onClose} footer={footer}>
+      {/* --- 1-bosqich: manbani tanlash --- */}
+      {bosqich === BOSQICH.TANLASH && (
+        <div className="add-options">
+          <button className="opt" onClick={() => cameraRef.current?.click()}>
+            <span className="opt-icon opt-icon--accent">
+              <CameraIcon size={22} />
+            </span>
+            <span className="opt-text">
+              <b>Rasmga olish</b>
+              <small>Kamerani ochib, ovqatni suratga oling</small>
+            </span>
+          </button>
+
+          <button className="opt" onClick={() => galleryRef.current?.click()}>
+            <span className="opt-icon">
+              <GalleryIcon size={22} />
+            </span>
+            <span className="opt-text">
+              <b>Galereyadan tanlash</b>
+              <small>Tayyor rasmni yuklang</small>
+            </span>
+          </button>
+
+          <button className="opt" onClick={() => setBosqich(BOSQICH.MATN)}>
+            <span className="opt-icon">
+              <PencilIcon size={22} />
+            </span>
+            <span className="opt-text">
+              <b>Qo'lda kiritish</b>
+              <small>Masalan: "150g osh"</small>
+            </span>
+          </button>
+
+          {favorites.length > 0 && (
+            <>
+              <div className="section-title">Sevimli taomlar</div>
+              <div className="favs">
+                {favorites.map((f) => (
+                  <button key={f.id} className="fav" onClick={() => favoritdanQosh(f)}>
+                    <StarIcon size={14} />
+                    <span className="fav-name">{f.taom_nomi}</span>
+                    <span className="fav-kcal">{f.kaloriya}</span>
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
+
+          {/* capture="environment" — mobil qurilmada to'g'ridan-to'g'ri kamerani ochadi */}
+          <input
+            ref={cameraRef}
+            type="file"
+            accept="image/*"
+            capture="environment"
+            hidden
+            onChange={(e) => rasmniTahlilQil(e.target.files?.[0])}
+          />
+          <input
+            ref={galleryRef}
+            type="file"
+            accept="image/*"
+            hidden
+            onChange={(e) => rasmniTahlilQil(e.target.files?.[0])}
+          />
+        </div>
+      )}
+
+      {/* --- Qo'lda kiritish --- */}
+      {bosqich === BOSQICH.MATN && (
+        <div className="add-manual">
+          <label className="tf">
+            <span className="tf-label">Nima yedingiz?</span>
+            <input
+              type="text"
+              autoFocus
+              placeholder="Masalan: 1 kosa lag'mon va 2 dona non"
+              value={matn}
+              onChange={(e) => setMatn(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && matnniTahlilQil()}
+            />
+          </label>
+          <p className="hint">
+            Miqdorni ham yozing (gramm, kosa, dona) — shunda hisob aniqroq bo'ladi.
+          </p>
+        </div>
+      )}
+
+      {/* --- Yuklanmoqda --- */}
+      {bosqich === BOSQICH.YUKLASH && <Loading rasmUrl={rasmUrl} />}
+
+      {/* --- Natija (tahrirlanadigan) --- */}
+      {bosqich === BOSQICH.NATIJA && natija && (
+        <div className="result fade-up">
+          {rasmUrl && (
+            <div className="result-photo">
+              <img src={rasmUrl} alt="" />
+            </div>
+          )}
+
+          <label className="tf">
+            <span className="tf-label">Taom nomi</span>
+            <input
+              type="text"
+              value={natija.taom_nomi}
+              onChange={(e) => setNatija({ ...natija, taom_nomi: e.target.value })}
+            />
+          </label>
+
+          {natija.ulush && <div className="result-portion">{natija.ulush}</div>}
+
+          {natija.izoh && (
+            <div className="result-note">
+              <SparkIcon size={15} />
+              <span>{natija.izoh}</span>
+            </div>
+          )}
+
+          {natija.ishonch > 0 && natija.ishonch < 0.6 && (
+            <div className="result-warn">
+              AI bu taomga to'liq ishonchi komil emas — raqamlarni tekshirib chiqing.
+            </div>
+          )}
+
+          <NumField
+            label="Kaloriya"
+            unit="kcal"
+            value={natija.kaloriya}
+            onChange={(v) => setNatija({ ...natija, kaloriya: v })}
+          />
+
+          <div className="result-macros">
+            <NumField
+              label="Oqsil"
+              unit="g"
+              tur="protein"
+              value={natija.protein_g}
+              onChange={(v) => setNatija({ ...natija, protein_g: v })}
+            />
+            <NumField
+              label="Uglevod"
+              unit="g"
+              tur="carbs"
+              value={natija.uglevod_g}
+              onChange={(v) => setNatija({ ...natija, uglevod_g: v })}
+            />
+            <NumField
+              label="Yog'"
+              unit="g"
+              tur="fat"
+              value={natija.yog_g}
+              onChange={(v) => setNatija({ ...natija, yog_g: v })}
+            />
+          </div>
+
+          <button
+            className={`fav-toggle ${favSifatidaSaqla ? 'is-on' : ''}`}
+            onClick={() => {
+              haptic('select')
+              setFavSifatidaSaqla((v) => !v)
+            }}
+          >
+            <StarIcon size={17} />
+            Sevimlilarga qo'shish
+          </button>
+        </div>
+      )}
+    </Sheet>
+  )
+}

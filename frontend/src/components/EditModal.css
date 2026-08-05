@@ -1,0 +1,114 @@
+.em-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--surface);
+  border-radius: var(--r);
+  box-shadow: var(--shadow-sm);
+  padding: 0 16px;
+  min-height: 60px;
+  transition: box-shadow 0.16s ease;
+}
+
+.em-input-wrap:focus-within {
+  box-shadow: 0 0 0 2px var(--accent);
+}
+
+.em-input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: none;
+  font-size: 22px;
+  font-weight: 750;
+  letter-spacing: -0.5px;
+  font-variant-numeric: tabular-nums;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.em-input::-webkit-outer-spin-button,
+.em-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.em-unit {
+  font-size: 14px;
+  font-weight: 620;
+  color: var(--ink-3);
+  flex: 0 0 auto;
+}
+
+.em-choices {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.em-choice {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 15px;
+  border-radius: var(--r);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  text-align: left;
+  transition: box-shadow 0.16s ease, transform 0.12s ease;
+}
+
+.em-choice:active {
+  transform: scale(0.985);
+}
+
+.em-choice.is-on {
+  box-shadow: 0 0 0 2px var(--accent);
+}
+
+.em-choice-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.em-choice-text b {
+  font-size: 15px;
+  font-weight: 650;
+}
+
+.em-choice-text small {
+  font-size: 12.5px;
+  color: var(--ink-3);
+}
+
+.em-radio {
+  flex: 0 0 auto;
+  width: 21px;
+  height: 21px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1.8px var(--line);
+  transition: box-shadow 0.16s ease, background 0.16s ease;
+}
+
+.em-choice.is-on .em-radio {
+  background: var(--accent);
+  box-shadow: inset 0 0 0 4.5px #fff, 0 0 0 1.5px var(--accent);
+}
+
+.em-hint {
+  font-size: 12.5px;
+  color: var(--ink-3);
+  line-height: 1.5;
+  margin: 12px 2px 0;
+}
+
+.em-error {
+  font-size: 13px;
+  color: var(--danger);
+  font-weight: 600;
+  margin: 10px 2px 0;
+}

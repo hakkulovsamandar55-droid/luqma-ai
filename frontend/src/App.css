@@ -1,0 +1,45 @@
+.splash {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 24px;
+  text-align: center;
+}
+
+.splash-logo {
+  font-size: 54px;
+  line-height: 1;
+}
+
+.splash-name {
+  font-size: 25px;
+  font-weight: 800;
+  letter-spacing: -0.7px;
+}
+
+.splash-spinner {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 3px solid var(--line);
+  border-top-color: var(--accent);
+  animation: spin 0.85s linear infinite;
+  margin-top: 10px;
+}
+
+.splash-error {
+  font-size: 14px;
+  color: var(--danger);
+  max-width: 300px;
+  line-height: 1.5;
+  margin: 4px 0 0;
+}
+
+.splash-retry {
+  width: auto;
+  min-width: 170px;
+  margin-top: 6px;
+}

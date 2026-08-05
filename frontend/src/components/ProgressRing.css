@@ -1,0 +1,60 @@
+.ring {
+  position: relative;
+  margin: 4px auto 2px;
+}
+
+.ring-track {
+  fill: none;
+  stroke: var(--line);
+}
+
+.ring-bar {
+  fill: none;
+  stroke: var(--accent);
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.85s cubic-bezier(0.2, 0.7, 0.25, 1),
+    stroke 0.3s ease;
+}
+
+.ring-bar.is-over {
+  stroke: var(--danger);
+}
+
+.ring-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+
+.ring-value {
+  font-size: 52px;
+  font-weight: 800;
+  letter-spacing: -2.2px;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.ring-value.is-over {
+  color: var(--danger);
+}
+
+.ring-value.is-over::before {
+  content: '+';
+}
+
+.ring-label {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ink-2);
+  margin-top: 4px;
+}
+
+.ring-sub {
+  font-size: 12px;
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
