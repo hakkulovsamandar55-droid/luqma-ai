@@ -1,0 +1,61 @@
+services:
+  backend:
+    build: ./backend
+    container_name: luqma-backend
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DATABASE_URL: sqlite+aiosqlite:////data/luqma.db
+      MEDIA_DIR: /data/media
+    volumes:
+      - luqma-data:/data
+    expose:
+      - "8000"
+    networks: [luqma]
+
+  frontend:
+    build: ./frontend
+    container_name: luqma-frontend
+    restart: unless-stopped
+    expose:
+      - "80"
+    networks: [luqma]
+
+  # HTTPS tugatuvchi reverse-proxy
+  proxy:
+    image: nginx:1.27-alpine
+    container_name: luqma-proxy
+    restart: unless-stopped
+    depends_on: [backend, frontend]
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      DOMAIN: ${DOMAIN}
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/templates/default.conf.template:ro
+      - certbot-conf:/etc/letsencrypt:ro
+      - certbot-www:/var/www/certbot
+    networks: [luqma]
+
+  # Sertifikatni avtomatik yangilab turadi (har 12 soatda tekshiradi)
+  certbot:
+    image: certbot/certbot:latest
+    container_name: luqma-certbot
+    restart: unless-stopped
+    volumes:
+      - certbot-conf:/etc/letsencrypt
+      - certbot-www:/var/www/certbot
+    entrypoint: >
+      sh -c "trap exit TERM;
+      while :; do certbot renew --webroot -w /var/www/certbot --quiet;
+      sleep 12h & wait $${!}; done"
+
+volumes:
+  luqma-data:
+  certbot-conf:
+  certbot-www:
+
+networks:
+  luqma:
+    driver: bridge
