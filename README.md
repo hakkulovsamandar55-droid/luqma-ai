@@ -130,6 +130,10 @@ pytest -q        # 33 passed
 
 ## Deploy (VPS + Docker Compose)
 
+> 📘 **To'liq bosqichma-bosqich qo'llanma: [DEPLOY.md](DEPLOY.md)** — serverni
+> tayyorlashdan (Docker, firewall, swap) to Telegram sozlashgacha, muammolar
+> yechimi va zaxiralash bilan birga.
+
 Talab: domen A-yozuvi serverning IP manziliga ko'rsatilgan bo'lsin, 80 va 443
 portlar ochiq bo'lsin.
 
