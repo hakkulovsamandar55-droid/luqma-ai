@@ -30,7 +30,7 @@
 .admin-head h1 {
   font-family: var(--font-head);
   font-size: 17px;
-  font-weight: 400;
+  font-weight: var(--w-head);
   margin: 0;
 }
 

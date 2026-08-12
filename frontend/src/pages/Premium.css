@@ -30,7 +30,7 @@
 .premium-head h1 {
   font-family: var(--font-head);
   font-size: 17px;
-  font-weight: 400;
+  font-weight: var(--w-head);
   letter-spacing: -0.1px;
   margin: 0;
 }
@@ -348,7 +348,7 @@
 .ptitle {
   font-family: var(--font-head);
   font-size: 25px;
-  font-weight: 400;
+  font-weight: var(--w-head);
   letter-spacing: -0.2px;
   line-height: 1.25;
   margin: 6px 0 16px;

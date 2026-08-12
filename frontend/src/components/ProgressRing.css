@@ -90,8 +90,8 @@
 .ring-value {
   font-family: var(--font-head);
   font-size: clamp(27px, 4.2vh, 42px);
-  font-weight: 400;
-  letter-spacing: -0.05em;
+  font-weight: var(--w-head);
+  letter-spacing: -0.015em;
   line-height: 1;
   font-variant-numeric: tabular-nums;
 }
@@ -102,11 +102,12 @@
 
 .ring-label {
   font-family: var(--font-label);
-  font-size: 13px;
-  font-weight: 400;
-  letter-spacing: 0.1em;
+  font-size: 11px;
+  font-weight: var(--w-label);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
   color: var(--ink-2);
-  margin-top: 2px;
+  margin-top: 5px;
 }
 
 .ring-pct {

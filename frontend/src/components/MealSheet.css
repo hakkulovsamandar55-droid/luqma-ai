@@ -1,0 +1,183 @@
+/* Ovqatni tahrirlash oynasi. Maydonlar EditModal bilan bir tilda:
+   bir xil radius, bir xil sirt, bir xil fokus chizig'i. */
+
+.ms-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.ms-thumb {
+  flex: none;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  color: var(--ink-2);
+}
+
+.ms-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ms-meta {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.ms-meta b {
+  font-size: var(--t-lead);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ms-meta span {
+  font-family: var(--font-num);
+  font-size: var(--t-sub);
+  color: var(--ink-3);
+}
+
+/* --- Matn maydonlari --- */
+.ms-field {
+  display: block;
+  margin-bottom: 12px;
+}
+
+.ms-field > span {
+  display: block;
+  font-size: var(--t-mini);
+  font-weight: var(--w-label);
+  text-transform: uppercase;
+  letter-spacing: 0.11em;
+  color: var(--ink-3);
+  margin-bottom: 7px;
+}
+
+.ms-field input {
+  width: 100%;
+  min-height: 50px;
+  padding: 0 16px;
+  border-radius: var(--r-sm);
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  font-weight: 600;
+  transition: border-color var(--dur-fast) linear;
+}
+
+.ms-field input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+/* --- Raqamlar to'ri: kaloriya butun qatorni egallaydi --- */
+.ms-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 18px 0 12px;
+}
+
+.ms-num {
+  position: relative;
+  display: block;
+}
+
+.ms-num.is-main {
+  grid-column: 1 / -1;
+}
+
+.ms-num > span {
+  display: block;
+  font-size: var(--t-mini);
+  font-weight: var(--w-label);
+  text-transform: uppercase;
+  letter-spacing: 0.11em;
+  color: var(--ink-3);
+  margin-bottom: 7px;
+}
+
+.ms-num input {
+  width: 100%;
+  min-height: 50px;
+  padding: 0 34px 0 14px;
+  border-radius: var(--r-sm);
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  font-family: var(--font-num);
+  font-size: 17px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  transition: border-color var(--dur-fast) linear;
+}
+
+.ms-num.is-main input {
+  font-size: 22px;
+}
+
+.ms-num input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+/* Raqam o'qlari joyni egallaydi va dizaynni buzadi */
+.ms-num input::-webkit-outer-spin-button,
+.ms-num input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.ms-num input[type='number'] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.ms-num i {
+  position: absolute;
+  right: 13px;
+  bottom: 16px;
+  font-size: var(--t-sub);
+  font-style: normal;
+  color: var(--ink-3);
+  pointer-events: none;
+}
+
+/* --- Qayta hisoblash --- */
+.ms-calc {
+  width: 100%;
+  min-height: 44px;
+  border-radius: 99px;
+  background: var(--accent-soft);
+  color: var(--lime-text);
+  font-size: var(--t-sub);
+  font-weight: 600;
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.ms-calc:active {
+  transform: scale(0.97);
+}
+
+.ms-error {
+  margin: 12px 0 0;
+  font-size: var(--t-sub);
+  font-weight: 600;
+  color: var(--over);
+}
+
+.ms-del {
+  margin-top: 18px;
+  min-height: 48px;
+}

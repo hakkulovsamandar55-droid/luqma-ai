@@ -736,6 +736,10 @@ async def admin_stats(
     session: AsyncSession = Depends(get_session),
 ) -> AdminStats:
     bugun = timeutil.bugun()
+    # created_at ustunlari UTC da, oxirgi_faollik esa mahalliy zonada
+    # yoziladi — shuning uchun ikki xil boshlanish nuqtasi kerak.
+    kun_boshi_utc = timeutil.kun_boshi_utc()
+    hafta_utc = kun_boshi_utc - timedelta(days=7)
     kun_boshi = timeutil.kun_boshi()
     hafta = kun_boshi - timedelta(days=7)
 
@@ -745,10 +749,10 @@ async def admin_stats(
     return AdminStats(
         jami_foydalanuvchi=await son(select(func.count(User.id))),
         yangi_bugun=await son(
-            select(func.count(User.id)).where(User.created_at >= kun_boshi)
+            select(func.count(User.id)).where(User.created_at >= kun_boshi_utc)
         ),
         yangi_hafta=await son(
-            select(func.count(User.id)).where(User.created_at >= hafta)
+            select(func.count(User.id)).where(User.created_at >= hafta_utc)
         ),
         faol_bugun=await son(
             select(func.count(User.id)).where(User.oxirgi_faollik >= kun_boshi)
@@ -1018,7 +1022,7 @@ async def payment_create(
         await session.scalar(
             select(func.count(Payment.id)).where(
                 Payment.user_id == user.id,
-                Payment.created_at >= timeutil.kun_boshi(),
+                Payment.created_at >= timeutil.kun_boshi_utc(),
             )
         )
         or 0

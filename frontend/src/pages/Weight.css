@@ -30,7 +30,7 @@
 .weight-head h1 {
   font-family: var(--font-head);
   font-size: 17px;
-  font-weight: 400;
+  font-weight: var(--w-head);
   margin: 0;
 }
 
@@ -89,17 +89,43 @@
   overflow: visible;
 }
 
-.wgraph-scale {
+/* Oxirgi o'lchov nuqtasi. SVG ichida emas, ustida: preserveAspectRatio
+   ="none" doiralarni ovalga aylantirib yuboradi. */
+.wgraph-dot {
   position: absolute;
-  top: 18px;
-  bottom: 18px;
-  right: 16px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+/* Nuqta foizlari aynan svg maydoniga nisbatan hisoblanishi uchun
+   alohida o'ram kerak — .wgraph da ichki chekka bor. */
+.wgraph-plot {
+  position: relative;
+}
+
+.wgraph-max,
+.wgraph-min {
+  position: absolute;
+  font-family: var(--font-num);
   font-size: var(--t-mini);
+  font-weight: 600;
   color: var(--ink-3);
   pointer-events: none;
+}
+
+.wgraph-max {
+  top: 18px;
+  right: 16px;
+}
+
+.wgraph-min {
+  bottom: 18px;
+  left: 16px;
 }
 
 /* --- Kiritish ------------------------------------------------------------ */

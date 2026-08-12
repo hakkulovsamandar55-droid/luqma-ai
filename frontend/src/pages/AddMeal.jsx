@@ -3,6 +3,7 @@ import Sheet from '../components/Sheet'
 import {
   CameraIcon,
   CheckIcon,
+  CloseIcon,
   GalleryIcon,
   PencilIcon,
   SparkIcon,
@@ -300,14 +301,29 @@ export default function AddMeal({ open, usul, onClose, onSaved, sana }) {
       </button>
     ) : bosqich === BOSQICH.QIDIRUV ? (
       <div className="search">
-        <input
-          className="search-input"
-          type="search"
-          autoFocus
-          placeholder="Masalan: osh, somsa, tuxum"
-          value={qidiruv}
-          onChange={(e) => setQidiruv(e.target.value)}
-        />
+        {/* Tozalash tugmasi o'zimizniki. Brauzerning ichki
+            (-webkit-search-cancel-button) tugmasi Chrome da KO'K "✕" bo'lib
+            chiqadi va ilova palitrasiga umuman mos kelmaydi — u CSS da
+            o'chirilgan. */}
+        <div className="search-box">
+          <input
+            className="search-input"
+            type="search"
+            autoFocus
+            placeholder="Masalan: osh, somsa, tuxum"
+            value={qidiruv}
+            onChange={(e) => setQidiruv(e.target.value)}
+          />
+          {qidiruv && (
+            <button
+              className="search-clear"
+              onClick={() => setQidiruv('')}
+              aria-label="Tozalash"
+            >
+              <CloseIcon size={15} />
+            </button>
+          )}
+        </div>
 
         {qidirilmoqda && topilgan.length === 0 ? (
           <p className="search-bosh">Qidirilmoqda…</p>

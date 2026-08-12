@@ -55,8 +55,8 @@
   position: relative;
   font-family: var(--font-head);
   font-size: 14px;
-  font-weight: 400;
-  letter-spacing: -0.03em;
+  font-weight: var(--w-head);
+  letter-spacing: 0;
 }
 
 .mring.is-over .mring-val {
@@ -65,10 +65,12 @@
 
 .mring-label {
   font-family: var(--font-label);
-  font-size: 14px;
-  font-weight: 400;
-  letter-spacing: 0.04em;
-  margin-top: 4px;
+  font-size: 11px;
+  font-weight: var(--w-label);
+  text-transform: uppercase;
+  letter-spacing: 0.11em;
+  color: var(--ink-2);
+  margin-top: 6px;
 }
 
 .mring-limit {

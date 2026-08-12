@@ -140,7 +140,7 @@ async def _tarix(session: AsyncSession, user_id: int) -> list[dict[str, str]]:
 
 async def bugungi_xabarlar_soni(session: AsyncSession, user_id: int) -> int:
     """Foydalanuvchi bugun nechta savol berganini sanaydi (limit uchun)."""
-    boshi = timeutil.kun_boshi()
+    boshi = timeutil.kun_boshi_utc()
     return (
         await session.scalar(
             select(func.count(ChatMessage.id)).where(

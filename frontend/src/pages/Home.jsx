@@ -4,6 +4,7 @@ import Logo from '../components/Logo'
 import DayStrip from '../components/DayStrip'
 import MacroCards from '../components/MacroCards'
 import MealList from '../components/MealList'
+import MealSheet from '../components/MealSheet'
 import Sheet from '../components/Sheet'
 import ProgressRing from '../components/ProgressRing'
 import WeeklyChart from '../components/WeeklyChart'
@@ -17,7 +18,6 @@ export default function Home({
   sana,
   onSanaChange,
   onAdd,
-  onOpenMeal,
   onOpenChat,
   refreshKey,
 }) {
@@ -27,6 +27,8 @@ export default function Home({
   const [tavsiya, setTavsiya] = useState(null)
   const [statsOchiq, setStatsOchiq] = useState(false)
   const [royxatOchiq, setRoyxatOchiq] = useState(false)
+  // Bosilgan ovqat — tahrirlash oynasida ochiladi.
+  const [tanlangan, setTanlangan] = useState(null)
   const [yuklanmoqda, setYuklanmoqda] = useState(true)
   const [xato, setXato] = useState(null)
 
@@ -147,7 +149,11 @@ export default function Home({
             {meals.length === 0 ? (
               <p className="home-empty-txt">Hali hech narsa qo'shilmagan</p>
             ) : (
-              <MealList meals={meals} onDelete={ovqatniOchir} onOpen={onOpenMeal} />
+              <MealList
+                meals={meals}
+                onDelete={ovqatniOchir}
+                onOpen={setTanlangan}
+              />
             )}
           </div>
         </div>
@@ -188,6 +194,13 @@ export default function Home({
 
         {statsOchiq && weekly && <WeeklyChart data={weekly} />}
       </Sheet>
+
+      <MealSheet
+        meal={tanlangan}
+        onClose={() => setTanlangan(null)}
+        onSaved={yukla}
+        onDelete={ovqatniOchir}
+      />
     </div>
   )
 }

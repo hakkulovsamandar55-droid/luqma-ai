@@ -1,9 +1,11 @@
 """API endpointlari uchun end-to-end testlar (AI mock qilingan)."""
 
 import io
-from datetime import date, timedelta
+from datetime import timedelta
 
 import pytest
+
+import timeutil
 
 from db import SessionLocal
 from models import User as _User
@@ -87,7 +89,7 @@ async def test_notogri_qiymat_422(client):
 
 
 async def test_ovqat_saqlash_va_royxat(client):
-    bugun = date.today().isoformat()
+    bugun = timeutil.bugun().isoformat()
     r = await client.post(
         "/api/meals",
         json={
@@ -103,7 +105,7 @@ async def test_ovqat_saqlash_va_royxat(client):
     assert len(lst.json()) == 1
 
     # Boshqa kunda bo'sh
-    ertaga = (date.today() + timedelta(days=1)).isoformat()
+    ertaga = (timeutil.bugun() + timedelta(days=1)).isoformat()
     assert (await client.get(f"/api/meals?date={ertaga}")).json() == []
 
     upd = await client.put(
@@ -151,7 +153,7 @@ async def test_kunlik_summary(client):
 
 
 async def test_haftalik_statistika(client):
-    bugun = date.today()
+    bugun = timeutil.bugun()
     for i, kcal in enumerate([500, 800, 1200]):
         await client.post(
             "/api/meals",
@@ -167,7 +169,7 @@ async def test_haftalik_statistika(client):
 
 
 async def test_streak_uzilganda_qayta_boshlanadi(client):
-    bugun = date.today()
+    bugun = timeutil.bugun()
     for kun in (0, 1, 4):  # 2 va 3-kunlar tashlab ketilgan
         await client.post(
             "/api/meals",
@@ -186,7 +188,7 @@ async def test_suv_hisoblagichi(client):
 
 
 async def test_vazn_tarixi(client):
-    bugun = date.today()
+    bugun = timeutil.bugun()
     await client.post("/api/weight", json={"vazn_kg": 82.5, "sana": (bugun - timedelta(days=2)).isoformat()})
     await client.post("/api/weight", json={"vazn_kg": 81.0})
     # Bir kunda ikkinchi marta — yangilanadi, dublikat yaratmaydi

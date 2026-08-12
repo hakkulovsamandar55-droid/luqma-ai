@@ -32,7 +32,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--font-num);
+  /* Bu harf, raqam emas: son shriftining burchakli "D" si dumaloq
+     avatar ichida g'alati ko'rinadi. */
+  font-family: var(--font);
   font-size: var(--t-head);
   font-weight: 700;
 }
@@ -46,7 +48,7 @@
   display: block;
   font-family: var(--font-head);
   font-size: 20px;
-  font-weight: 400;
+  font-weight: var(--w-head);
   letter-spacing: -0.1px;
   color: var(--ink-top);
 }

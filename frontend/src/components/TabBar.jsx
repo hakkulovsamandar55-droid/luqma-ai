@@ -19,14 +19,21 @@ import './TabBar.css'
  * Markazdagi "+" asosiy harakat, ikki yonida teng og'irlikdagi ikkitadan
  * bo'lim — panel simmetrik qoladi.
  */
+/**
+ * Ovqat qo'shish usullari — eng ko'p ishlatiladigani birinchi.
+ *
+ * Ilgari bular "+" atrofida yoy bo'ylab yoyilardi. Chiroyli edi, lekin
+ * ishlamasdi: yorliqlar plitalar ostida turgani uchun chetdagi ikkitasi
+ * bir-birini yopib qolar, eng pastdagisi ("Galereya") esa ekran qirrasi
+ * ortida kesilib ketardi. Tik ro'yxatda har qanday ekran kengligida va
+ * har qanday yorliq uzunligida hammasi o'qiladi.
+ */
 const YOYILUVCHILAR = [
-  { key: 'kamera', label: 'Kamera', Icon: CameraIcon, burchak: -90 },
-  { key: 'qidiruv', label: 'Qidirish', Icon: SearchIcon, burchak: -145 },
-  { key: 'galereya', label: 'Galereya', Icon: GalleryIcon, burchak: -180 },
-  { key: 'matn', label: 'Yozish', Icon: PencilIcon, burchak: -35 },
+  { key: 'kamera', label: 'Kamera', Icon: CameraIcon },
+  { key: 'galereya', label: 'Galereya', Icon: GalleryIcon },
+  { key: 'qidiruv', label: 'Qidirish', Icon: SearchIcon },
+  { key: 'matn', label: 'Yozish', Icon: PencilIcon },
 ]
-
-const RADIUS = 98
 
 export default function TabBar({ active, onNavigate, onAdd, premium, onPremium }) {
   const [ochiq, setOchiq] = useState(false)
@@ -77,28 +84,23 @@ export default function TabBar({ active, onNavigate, onAdd, premium, onPremium }
           </button>
 
           <div className="tab-add-slot">
-            {YOYILUVCHILAR.map(({ key, label, Icon, burchak }, i) => {
-              const rad = (burchak * Math.PI) / 180
-              return (
+            <div className="fan">
+              {YOYILUVCHILAR.map(({ key, label, Icon }, i) => (
                 <button
                   key={key}
                   className="fan-item"
-                  style={{
-                    '--x': `${Math.cos(rad) * RADIUS}px`,
-                    '--y': `${Math.sin(rad) * RADIUS}px`,
-                    '--delay': `${i * 40}ms`,
-                  }}
+                  style={{ '--delay': `${i * 45}ms` }}
                   tabIndex={ochiq ? 0 : -1}
                   aria-hidden={!ochiq}
                   onClick={() => tanla(key)}
                 >
                   <span className="fan-icon">
-                    <Icon size={21} />
+                    <Icon size={20} />
                   </span>
                   <span className="fan-label">{label}</span>
                 </button>
-              )
-            })}
+              ))}
+            </div>
 
             <button
               className="tab-add"

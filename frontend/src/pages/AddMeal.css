@@ -552,19 +552,52 @@
   min-height: 0;
 }
 
+/* Maydon va tozalash tugmasi bitta o'ramda — tugma matn ustida turadi. */
+.search-box {
+  position: relative;
+  margin-bottom: 12px;
+}
+
 .search-input {
   width: 100%;
   background: var(--surface-2);
   border: 1px solid var(--line);
   border-radius: var(--r-sm);
-  padding: 0 16px;
+  padding: 0 46px 0 16px;
   min-height: 50px;
   outline: none;
-  margin-bottom: 12px;
 }
 
 .search-input:focus {
   border-color: var(--lime);
+}
+
+/* Chrome ning ichki tozalash tugmasi KO'K "✕" bo'lib chiqadi va
+   palitraga mos kelmaydi. Uni o'chiramiz — o'rniga o'zimizniki. */
+.search-input::-webkit-search-cancel-button,
+.search-input::-webkit-search-decoration {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.search-clear {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--surface-3);
+  color: var(--ink-2);
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.search-clear:active {
+  transform: translateY(-50%) scale(0.9);
 }
 
 .search-list {

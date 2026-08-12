@@ -9,7 +9,7 @@ ishlatilsa, kun noto'g'ri vaqtda yangilanadi — O'zbekistonda ertalab soat
 from __future__ import annotations
 
 from datetime import date as date_type
-from datetime import datetime
+from datetime import datetime, timezone
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 from config import settings
@@ -31,5 +31,22 @@ def bugun() -> date_type:
 
 
 def kun_boshi() -> datetime:
-    """Bugungi kunning boshlanishi (00:00) — kunlik chegaralarni sanash uchun."""
+    """Mahalliy yarim tun, mahalliy zonada (naive).
+
+    Faqat `hozir()` bilan yozilgan ustunlar bilan solishtiriladi
+    (masalan `User.oxirgi_faollik`).
+    """
     return hozir().replace(hour=0, minute=0, second=0, microsecond=0)
+
+
+def kun_boshi_utc() -> datetime:
+    """Mahalliy yarim tun, LEKIN UTC da ifodalangan (naive).
+
+    Nega kerak: `created_at` ustunlari `models.utcnow()` bilan, ya'ni UTC da
+    yoziladi. Ularni mahalliy yarim tun bilan solishtirsak, zona farqi
+    (Toshkent uchun +5 soat) qadar oyna hosil bo'ladi va o'sha vaqtda
+    hisob NOL chiqadi — ya'ni kunlik chegara har kecha 00:00 dan 05:00
+    gacha umuman ishlamay qoladi.
+    """
+    mahalliy = datetime.now(TZ).replace(hour=0, minute=0, second=0, microsecond=0)
+    return mahalliy.astimezone(timezone.utc).replace(tzinfo=None)

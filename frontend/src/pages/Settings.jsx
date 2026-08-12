@@ -3,7 +3,10 @@ import EditModal from '../components/EditModal'
 import {
   ActivityIcon,
   CalendarIcon,
+  ChartIcon,
   ChevronRight,
+  CrownIcon,
+  FlagIcon,
   GenderIcon,
   FireIcon,
   PhoneIcon,
@@ -68,7 +71,9 @@ const MAYDONLAR = {
     unit: 'kg',
     min: 20,
     max: 400,
-    Icon: TargetIcon,
+    // Bayroq, nishon emas: "Maqsad" qatorida nishon turibdi va ikkita
+    // bir xil ikonka ro'yxatni o'qishni qiyinlashtirardi.
+    Icon: FlagIcon,
   },
   faollik_darajasi: {
     key: 'faollik_darajasi',
@@ -122,6 +127,16 @@ const MAYDONLAR = {
     max: 10000,
     Icon: WaterIcon,
   },
+}
+
+/** Premium qatori ostidagi izoh: muddat yoki tasdiq kutilayotgani. */
+function premiumIzoh(user) {
+  if (user.premium_tasdiq_kutilmoqda) return 'Ariza admin tekshiruvida'
+  if (!user.premium_tugash) return 'Faol'
+  const kun = Math.ceil(
+    (new Date(user.premium_tugash) - new Date()) / 86400000
+  )
+  return kun > 0 ? `Yana ${kun} kun` : 'Muddati tugadi'
 }
 
 /**
@@ -280,10 +295,31 @@ export default function Settings({
           )
         )}
         <Row
-          field={{ label: 'Vazn kuzatuvi', sub: "O'zgarishni grafikda ko'ring", Icon: ScaleIcon }}
+          field={{ label: 'Vazn kuzatuvi', sub: "O'zgarishni grafikda ko'ring", Icon: ChartIcon }}
           onClick={() => {
             haptic('light')
             onOpenWeight?.()
+          }}
+        />
+      </div>
+
+      {/* Obuna.
+          Ilgari bu sahifaga faqat premiumsiz foydalanuvchi "+" tugmasini
+          bosganda tushar edi — ya'ni obuna bo'lgan odam o'z tarifini,
+          muddatini va arizalari holatini umuman ko'ra olmasdi. */}
+      <h2 className="section-title">Obuna</h2>
+      <div className="group">
+        <Row
+          field={{
+            label: user.premium_faolmi ? 'Premium obuna' : 'Premium olish',
+            sub: user.premium_faolmi
+              ? premiumIzoh(user)
+              : 'Rasmdan tahlil va AI murabbiy',
+            Icon: CrownIcon,
+          }}
+          onClick={() => {
+            haptic('light')
+            onOpenPremium?.()
           }}
         />
       </div>

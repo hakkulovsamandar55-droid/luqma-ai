@@ -52,7 +52,8 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  color: var(--ink-3);
+  /* --ink-3 juda so'nik edi: qora fonda ikonka deyarli ko'rinmasdi. */
+  color: var(--ink-2);
 }
 
 .meal-thumb img {

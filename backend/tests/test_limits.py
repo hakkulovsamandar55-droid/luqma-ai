@@ -355,3 +355,21 @@ async def test_tolov_cheki_yetim_deb_ochirilmaydi(client, tmp_path, monkeypatch)
 
     assert await cleanup.yetim_fayllarni_ochir() == 0
     assert chek.exists()
+
+
+def test_kun_boshi_utc_hech_qachon_kelajakda_emas():
+    """`kun_boshi_utc()` UTC dagi hozirgi vaqtdan oldin turishi shart.
+
+    Kunlik chegaralar `created_at >= kun_boshi_utc()` bilan sanaladi, ustun
+    esa UTC da yoziladi. Agar bu yerda mahalliy yarim tun naive ko'rinishda
+    qaytarilsa, zona farqi qadar (Toshkent uchun 5 soat) qiymat KELAJAKDA
+    bo'lib qoladi: shart hech bir qatorga mos kelmaydi, hisob nol chiqadi
+    va chegara har kecha 00:00–05:00 oralig'ida umuman ishlamaydi.
+    """
+    from datetime import datetime, timezone
+
+    boshi = timeutil.kun_boshi_utc()
+    hozir_utc = datetime.now(timezone.utc).replace(tzinfo=None)
+
+    assert boshi <= hozir_utc, "kun boshi kelajakda — chegara ishlamaydi"
+    assert (hozir_utc - boshi).total_seconds() < 24 * 3600

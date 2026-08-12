@@ -157,11 +157,13 @@ export const FatIcon = (p) => (
   </Svg>
 )
 
-/* Olov — ikki tilli, uchlari dumaloq */
+/* Olov — tashqi til va ichki yadro.
+   Ilgari kontur juda burilishli edi: 19px da tafsilotlar bir-biriga
+   yopishib, tomchiga o'xshab qolardi. Endi ikkita sodda shakl. */
 export const FireIcon = (p) => (
   <Svg {...p}>
-    <path d="M12.7 3.1c.55 2.55-.35 4.2-1.7 5.6-1.7 1.75-3.6 3.25-3.6 5.9a6.65 6.65 0 0 0 .3 2 4.5 4.5 0 0 1-1-2.8c0-.4 0-.8.1-1.15a6.4 6.4 0 0 0-1.9 4.5c0 3.25 3.2 5.7 7.1 5.7s7.1-2.45 7.1-5.7c0-2.4-1.3-4.2-2.8-5.85-.25 1-.85 1.75-1.6 2.05 1.15-3.2.1-7.4-2-10.25Z" />
-    <path d="M12 13.9c.95 1.35 1.5 2.4 1.5 3.35a2.3 2.3 0 0 1-4.6 0c0-.95.55-2 1.5-3.35.25-.35.45-.65.6-.95.15.3.35.6.6.95Z" />
+    <path d="M12.4 3.05a.4.4 0 0 1 .66.3c.05 2.2 1.1 3.3 2.4 4.6 1.6 1.6 2.9 3.3 2.9 5.75a6.36 6.36 0 0 1-12.72 0c0-2.2 1-3.9 2.15-5.2a.4.4 0 0 1 .7.26c.02.95.3 1.7.8 2.25.6-3.35 2.05-5.85 3.11-7.96Z" />
+    <path d="M12 14.15c1.05 1.15 1.7 2.05 1.7 3a2.35 2.35 0 0 1-4.7 0c0-.95.65-1.85 1.7-3 .25-.28.45-.53.65-.8.2.27.4.52.65.8Z" />
   </Svg>
 )
 
@@ -227,12 +229,14 @@ export const CalendarIcon = (p) => (
   </Svg>
 )
 
+/* Jins — Mars va Venera belgilari.
+   Ilgari "ikki kishi" chizilgan edi, u esa "foydalanuvchilar" degan
+   ma'noni beradi, jinsni emas. */
 export const GenderIcon = (p) => (
   <Svg {...p}>
-    <circle cx="9.1" cy="8.5" r="3.15" />
-    <path d="M3.9 19.1a5.35 5.35 0 0 1 10.4 0" />
-    <path d="M16.1 5.9a3.15 3.15 0 0 1 0 5.2" />
-    <path d="M17.4 13.3a5.4 5.4 0 0 1 2.9 4.8" />
+    <circle cx="9.4" cy="14.3" r="4.15" />
+    <path d="M12.4 11.3 18.9 4.8" />
+    <path d="M14.6 4.8h4.3v4.3" />
   </Svg>
 )
 
@@ -242,18 +246,31 @@ export const PhoneIcon = (p) => (
   </Svg>
 )
 
+/* Bo'y — vertikal o'lchov chizig'i.
+   Ilgari yotiq "chizg'ich" edi: 19px da u batareyaga o'xshab qolar va
+   bo'yni anglatmasdi. Endi ikki uchida strelka bor tik chiziq — bu
+   universal "balandlik" belgisi. */
 export const RulerIcon = (p) => (
   <Svg {...p}>
-    <rect x="2.75" y="8.4" width="18.5" height="7.2" rx="2.6" />
-    <path d="M7.1 8.4v2.5M11 8.4v3.4M14.9 8.4v2.5M18.8 8.4v3.4" />
+    {/* Yuqori va pastki chegara — o'lchov shu ikkisi orasida */}
+    <path d="M5.4 4.6h13.2M5.4 19.4h13.2" />
+    <path d="M12 7.2v9.6" />
+    <path d="m9.7 9.5 2.3-2.3 2.3 2.3" />
+    <path d="m9.7 14.5 2.3 2.3 2.3-2.3" />
   </Svg>
 )
 
+/* Vazn — tarozi: dumaloq shkala va strelka.
+   Ilgari to'rtburchak ichida yuqoriga qaragan strelka bor edi — u
+   "yuklash" (upload) belgisiga o'xshardi va vaznni bildirmasdi. */
 export const ScaleIcon = (p) => (
   <Svg {...p}>
-    <rect x="3.9" y="4.9" width="16.2" height="14.2" rx="3.6" />
-    <path d="m9 10.9 2.35-2.35a.92.92 0 0 1 1.3 0L15 10.9" />
-    <path d="M12 8.4v3.3" />
+    {/* Strelkali shkala. Ilgari to'rtburchak ichiga kichik yoy chizilgan
+        edi — 19px da u tafsilot emas, dog' bo'lib ko'rinardi. Endi yoy
+        butun maydonni egallaydi. */}
+    <path d="M4.4 17.9a8 8 0 1 1 15.2 0" />
+    <path d="M4.4 17.9h15.2" />
+    <path d="m12 17.9 4.3-5.1" />
   </Svg>
 )
 
@@ -265,11 +282,30 @@ export const TargetIcon = (p) => (
   </Svg>
 )
 
+/* Istalgan vazn — bayroq. Ilgari "Maqsad" bilan bir xil nishon ikonkasi
+   turardi: ikki qatorda bir xil belgi ko'ringanda ro'yxat o'qilmaydi. */
+export const FlagIcon = (p) => (
+  <Svg {...p}>
+    <path d="M6.25 20.25V4.6" />
+    <path d="M6.25 5.4h9.9a.75.75 0 0 1 .58 1.22l-2.1 2.6a.75.75 0 0 0 0 .95l2.1 2.6a.75.75 0 0 1-.58 1.23h-9.9" />
+  </Svg>
+)
+
+/* Premium — toj. Faqat obuna bo'limida ishlatiladi. */
+export const CrownIcon = (p) => (
+  <Svg {...p}>
+    <path d="M4.4 8.1a1 1 0 0 1 1.62-.78l2.7 2.14a1 1 0 0 0 1.5-.3l1.9-3.55a1 1 0 0 1 1.76 0l1.9 3.55a1 1 0 0 0 1.5.3l2.7-2.14a1 1 0 0 1 1.61.78l-.9 7.3a2.2 2.2 0 0 1-2.18 1.93H7.49a2.2 2.2 0 0 1-2.19-1.94Z" />
+    <path d="M8.6 20.4h6.8" />
+  </Svg>
+)
+
 /* ---------- Statistika ---------- */
 
+/* Faollik — puls chizig'i. Amplituda oshirildi: ilgari chiziq deyarli
+   tekis edi va 19px da oddiy tire bo'lib ko'rinardi. */
 export const ActivityIcon = (p) => (
   <Svg {...p}>
-    <path d="M3.75 12.5h3.1a.9.9 0 0 0 .84-.58l1.7-4.5a.6.6 0 0 1 1.14.06l2.72 9.4a.6.6 0 0 0 1.15.02l1.6-4.83a.9.9 0 0 1 .85-.62h3.4" />
+    <path d="M3.4 12.4h3a.9.9 0 0 0 .84-.58l1.85-4.9a.55.55 0 0 1 1.04.05l2.9 10.9a.55.55 0 0 0 1.06.01l1.72-5.85a.9.9 0 0 1 .86-.64h3.93" />
   </Svg>
 )
 

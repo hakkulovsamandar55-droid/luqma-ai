@@ -1,4 +1,4 @@
-import { nisbat, raqam } from '../lib/format'
+import { litr, nisbat, raqam } from '../lib/format'
 import './MacroCards.css'
 
 const MAKROLAR = [
@@ -14,7 +14,7 @@ const MAKROLAR = [
  * turganda ular bir oilaga o'xshaydi va asosiy kaloriya halqasi bilan
  * bitta tilda gapiradi.
  */
-function MacroRing({ label, istemol, limit, birlik, oshib }) {
+function MacroRing({ label, istemol, limit, birlik, oshib, format = raqam }) {
   const R = 26
   const C = 2 * Math.PI * R
   const p = Math.min(nisbat(istemol, limit), 1)
@@ -35,11 +35,11 @@ function MacroRing({ label, istemol, limit, birlik, oshib }) {
             transform="rotate(-90 32 32)"
           />
         </svg>
-        <span className="mring-val num">{raqam(Math.round(istemol))}</span>
+        <span className="mring-val num">{format(istemol)}</span>
       </div>
       <span className="mring-label">{label}</span>
       <span className="mring-limit num">
-        / {raqam(Math.round(limit))} {birlik}
+        / {format(limit)} {birlik}
       </span>
     </div>
   )
@@ -63,13 +63,17 @@ export default function MacroCards({ summary, suvMl = 0, suvLimit = 2000 }) {
       })}
 
       {/* To'rtinchi katak — suv. Ilgari alohida kartochkada edi va
-          ekranni uzaytirardi. */}
+          ekranni uzaytirardi.
+
+          Millilitr emas, litr: "1 400" halqa ichiga sig'may chetidan
+          chiqib ketardi, "1,4" esa bemalol turadi. */}
       <MacroRing
         label="Suv"
         istemol={suvMl}
         limit={suvLimit}
-        birlik="ml"
+        birlik="l"
         oshib={false}
+        format={litr}
       />
     </div>
   )

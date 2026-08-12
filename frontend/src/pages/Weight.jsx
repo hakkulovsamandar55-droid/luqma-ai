@@ -16,9 +16,9 @@ function sanaQisqa(iso) {
 
 /** Oddiy chiziqli grafik — kutubxonasiz, SVG. */
 function Grafik({ nuqtalar }) {
-  const { yol, min, max } = useMemo(() => {
+  const { yol, toldirish, oxirgi, min, max } = useMemo(() => {
     if (!Array.isArray(nuqtalar) || nuqtalar.length < 2) {
-      return { yol: '', min: 0, max: 0 }
+      return { yol: '', toldirish: '', oxirgi: [0, 0], min: 0, max: 0 }
     }
 
     const qiymatlar = nuqtalar.map((n) => n.vazn_kg)
@@ -27,32 +27,64 @@ function Grafik({ nuqtalar }) {
     // Tekis chiziq bo'lsa ham grafik ko'rinsin.
     const oraliq = eng_kop - eng_kam || 1
 
+    // Chekka bo'sh joy: chiziq kartochka qirrasiga tegib turmasligi kerak,
+    // aks holda u grafik emas, tasodifan chizilgandek ko'rinadi.
     const W = 100
     const H = 40
-    const yol = nuqtalar
-      .map((n, i) => {
-        const x = (i / (nuqtalar.length - 1)) * W
-        const y = H - ((n.vazn_kg - eng_kam) / oraliq) * H
-        return `${i === 0 ? 'M' : 'L'}${x.toFixed(1)},${y.toFixed(1)}`
-      })
+    const PX = 3
+    const PY = 5
+
+    const koord = nuqtalar.map((n, i) => {
+      const x = PX + (i / (nuqtalar.length - 1)) * (W - PX * 2)
+      const y =
+        H - PY - ((n.vazn_kg - eng_kam) / oraliq) * (H - PY * 2)
+      return [Number(x.toFixed(2)), Number(y.toFixed(2))]
+    })
+
+    const yol = koord
+      .map(([x, y], i) => `${i === 0 ? 'M' : 'L'}${x},${y}`)
       .join(' ')
 
-    return { yol, min: eng_kam, max: eng_kop }
+    // To'ldirish uchun yopiq shakl — chiziq ostidagi maydon.
+    const [oxirgiX] = koord[koord.length - 1]
+    const toldirish = `${yol} L${oxirgiX},${H} L${koord[0][0]},${H} Z`
+
+    return { yol, toldirish, oxirgi: koord[koord.length - 1], min: eng_kam, max: eng_kop }
   }, [nuqtalar])
 
   if (!Array.isArray(nuqtalar) || nuqtalar.length < 2) return null
 
   return (
     <div className="wgraph">
+      {/* preserveAspectRatio="none" ataylab: grafik kartochka kengligiga
+          cho'ziladi. Shu sababli chiziq qalinligi va nuqta radiusi
+          non-scaling-stroke bilan himoyalangan. */}
+      <div className="wgraph-plot">
       <svg viewBox="0 0 100 40" preserveAspectRatio="none" aria-hidden="true">
-        <path d={yol} fill="none" stroke="var(--ink)" strokeWidth="1"
+        <defs>
+          <linearGradient id="wgrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="var(--accent)" stopOpacity="0.22" />
+            <stop offset="100%" stopColor="var(--accent)" stopOpacity="0" />
+          </linearGradient>
+        </defs>
+        <path d={toldirish} fill="url(#wgrad)" stroke="none" />
+        <path d={yol} fill="none" stroke="var(--accent)" strokeWidth="2"
               vectorEffect="non-scaling-stroke" strokeLinecap="round"
               strokeLinejoin="round" />
       </svg>
-      <div className="wgraph-scale">
-        <span className="num">{max.toFixed(1)}</span>
-        <span className="num">{min.toFixed(1)}</span>
+
+      {/* Oxirgi o'lchov — alohida belgilanadi, chunki "hozir qayerdaman"
+          degan savolga aynan shu javob beradi. */}
+      <span
+        className="wgraph-dot"
+        style={{ left: `${oxirgi[0]}%`, top: `${(oxirgi[1] / 40) * 100}%` }}
+      />
       </div>
+      {/* Eng katta qiymat o'ngda tepada, eng kichigi chapda pastda:
+          ikkalasi ham o'ng tomonda turganda pastdagisi chiziqning
+          oxirgi nuqtasi bilan ustma-ust tushib qolardi. */}
+      <span className="wgraph-max num">{max.toFixed(1)}</span>
+      <span className="wgraph-min num">{min.toFixed(1)}</span>
     </div>
   )
 }
