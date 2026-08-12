@@ -272,3 +272,86 @@ def test_admin_royxati_parse():
         assert settings.admin_id_list == []
     finally:
         settings.admin_ids = eski
+
+
+# --------------------------------------------------------------------------- #
+# Yetim fayllarni tozalash
+# --------------------------------------------------------------------------- #
+def _eskirtir(fayl) -> None:
+    """Faylni 'eski' qilib ko'rsatadi — yetim tozalash chegarasidan o'tishi uchun."""
+    import os
+
+    eski = (timeutil.hozir() - timedelta(hours=cleanup_yetim_soat() + 1)).timestamp()
+    os.utime(fayl, (eski, eski))
+
+
+def cleanup_yetim_soat() -> int:
+    import cleanup
+
+    return cleanup.YETIM_SOAT
+
+
+@pytest.mark.anyio
+async def test_yetim_fayl_ochiriladi(client, tmp_path, monkeypatch):
+    """DB da eslatilmagan eski fayl o'chadi."""
+    import cleanup
+
+    monkeypatch.setattr(settings, "media_dir", str(tmp_path))
+
+    fayl = tmp_path / "hech-kimniki.jpg"
+    fayl.write_bytes(b"rasm")
+    _eskirtir(fayl)
+
+    assert await cleanup.yetim_fayllarni_ochir() == 1
+    assert not fayl.exists()
+
+
+@pytest.mark.anyio
+async def test_yangi_yetim_fayl_saqlanadi(client, tmp_path, monkeypatch):
+    """Endi yuklangan fayl tegilmaydi — foydalanuvchi tahlilni ko'rib turgan bo'lishi mumkin."""
+    import cleanup
+
+    monkeypatch.setattr(settings, "media_dir", str(tmp_path))
+
+    fayl = tmp_path / "hozirgina.jpg"
+    fayl.write_bytes(b"rasm")
+
+    assert await cleanup.yetim_fayllarni_ochir() == 0
+    assert fayl.exists()
+
+
+@pytest.mark.anyio
+async def test_tolov_cheki_yetim_deb_ochirilmaydi(client, tmp_path, monkeypatch):
+    """Chek rasmi Meal emas, Payment ga bog'langan — tozalash uni ushlamasligi kerak.
+
+    Aks holda chek yuborilgandan bir necha soat keyin rasm yo'qoladi va admin
+    arizani ko'rganda isbot qolmaydi.
+    """
+    import cleanup
+    from models import Payment
+
+    monkeypatch.setattr(settings, "media_dir", str(tmp_path))
+
+    chek = tmp_path / "chek.jpg"
+    chek.write_bytes(b"chek-rasmi")
+    _eskirtir(chek)
+
+    async with SessionLocal() as session:
+        user = _User(telegram_id=555_010)
+        session.add(user)
+        await session.commit()
+        await session.refresh(user)
+
+        session.add(
+            Payment(
+                user_id=user.id,
+                tarif_nom="1 oy",
+                tarif_kun=30,
+                kutilgan_summa=30_000,
+                chek_yoli="/media/chek.jpg",
+            )
+        )
+        await session.commit()
+
+    assert await cleanup.yetim_fayllarni_ochir() == 0
+    assert chek.exists()

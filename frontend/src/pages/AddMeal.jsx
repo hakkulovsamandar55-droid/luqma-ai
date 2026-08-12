@@ -418,7 +418,7 @@ export default function AddMeal({ open, usul, onClose, onSaved, sana }) {
           <input
             ref={cameraRef}
             type="file"
-            accept="image/*"
+            accept="image/jpeg,image/png,image/webp"
             capture="environment"
             hidden
             onChange={(e) => rasmniTahlilQil(e.target.files?.[0])}
@@ -426,7 +426,7 @@ export default function AddMeal({ open, usul, onClose, onSaved, sana }) {
           <input
             ref={galleryRef}
             type="file"
-            accept="image/*"
+            accept="image/jpeg,image/png,image/webp"
             hidden
             onChange={(e) => rasmniTahlilQil(e.target.files?.[0])}
           />

@@ -21,7 +21,7 @@ from sqlalchemy import select, update
 import timeutil
 from config import settings
 from db import SessionLocal as async_session
-from models import Meal
+from models import Meal, Payment
 
 log = logging.getLogger(__name__)
 
@@ -33,8 +33,16 @@ INTERVAL_SEKUND = 24 * 60 * 60
 YETIM_SOAT = 6
 
 
+def _nomlar(yollar) -> set[str]:
+    return {Path(y).name for y in yollar if y}
+
+
 def _media_dir() -> Path:
-    return Path(settings.media_dir)
+    # `settings.media_path` — API rasmlarni AYNAN shu yerga yozadi (nisbiy yo'l
+    # loyiha ildiziga nisbatan hisoblanadi). Bu yerda `Path(settings.media_dir)`
+    # ishlatilsa, process boshqa katalogdan ishga tushirilganda tozalash butunlay
+    # boshqa papkaga qarab qolardi.
+    return settings.media_path
 
 
 async def eski_rasmlarni_ochir() -> int:
@@ -79,14 +87,22 @@ async def yetim_fayllarni_ochir() -> int:
         return 0
 
     async with async_session() as session:
-        band = {
-            Path(y).name
-            for (y,) in (
+        # DIQQAT: to'lov cheklari ham SHU papkaga tushadi. Ular ro'yxatga
+        # qo'shilmasa, chek yuborilgandan 6 soat keyin o'chib ketadi va admin
+        # arizani ko'rganda rasm topilmaydi.
+        band = _nomlar(
+            (
                 await session.execute(
                     select(Meal.rasm_yoli).where(Meal.rasm_yoli.is_not(None))
                 )
-            ).all()
-        }
+            ).scalars()
+        ) | _nomlar(
+            (
+                await session.execute(
+                    select(Payment.chek_yoli).where(Payment.chek_yoli.is_not(None))
+                )
+            ).scalars()
+        )
 
     chegara = timeutil.hozir() - timedelta(hours=YETIM_SOAT)
     chegara_ts = chegara.timestamp()

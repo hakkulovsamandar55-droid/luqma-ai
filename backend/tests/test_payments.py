@@ -438,3 +438,120 @@ async def test_yordam_username_saqlanadi(client):
 
     # Oddiy foydalanuvchi ham ko'ra oladi — yordam tugmasi shundan oladi.
     assert (await client.get("/api/payment-info")).json()["yordam_username"] == "luqma_admin"
+
+
+# --------------------------------------------------------------------------- #
+# Rasm formati
+# --------------------------------------------------------------------------- #
+@pytest.mark.anyio
+async def test_heic_aniq_xabar_bilan_rad_etiladi(client):
+    """HEIC ni AI o'qiy olmaydi va brauzer ko'rsatmaydi — darhol tushuntiramiz."""
+    tid = await _sozla()
+
+    r = await client.post(
+        "/api/payments",
+        data={"tarif_id": tid},
+        files={"chek": ("chek.heic", io.BytesIO(b"rasm"), "image/heic")},
+    )
+
+    assert r.status_code == 415
+    assert "HEIC" in r.json()["detail"]
+
+
+@pytest.mark.anyio
+async def test_png_chek_png_bolib_saqlanadi(client):
+    """Kengaytma MIME turiga mos bo'lishi kerak, aks holda rasm ochilmaydi."""
+    tid = await _sozla()
+
+    with patch("receipt.chekni_oqi", new=AsyncMock(return_value=ai_javob())):
+        r = await client.post(
+            "/api/payments",
+            data={"tarif_id": tid},
+            files={"chek": ("chek.png", io.BytesIO(b"png-baytlari"), "image/png")},
+        )
+
+    assert r.status_code == 200
+    async with SessionLocal() as session:
+        from sqlalchemy import select
+
+        from models import Payment
+
+        p = await session.scalar(select(Payment).order_by(Payment.id.desc()))
+        assert p.chek_yoli.endswith(".png")
+
+
+# --------------------------------------------------------------------------- #
+# Bir nechta ariza
+# --------------------------------------------------------------------------- #
+@pytest.mark.anyio
+async def test_bitta_arizani_rad_etish_ikkinchisini_buzmaydi(client):
+    """Ikkita avtomatik o'tgan ariza bo'lsa, birini rad etish premiumni olmaydi."""
+    tid = await _sozla()
+    await _meni_admin_qil(client)
+
+    with patch("receipt.chekni_oqi", new=AsyncMock(return_value=ai_javob())):
+        birinchi = (
+            await client.post(
+                "/api/payments", data={"tarif_id": tid}, files=chek_fayl(bayt=b"rasm-a")
+            )
+        ).json()
+
+    with patch(
+        "receipt.chekni_oqi",
+        new=AsyncMock(return_value=ai_javob(tranzaksiya_id="TRX-2")),
+    ):
+        ikkinchi = (
+            await client.post(
+                "/api/payments", data={"tarif_id": tid}, files=chek_fayl(bayt=b"rasm-b")
+            )
+        ).json()
+
+    assert birinchi["avto_otdi"] is True
+    assert ikkinchi["avto_otdi"] is True
+
+    # Birinchisini rad etamiz — ikkinchisi hali kutmoqda, premium qolishi kerak.
+    await client.patch(f"/api/admin/payments/{birinchi['id']}", json={"tasdiq": False})
+    assert (await client.get("/api/user/me")).json()["is_premium"] is True
+
+    # Ikkinchisi ham rad etilsa — endi asos qolmadi.
+    await client.patch(f"/api/admin/payments/{ikkinchi['id']}", json={"tasdiq": False})
+    assert (await client.get("/api/user/me")).json()["is_premium"] is False
+
+
+# --------------------------------------------------------------------------- #
+# Hisobni o'chirish
+# --------------------------------------------------------------------------- #
+@pytest.mark.anyio
+async def test_hisob_ochirilsa_chek_ham_ketadi(client):
+    """Chekda ism, karta va tranzaksiya ID bor — hisob bilan birga o'chishi shart."""
+    from pathlib import Path
+
+    tid = await _sozla()
+
+    with patch("receipt.chekni_oqi", new=AsyncMock(return_value=ai_javob())):
+        await client.post("/api/payments", data={"tarif_id": tid}, files=chek_fayl())
+
+    me = (await client.get("/api/user/me")).json()
+
+    async with SessionLocal() as session:
+        from sqlalchemy import select
+
+        from models import Payment
+
+        p = await session.scalar(select(Payment).where(Payment.user_id == me["id"]))
+        assert p is not None
+        fayl = Path(settings.media_path) / Path(p.chek_yoli).name
+        assert fayl.exists()
+
+    assert (await client.delete("/api/user/me")).status_code == 204
+
+    assert not fayl.exists()
+    async with SessionLocal() as session:
+        from sqlalchemy import func, select
+
+        from models import Payment
+
+        qolgan = await session.scalar(
+            select(func.count(Payment.id)).where(Payment.user_id == me["id"])
+        )
+        assert qolgan == 0

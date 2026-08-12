@@ -90,7 +90,16 @@ logging_setup.sozla()
 log = logging.getLogger(__name__)
 
 MAX_IMAGE_BYTES = 8 * 1024 * 1024
-ALLOWED_IMAGE_TYPES = {"image/jpeg", "image/png", "image/webp", "image/heic", "image/heif"}
+
+# MIME turi -> fayl kengaytmasi. HEIC/HEIF ataylab yo'q: OpenAI vision uni
+# o'qiy olmaydi (chaqiruv xatoga uchraydi) va brauzerlarning ko'pi ko'rsata
+# olmaydi — ya'ni qabul qilsak, rasm ham tahlil qilinmaydi, ham ochilmaydi.
+# Foydalanuvchiga tushunarli xabar berish afzal.
+ALLOWED_IMAGE_TYPES = {
+    "image/jpeg": ".jpg",
+    "image/png": ".png",
+    "image/webp": ".webp",
+}
 
 
 @asynccontextmanager
@@ -125,12 +134,14 @@ def _bugun(sana: date_type | None) -> date_type:
     return sana or timeutil.bugun()
 
 
-async def _rasmni_saqla(rasm: UploadFile) -> tuple[bytes, str]:
-    """Yuklangan rasmni tekshiradi va diskka saqlaydi. -> (baytlar, nisbiy url)"""
-    if rasm.content_type not in ALLOWED_IMAGE_TYPES:
+async def _rasmni_oqi(rasm: UploadFile) -> bytes:
+    """Yuklangan faylni tekshiradi va baytlarini qaytaradi (diskka yozmaydi)."""
+    ext = ALLOWED_IMAGE_TYPES.get(rasm.content_type or "")
+    if ext is None:
         raise HTTPException(
             status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
-            detail="Faqat rasm fayllari qabul qilinadi (JPEG/PNG/WebP)",
+            detail="Faqat JPEG, PNG yoki WebP rasm yuboring. iPhone'da rasm HEIC "
+            "bo'lsa, Sozlamalar > Kamera > Formatlar > \"Eng mos\" ni tanlang.",
         )
 
     data = await rasm.read()
@@ -141,11 +152,21 @@ async def _rasmni_saqla(rasm: UploadFile) -> tuple[bytes, str]:
             status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
             detail="Rasm hajmi 8MB dan katta bo'lmasligi kerak",
         )
+    return data
 
-    ext = {"image/png": ".png", "image/webp": ".webp"}.get(rasm.content_type, ".jpg")
+
+def _rasmni_yoz(data: bytes, content_type: str | None) -> str:
+    """Baytlarni media papkasiga yozadi. -> nisbiy url"""
+    ext = ALLOWED_IMAGE_TYPES.get(content_type or "", ".jpg")
     name = f"{uuid.uuid4().hex}{ext}"
     (settings.media_path / name).write_bytes(data)
-    return data, f"{settings.media_url_prefix}/{name}"
+    return f"{settings.media_url_prefix}/{name}"
+
+
+async def _rasmni_saqla(rasm: UploadFile) -> tuple[bytes, str]:
+    """Yuklangan rasmni tekshiradi va diskka saqlaydi. -> (baytlar, nisbiy url)"""
+    data = await _rasmni_oqi(rasm)
+    return data, _rasmni_yoz(data, rasm.content_type)
 
 
 async def _streak(session: AsyncSession, user_id: int, sana: date_type) -> int:
@@ -301,13 +322,15 @@ async def meal_analyze(
     """Rasmni AI bilan tahlil qiladi. Natija hali DB ga yozilmaydi (preview)."""
     await limits.premium_talab(session, user)
     await limits.tekshir_va_sana(session, user, "tahlil")
-    data, url = await _rasmni_saqla(rasm)
+    data = await _rasmni_oqi(rasm)
     try:
         natija = await vision.rasmni_tahlil_qil(data, rasm.content_type or "image/jpeg")
     except vision.VisionError as exc:
         raise HTTPException(status.HTTP_502_BAD_GATEWAY, detail=str(exc)) from exc
 
-    natija.rasm_yoli = url if saqlash else None
+    # Faqat kerak bo'lsa diskka yozamiz. Ilgari har bir tahlil fayl qoldirar,
+    # keyin tozalash vazifasi ularni yig'ishtirib yurardi.
+    natija.rasm_yoli = _rasmni_yoz(data, rasm.content_type) if saqlash else None
     return natija
 
 
@@ -881,13 +904,26 @@ async def user_delete(
     Bog'liq yozuvlar cascade bilan ketadi, lekin rasm fayllari diskda qoladi —
     ularni qo'lda o'chiramiz.
     """
-    rasmlar = (
-        await session.execute(
-            select(Meal.rasm_yoli).where(
-                Meal.user_id == user.id, Meal.rasm_yoli.is_not(None)
+    # Ovqat rasmlari va to'lov cheklari — ikkalasi ham shaxsiy ma'lumot.
+    # Chekda ism, karta raqami va tranzaksiya ID bo'ladi, shuning uchun
+    # hisob o'chirilganda ular ham diskdan ketishi kerak.
+    rasmlar = list(
+        (
+            await session.execute(
+                select(Meal.rasm_yoli).where(
+                    Meal.user_id == user.id, Meal.rasm_yoli.is_not(None)
+                )
             )
-        )
-    ).scalars().all()
+        ).scalars()
+    ) + list(
+        (
+            await session.execute(
+                select(Payment.chek_yoli).where(
+                    Payment.user_id == user.id, Payment.chek_yoli.is_not(None)
+                )
+            )
+        ).scalars()
+    )
 
     for yol in rasmlar:
         try:
@@ -895,8 +931,19 @@ async def user_delete(
         except OSError:
             log.warning("Rasmni o'chirib bo'lmadi: %s", yol)
 
-    # Cascade sozlanmagan jadvallarni aniq o'chiramiz.
-    for model in (ChatMessage, AiUsage, Favorite, WaterLog, WeightLog, Meal):
+    # Cascade sozlanmagan jadvallarni aniq o'chiramiz. Ro'yxatga yangi jadval
+    # qo'shishni unutmang — aks holda foydalanuvchi ma'lumoti bazada qoladi.
+    for model in (
+        ChatMessage,
+        AiUsage,
+        Favorite,
+        WaterLog,
+        WeightLog,
+        ExerciseLog,
+        Reminder,
+        Payment,
+        Meal,
+    ):
         await session.execute(delete(model).where(model.user_id == user.id))
 
     await session.delete(user)
@@ -1211,11 +1258,23 @@ async def admin_payment_review(
             egasi.premium_tasdiq_kutilmoqda = False
     else:
         p.holat = "rad_etilgan"
-        if egasi and egasi.premium_tasdiq_kutilmoqda:
-            # Faqat shu ariza tufayli berilgan premiumni olib qo'yamiz.
-            egasi.is_premium = False
-            egasi.premium_tugash = None
-            egasi.premium_tasdiq_kutilmoqda = False
+        # Premiumni faqat AYNAN shu ariza tufayli berilgan bo'lsa olib qo'yamiz.
+        # Foydalanuvchi ketma-ket bir nechta chek yuborgan bo'lishi mumkin: agar
+        # boshqa avtomatik o'tgan, hali ko'rilmagan ariza bo'lsa, premium unga
+        # tegishli — bittasini rad etganda hammasini o'chirib yubormaymiz.
+        if egasi and egasi.premium_tasdiq_kutilmoqda and p.avto_otdi:
+            boshqa_kutilayotgan = await session.scalar(
+                select(func.count(Payment.id)).where(
+                    Payment.user_id == p.user_id,
+                    Payment.id != p.id,
+                    Payment.avto_otdi.is_(True),
+                    Payment.holat == "kutilmoqda",
+                )
+            )
+            if not boshqa_kutilayotgan:
+                egasi.is_premium = False
+                egasi.premium_tugash = None
+                egasi.premium_tasdiq_kutilmoqda = False
 
     p.admin_izoh = payload.izoh
     p.admin_id = aktor.id

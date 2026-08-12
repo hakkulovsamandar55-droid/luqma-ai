@@ -213,7 +213,7 @@ export default function Premium({ user, onBack, onUserChange }) {
           darhol ishga tushadi, keyin admin qayta tekshiradi.
         </p>
 
-        <input ref={fileRef} type="file" accept="image/*" hidden onChange={chekYubor} />
+        <input ref={fileRef} type="file" accept="image/jpeg,image/png,image/webp" hidden onChange={chekYubor} />
         <button
           className="pbtn"
           disabled={yuborilmoqda}
