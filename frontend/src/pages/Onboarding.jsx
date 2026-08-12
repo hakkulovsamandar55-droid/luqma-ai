@@ -1,10 +1,18 @@
 import { useState } from 'react'
-import { ActivityIcon, CheckIcon, RulerIcon, TargetIcon, UserIcon } from '../components/Icons'
+import { CheckIcon, RulerIcon, TargetIcon, UserIcon } from '../components/Icons'
 import { api } from '../lib/api'
 import { haptic, showAlert } from '../lib/telegram'
 import './Onboarding.css'
 
-/** Yangi foydalanuvchi uchun profil to'ldirish oqimi (4 qadam). */
+/**
+ * Yangi foydalanuvchi uchun profil to'ldirish oqimi (3 qadam).
+ *
+ * Faollik darajasi ataylab bu yerda so'ralmaydi: yangi odam uchun bu eng
+ * chalkash savol ("o'rtacha" nima degani?) va u kunlik me'yorga eng kam
+ * ta'sir qiladi. Default "o'rtacha" qo'yiladi, keyin Sozlamalardan
+ * o'zgartirsa bo'ladi. Kirish qanchalik qisqa bo'lsa, shuncha ko'p odam
+ * oxirigacha yetadi.
+ */
 const QADAMLAR = [
   {
     key: 'jins',
@@ -23,20 +31,6 @@ const QADAMLAR = [
     title: 'Yosh, bo\'y va vazn',
     sub: 'Aniq hisob uchun kerak',
     type: 'olchamlar',
-  },
-  {
-    key: 'faollik_darajasi',
-    Icon: ActivityIcon,
-    title: 'Faollik darajangiz',
-    sub: 'Kunlik harakat miqdori',
-    type: 'choice',
-    options: [
-      { value: 'sedentary', label: 'Harakatsiz', hint: 'Ofis ishi' },
-      { value: 'light', label: 'Yengil', hint: 'Haftada 1-3 kun' },
-      { value: 'moderate', label: "O'rtacha", hint: 'Haftada 3-5 kun' },
-      { value: 'high', label: 'Yuqori', hint: 'Haftada 6-7 kun' },
-      { value: 'athlete', label: 'Juda yuqori', hint: 'Kuniga 2 mashg\'ulot' },
-    ],
   },
   {
     key: 'maqsad_turi',
@@ -60,7 +54,7 @@ export default function Onboarding({ user, onDone }) {
     boy_sm: user.boy_sm || '',
     joriy_vazn_kg: user.joriy_vazn_kg || '',
     istalgan_vazn_kg: user.istalgan_vazn_kg || '',
-    faollik_darajasi: user.faollik_darajasi || 'light',
+    faollik_darajasi: user.faollik_darajasi || 'moderate',
     maqsad_turi: user.maqsad_turi || 'saqlash',
   })
   const [saqlanmoqda, setSaqlanmoqda] = useState(false)

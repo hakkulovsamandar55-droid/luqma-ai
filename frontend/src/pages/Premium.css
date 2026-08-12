@@ -1,0 +1,411 @@
+.premium {
+  position: fixed;
+  inset: 0;
+  max-width: 440px;
+  margin: 0 auto;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  z-index: 60;
+}
+
+.premium-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: calc(var(--safe-top) + 14px) 20px 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+.premium-back {
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: -8px;
+  color: var(--ink);
+}
+
+.premium-head h1 {
+  font-family: var(--font-head);
+  font-size: 17px;
+  font-weight: 400;
+  letter-spacing: -0.1px;
+  margin: 0;
+}
+
+.premium-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 20px calc(40px + var(--safe-bottom));
+}
+
+/* --- Holat --- */
+.pstatus {
+  position: relative;
+  overflow: hidden;
+  background: var(--lime-soft);
+  background-color: var(--surface);
+  border: 1px solid var(--lime);
+  color: var(--ink);
+  border-radius: var(--r);
+  padding: 17px;
+  margin-bottom: 16px;
+}
+
+/* Yuqori qirradagi nur */
+.pstatus::after {
+  content: '';
+  position: absolute;
+  top: -60%;
+  right: -20%;
+  width: 70%;
+  height: 200%;
+  background: radial-gradient(circle, var(--accent-glow), transparent 70%);
+  filter: blur(30px);
+  pointer-events: none;
+}
+
+.pstatus b {
+  display: block;
+  font-size: var(--t-lead);
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  color: var(--lime-text);
+}
+
+.pstatus span {
+  display: block;
+  font-size: var(--t-sub);
+  color: var(--ink-2);
+  margin-top: 3px;
+  line-height: 1.45;
+}
+
+.pintro {
+  font-size: 14.5px;
+  color: var(--ink-2);
+  line-height: 1.5;
+  margin: 0 2px 18px;
+}
+
+.pbosh {
+  text-align: center;
+  color: var(--ink-3);
+  padding: 24px 0;
+  margin: 0;
+}
+
+/* --- Tariflar --- */
+.ptariffs {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.ptarif {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+  width: 100%;
+  text-align: left;
+  background: var(--sheen);
+  background-color: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  padding: 16px 18px;
+  min-height: 64px;
+  overflow: hidden;
+  transition: border-color var(--dur) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out),
+    background var(--dur) linear;
+}
+
+.ptarif:active {
+  transform: scale(0.985);
+}
+
+/* Tanlangan tarif yonadi — tanlov his qilinadi */
+.ptarif.is-on {
+  border-color: var(--lime);
+  background: var(--lime-soft);
+  background-color: var(--surface);
+}
+
+.ptarif.is-on::after {
+  content: '';
+  position: absolute;
+  top: -80%;
+  right: -30%;
+  width: 80%;
+  height: 240%;
+  background: radial-gradient(circle, var(--lime-glow), transparent 70%);
+  filter: blur(30px);
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.ptarif-nom {
+  position: relative;
+  font-size: var(--t-sub);
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.ptarif.is-on .ptarif-nom {
+  color: var(--lime-text);
+}
+
+.ptarif-narx {
+  position: relative;
+  font-family: var(--font-num);
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.035em;
+}
+
+.ptarif.is-on .ptarif-narx {
+  color: var(--lime-text);
+}
+
+.ptarif-izoh {
+  position: relative;
+  font-size: var(--t-sub);
+  color: var(--ink-2);
+}
+
+/* --- To'lov kartasi --- */
+.premium .pblock-head {
+  margin: 26px 2px 10px;
+}
+
+.pcard {
+  background: var(--sheen);
+  background-color: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  padding: 0 18px;
+}
+
+.pcard-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  text-align: left;
+  padding: 14px 0;
+  min-height: 52px;
+  border-bottom: 1px solid var(--line);
+}
+
+.pcard-row:last-child {
+  border-bottom: none;
+}
+
+.pcard-row span {
+  font-size: 13.5px;
+  color: var(--ink-3);
+}
+
+.pcard-row b {
+  font-size: var(--t-body);
+  font-weight: 600;
+  text-align: right;
+}
+
+.pnote {
+  font-size: var(--t-sub);
+  color: var(--ink-3);
+  line-height: 1.5;
+  margin: 10px 2px 0;
+}
+
+.pbtn {
+  width: 100%;
+  min-height: 54px;
+  border-radius: 99px;
+  background: var(--btn);
+  color: var(--on-btn);
+  font-size: var(--t-body);
+  font-weight: 600;
+  margin-top: 16px;
+  transition: transform var(--dur-fast) var(--ease-out), opacity var(--dur-fast) linear;
+}
+
+.pbtn:active {
+  transform: scale(0.97);
+}
+
+.pbtn:disabled {
+  opacity: 0.4;
+  transform: none;
+}
+
+/* --- Natija --- */
+.pnatija {
+  border-radius: var(--r);
+  padding: 15px 16px;
+  margin-top: 14px;
+}
+
+.pnatija.is-ok {
+  background: var(--lime-soft);
+  background-color: var(--surface);
+  border: 1px solid var(--lime);
+}
+
+.pnatija.is-ok b {
+  color: var(--lime-text);
+}
+
+.pnatija.is-wait {
+  background: var(--surface-2);
+}
+
+.pnatija b {
+  display: block;
+  font-size: var(--t-body);
+  font-weight: 700;
+}
+
+.pnatija span {
+  display: block;
+  font-size: var(--t-sub);
+  color: var(--ink-2);
+  margin-top: 3px;
+  line-height: 1.45;
+}
+
+/* --- Arizalar --- */
+.plist {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  padding: 0 18px;
+}
+
+.prow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.prow:last-child {
+  border-bottom: none;
+}
+
+.prow-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.prow-main b {
+  display: block;
+  font-size: 14.5px;
+  font-weight: 600;
+}
+
+.prow-main span {
+  display: block;
+  font-size: 12.5px;
+  color: var(--ink-3);
+}
+
+.prow-izoh {
+  margin-top: 2px;
+  font-style: italic;
+}
+
+.ptag {
+  flex: none;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 9px;
+  border-radius: 6px;
+  background: var(--surface-2);
+  color: var(--ink-2);
+}
+
+.ptag-tasdiqlangan {
+  background: rgba(95, 201, 138, 0.14);
+  color: var(--ok);
+}
+
+.ptag-rad_etilgan {
+  background: var(--over-soft);
+  color: var(--over);
+}
+
+/* --- Sarlavha va afzalliklar (admin paneldan tahrirlanadi) --- */
+.ptitle {
+  font-family: var(--font-head);
+  font-size: 25px;
+  font-weight: 400;
+  letter-spacing: -0.2px;
+  line-height: 1.25;
+  margin: 6px 0 16px;
+}
+
+.pfeat {
+  list-style: none;
+  margin: 0 0 24px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pfeat li {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  font-size: var(--t-body);
+  line-height: 1.4;
+  color: var(--ink);
+}
+
+.pfeat-dot {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--lime);
+  margin-top: 7px;
+}
+
+/* --- Pastda qotib turuvchi tugma --- */
+.premium {
+  display: flex;
+  flex-direction: column;
+}
+
+.premium-foot {
+  flex: none;
+  padding: 12px 20px calc(16px + var(--safe-bottom));
+  border-top: 1px solid var(--line);
+  background: var(--bg);
+}
+
+.premium-foot .pbtn {
+  margin-top: 0;
+}
+
+.premium .premium-block-head {
+  margin: 26px 2px 10px;
+}
+
+.pnote-top {
+  margin-top: 0;
+  margin-bottom: 14px;
+  font-size: var(--t-body);
+  color: var(--ink);
+  font-weight: 600;
+}

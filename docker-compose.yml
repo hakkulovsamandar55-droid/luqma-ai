@@ -7,8 +7,15 @@ services:
     environment:
       DATABASE_URL: sqlite+aiosqlite:////data/luqma.db
       MEDIA_DIR: /data/media
+      # Konteyner UTC da ishlaydi — busiz "bugun" noto'g'ri vaqtda yangilanadi.
+      TZ: ${TZ:-Asia/Tashkent}
+      TIMEZONE: ${TZ:-Asia/Tashkent}
+      # Loglar volume ichida — konteyner qayta qurilsa ham qoladi.
+      LOG_FILE: ${LOG_FILE:-/data/logs/luqma.log}
     volumes:
       - luqma-data:/data
+      # Zaxira nusxalar host da qolsin — konteyner o'chsa ham yo'qolmaydi.
+      - ./backups:/backups
     expose:
       - "8000"
     networks: [luqma]

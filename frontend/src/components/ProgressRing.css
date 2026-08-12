@@ -1,44 +1,78 @@
-.ring {
-  position: relative;
-  margin: 6px auto 2px;
+/* Halqa bloki qolgan joyni egallaydi va shunga moslashadi. */
+.ring-wrap {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 0 0;
 }
 
-/* Halqa ortidagi yumshoq nur — chuqurlik beradi */
+.ring {
+  position: relative;
+  /* vh bo'yicha: foiz ishlatilsa ota-element balandligi aniq bo'lmagani
+     uchun halqa qulab tushardi. vh har doim hisoblanadi. */
+  height: clamp(108px, 16vh, 146px);
+  aspect-ratio: 1;
+}
+
+.ring svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Halqa ortidagi nur. Blur qimmat, lekin bu bitta statik element —
+   har kadrda qayta hisoblanmaydi, shuning uchun tekin deyish mumkin. */
 .ring::before {
   content: '';
   position: absolute;
   inset: 14%;
   border-radius: 50%;
-  background: radial-gradient(
-    circle at 50% 45%,
-    rgba(107, 78, 255, 0.13) 0%,
-    rgba(107, 78, 255, 0) 68%
-  );
+  background: radial-gradient(circle, var(--accent-glow), transparent 68%);
+  filter: blur(26px);
+  animation: glow-breathe 5s ease-in-out infinite;
   pointer-events: none;
 }
 
-.ring.is-over::before {
+.ring-wrap.is-over .ring::before {
   background: radial-gradient(
-    circle at 50% 45%,
-    rgba(232, 71, 75, 0.14) 0%,
-    rgba(232, 71, 75, 0) 68%
+    circle,
+    rgba(255, 107, 90, 0.3),
+    transparent 68%
   );
 }
 
 .ring-track {
   fill: none;
-  stroke: var(--line);
+  stroke: var(--track);
 }
 
 .ring-bar {
   fill: none;
+  stroke: var(--accent);
   stroke-linecap: round;
-  transition: stroke-dashoffset 1.1s cubic-bezier(0.22, 0.75, 0.24, 1);
-  filter: drop-shadow(0 3px 8px rgba(107, 78, 255, 0.28));
+  transition: stroke-dashoffset var(--dur-ring) var(--ease),
+    stroke var(--dur-slow) linear;
+  /* Chiziqning o'zi ham nurlanadi */
+  filter: drop-shadow(0 0 5px var(--accent-glow));
 }
 
-.ring.is-over .ring-bar {
-  filter: drop-shadow(0 3px 8px rgba(232, 71, 75, 0.3));
+.ring-wrap.is-over .ring-bar {
+  stroke: var(--over);
+  filter: drop-shadow(0 0 7px rgba(255, 107, 90, 0.4));
+}
+
+/* Halqa uchidagi nuqta — progressni "tirik" qiladi */
+.ring-dot {
+  fill: var(--accent);
+  transition: transform var(--dur-ring) var(--ease);
+  transform-origin: center;
+  filter: drop-shadow(0 0 6px var(--accent-glow));
+}
+
+.ring-wrap.is-over .ring-dot {
+  fill: var(--over);
 }
 
 .ring-center {
@@ -48,67 +82,58 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 2px;
 }
 
-/* Ikonka — raqam ustidagi kichik gradient nishon */
-.ring-badge {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  background: var(--grad-accent);
-  color: #fff;
-  box-shadow: 0 4px 12px rgba(107, 78, 255, 0.35);
-  margin-bottom: 8px;
-}
-
-.ring.is-over .ring-badge {
-  background: var(--grad-danger);
-  box-shadow: 0 4px 12px rgba(232, 71, 75, 0.35);
-}
-
+/* Ekrandagi asosiy vizual langar. Qolgan hamma narsa bundan
+   yengilroq va kichikroq bo'lishi kerak. */
 .ring-value {
-  display: flex;
-  align-items: baseline;
-  font-size: var(--t-hero);
-  font-weight: 820;
-  letter-spacing: -3px;
+  font-family: var(--font-head);
+  font-size: clamp(27px, 4.2vh, 42px);
+  font-weight: 400;
+  letter-spacing: -0.05em;
   line-height: 1;
   font-variant-numeric: tabular-nums;
-  background: var(--grad-accent);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
 }
 
-.ring.is-over .ring-value {
-  background: var(--grad-danger);
-  -webkit-background-clip: text;
-  background-clip: text;
-}
-
-.ring-plus {
-  font-size: 34px;
-  letter-spacing: -1px;
+.ring-wrap.is-over .ring-value {
+  color: var(--over);
 }
 
 .ring-label {
-  font-size: 17px;
-  font-weight: 700;
-  color: var(--ink);
-  letter-spacing: -0.3px;
-  margin-top: 9px;
-}
-
-.ring-sub {
-  font-size: var(--t-mini);
-  color: var(--ink-3);
-  margin-top: 3px;
-  font-variant-numeric: tabular-nums;
-}
-
-.ring-sub b {
+  font-family: var(--font-label);
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.1em;
   color: var(--ink-2);
+  margin-top: 2px;
+}
+
+.ring-pct {
+  margin-top: 6px;
+  font-size: var(--t-sub);
   font-weight: 700;
+  color: var(--lime-text);
+  background: var(--accent-soft);
+  padding: 3px 10px;
+  border-radius: 99px;
+}
+
+.ring-wrap.is-over .ring-pct {
+  color: var(--over);
+  background: var(--over-soft);
+}
+
+.ring-line {
+  margin: 7px 0 0;
+  font-size: var(--t-sub);
+  max-width: 280px;
+  text-align: center;
+  color: var(--ink-2);
+  animation: fade-up var(--dur-slow) var(--ease-out) 240ms both;
+}
+
+.ring-line b {
+  color: var(--ink);
+  font-weight: 600;
 }

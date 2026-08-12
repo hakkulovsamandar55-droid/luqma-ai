@@ -1,0 +1,24 @@
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  color: var(--ink);
+  font-family: var(--font-head);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  user-select: none;
+}
+
+/* Brendning eng kichik tanilish belgisi */
+.logo-dot {
+  width: 0.24em;
+  height: 0.24em;
+  border-radius: 50%;
+  background: var(--lime);
+  margin: 0 0.16em;
+  flex: none;
+}
+
+.logo-sm { font-size: 16px; }
+.logo-md { font-size: 20px; }
+.logo-lg { font-size: 27px; }

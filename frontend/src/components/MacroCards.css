@@ -1,145 +1,77 @@
+/* 2 ustun x 2 qator. Balandligi qat'iy — Home ekrani skroll qilinmasligi
+   kerak, shuning uchun bu blok o'zgaruvchan bo'lmasligi shart. */
 .macros {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  margin-top: var(--s-5);
+  grid-template-columns: 1fr 1fr;
+  gap: 7px;
+  margin-top: 8px;
 }
 
-.macro {
-  position: relative;
-  background: var(--surface);
-  border-radius: var(--r-lg);
-  box-shadow: var(--shadow);
-  padding: 14px 12px 15px;
+.mring {
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center;
-  min-width: 0;
-  overflow: hidden;
+  gap: 2px;
+  background-color: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: var(--card-shadow);
+  border-radius: var(--r);
+  padding: 7px 8px 6px;
 }
 
-/* Kartaning yuqori chetida makro rangidagi ingichka chiziq */
-.macro::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  opacity: 0.9;
-}
-
-.macro--protein::before {
-  background: var(--grad-protein);
-}
-.macro--carbs::before {
-  background: var(--grad-carbs);
-}
-.macro--fat::before {
-  background: var(--grad-fat);
-}
-.macro.is-over::before {
-  background: var(--grad-danger);
-}
-
-.macro-icon {
-  width: 34px;
-  height: 34px;
-  display: grid;
-  place-items: center;
-  border-radius: 12px;
-  margin-bottom: 9px;
-  color: #fff;
-}
-
-.macro--protein .macro-icon {
-  background: var(--grad-protein);
-  box-shadow: 0 4px 10px rgba(255, 90, 95, 0.32);
-}
-.macro--carbs .macro-icon {
-  background: var(--grad-carbs);
-  box-shadow: 0 4px 10px rgba(255, 176, 32, 0.32);
-}
-.macro--fat .macro-icon {
-  background: var(--grad-fat);
-  box-shadow: 0 4px 10px rgba(59, 169, 255, 0.32);
-}
-
-.macro-value {
-  font-size: 23px;
-  font-weight: 800;
-  letter-spacing: -0.8px;
-  line-height: 1.1;
-  font-variant-numeric: tabular-nums;
-}
-
-.macro.is-over .macro-value {
-  color: var(--danger);
-}
-
-.macro-unit {
-  font-size: 13px;
-  font-weight: 650;
-  color: var(--ink-3);
-  margin-left: 1px;
-}
-
-.macro-label {
-  font-size: 12.5px;
-  color: var(--ink-3);
-  margin: 3px 0 11px;
-  font-weight: 620;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100%;
-}
-
-.macro-foot {
+.mring-dial {
+  position: relative;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
-  gap: 6px;
+  justify-content: center;
+}
+
+.mring-dial svg {
+  position: absolute;
+  inset: 0;
   width: 100%;
-}
-
-.macro-bar {
-  flex: 1;
-  height: 6px;
-  border-radius: 99px;
-  background: var(--line);
-  overflow: hidden;
-  min-width: 0;
-}
-
-.macro-bar span {
-  display: block;
   height: 100%;
-  border-radius: 99px;
-  transition: width 0.9s cubic-bezier(0.22, 0.75, 0.24, 1);
 }
 
-.macro--protein .macro-bar span {
-  background: var(--grad-protein);
-}
-.macro--carbs .macro-bar span {
-  background: var(--grad-carbs);
-}
-.macro--fat .macro-bar span {
-  background: var(--grad-fat);
-}
-.macro.is-over .macro-bar span {
-  background: var(--grad-danger);
+.mring-track {
+  fill: none;
+  stroke: var(--track);
 }
 
-.macro-pct {
-  font-size: 10.5px;
-  font-weight: 700;
+.mring-bar {
+  fill: none;
+  stroke: var(--lime);
+  stroke-linecap: round;
+  transition: stroke-dashoffset var(--dur-ring) var(--ease);
+}
+
+.mring.is-over .mring-bar {
+  stroke: var(--over);
+}
+
+.mring-val {
+  position: relative;
+  font-family: var(--font-head);
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+}
+
+.mring.is-over .mring-val {
+  color: var(--over);
+}
+
+.mring-label {
+  font-family: var(--font-label);
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  margin-top: 4px;
+}
+
+.mring-limit {
+  font-size: var(--t-mini);
   color: var(--ink-3);
-  font-variant-numeric: tabular-nums;
-  flex: 0 0 auto;
-}
-
-.macro.is-over .macro-pct {
-  color: var(--danger);
 }

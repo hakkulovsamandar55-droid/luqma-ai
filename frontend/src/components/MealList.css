@@ -1,247 +1,116 @@
-/* --- Timeline ------------------------------------------------------------ */
-.timeline {
-  display: flex;
-  flex-direction: column;
-  gap: var(--s-5);
+/* Skroll qilinadigan konteyner ichida turadi — o'z chekkasi bo'lmaydi,
+   aks holda matn chapdan kesilib ko'rinardi. */
+.meals {
+  background: var(--sheen);
+  background-color: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  padding: 0 18px;
+  overflow: hidden;
 }
 
-.tl-group {
-  position: relative;
-  padding-left: 26px;
-}
-
-/* Guruhlarni bog'lab turuvchi vertikal chiziq */
-.tl-group::before {
-  content: '';
-  position: absolute;
-  left: 11px;
-  top: 26px;
-  bottom: 4px;
-  width: 2px;
-  border-radius: 2px;
-  background: linear-gradient(
-    to bottom,
-    var(--line) 0%,
-    var(--line) 70%,
-    transparent 100%
-  );
-}
-
-.tl-head {
+.meal {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 10px;
+  border-bottom: 1px solid var(--line);
+  animation: fade-up var(--dur) var(--ease-out) both;
 }
 
-.tl-dot {
-  position: absolute;
-  left: 0;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: var(--surface);
-  box-shadow: var(--shadow-sm), inset 0 0 0 1.5px var(--line);
-  display: grid;
-  place-items: center;
-  line-height: 0;
-}
+.meal:nth-child(1) { animation-delay: 0ms; }
+.meal:nth-child(2) { animation-delay: 45ms; }
+.meal:nth-child(3) { animation-delay: 90ms; }
+.meal:nth-child(n + 4) { animation-delay: 130ms; }
 
-/* Kun davomiyligi: ertalab issiq, kunduz sariq, kechqurun binafsha */
-.tl-dot--nonushta {
-  color: #f2882b;
-}
-.tl-dot--tushlik {
-  color: #ffb020;
-}
-.tl-dot--kechki {
-  color: #7b62ff;
-}
-.tl-dot--gazak {
-  color: #2fbf71;
-}
-
-.tl-name {
-  font-size: 13.5px;
-  font-weight: 700;
-  letter-spacing: -0.2px;
-  color: var(--ink-2);
-}
-
-.tl-kcal {
-  margin-left: auto;
-  font-size: var(--t-mini);
-  font-weight: 700;
-  color: var(--ink-3);
-  font-variant-numeric: tabular-nums;
-}
-
-.tl-items {
-  display: flex;
-  flex-direction: column;
-  gap: 9px;
-}
-
-/* --- Ovqat kartochkasi --------------------------------------------------- */
-.meal {
-  position: relative;
-  display: flex;
-  align-items: stretch;
-  background: var(--surface);
-  border-radius: var(--r-lg);
-  box-shadow: var(--shadow);
-  overflow: hidden;
+.meal:last-child {
+  border-bottom: none;
 }
 
 .meal-main {
   flex: 1;
+  min-width: 0;
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 11px 6px 11px 11px;
+  gap: 14px;
+  padding: 9px 0;
+  min-height: 40px;
   text-align: left;
-  min-width: 0;
-  transition: background 0.15s ease;
+  transition: transform var(--dur-fast) var(--ease-out);
 }
 
 .meal-main:active {
-  background: var(--surface-2);
+  transform: scale(0.985);
 }
 
 .meal-thumb {
-  flex: 0 0 auto;
-  width: 54px;
-  height: 54px;
-  border-radius: 15px;
-  background: var(--accent-soft);
-  color: var(--accent);
-  display: grid;
-  place-items: center;
+  flex: none;
+  width: 38px;
+  height: 38px;
+  border-radius: 11px;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
+  color: var(--ink-3);
 }
 
 .meal-thumb img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: block;
 }
 
 .meal-info {
   flex: 1;
   min-width: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .meal-name {
   font-size: var(--t-body);
-  font-weight: 680;
-  letter-spacing: -0.25px;
+  font-weight: 600;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.meal-macros {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  margin-top: 5px;
-}
-
-/* Rangli tabletkalar — nuqtalardan ko'ra o'qilishi oson */
-.pill {
-  padding: 2px 7px;
-  border-radius: 99px;
-  font-size: 10.5px;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-  line-height: 1.5;
-}
-
-.pill--protein {
-  background: var(--protein-soft);
-  color: #d93a3f;
-}
-.pill--carbs {
-  background: var(--carbs-soft);
-  color: #b57708;
-}
-.pill--fat {
-  background: var(--fat-soft);
-  color: #1b7fc7;
-}
-
-.meal-right {
-  text-align: right;
-  flex: 0 0 auto;
-  padding-right: 4px;
+.meal-time {
+  font-size: 12.5px;
+  color: var(--ink-3);
+  margin-top: 1px;
 }
 
 .meal-kcal {
-  font-size: 18px;
-  font-weight: 780;
-  letter-spacing: -0.4px;
-  font-variant-numeric: tabular-nums;
+  flex: none;
+  font-size: var(--t-body);
+  font-weight: 600;
+  white-space: nowrap;
 }
 
-.meal-time {
-  font-size: 11.5px;
+.meal-kcal i {
+  font-style: normal;
+  font-size: var(--t-mini);
+  font-weight: 500;
   color: var(--ink-3);
-  font-variant-numeric: tabular-nums;
+  margin-left: 3px;
 }
 
 .meal-del {
-  flex: 0 0 auto;
+  flex: none;
   width: 44px;
-  display: grid;
-  place-items: center;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: -14px;
   color: var(--ink-3);
-  transition: background 0.15s ease, color 0.15s ease;
+  transition: color var(--dur-fast) linear,
+    transform var(--dur-fast) var(--ease-out);
 }
 
 .meal-del:active {
-  background: #fdecec;
-  color: var(--danger);
-}
-
-/* --- Bo'sh holat --------------------------------------------------------- */
-.meal-empty {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  padding: 26px 24px 4px;
-}
-
-.meal-empty-art {
-  width: 84px;
-  height: 84px;
-  border-radius: 50%;
-  background: var(--surface);
-  color: var(--accent);
-  display: grid;
-  place-items: center;
-  box-shadow: var(--shadow);
-  margin-bottom: 14px;
-}
-
-.meal-empty-title {
-  font-size: 17px;
-  font-weight: 750;
-  letter-spacing: -0.3px;
-}
-
-.meal-empty-text {
-  font-size: 13.5px;
-  color: var(--ink-3);
-  margin: 6px 0 0;
-  max-width: 270px;
-  line-height: 1.5;
-}
-
-.meal-empty-arrow {
-  margin-top: 16px;
-  color: var(--accent);
-  opacity: 0.65;
-  animation: bob 1.7s ease-in-out infinite;
+  color: var(--over);
+  transform: scale(0.88);
 }

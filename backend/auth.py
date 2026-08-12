@@ -143,4 +143,22 @@ async def current_user(
             ) from exc
 
     user, _ = await get_or_create_user(session, tg)
+
+    # Bloklangan foydalanuvchi hech qaysi endpointdan foydalana olmaydi.
+    # Tekshiruv shu yerda — shunda yangi endpoint qo'shilganda ham unutilmaydi.
+    if user.is_blocked:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=user.block_sabab or "Hisobingiz bloklangan. Yordam xizmatiga yozing.",
+        )
+
+    # Oxirgi faollik — admin panelidagi "faol foydalanuvchilar" uchun.
+    # Har so'rovda emas, kuniga bir marta yoziladi (ortiqcha yozuvni oldini olish).
+    import timeutil
+
+    hozir = timeutil.hozir()
+    if user.oxirgi_faollik is None or user.oxirgi_faollik.date() != hozir.date():
+        user.oxirgi_faollik = hozir
+        await session.commit()
+
     return user

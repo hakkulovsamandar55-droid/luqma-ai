@@ -1,81 +1,196 @@
+/* Shriftlar npm orqali keladi — tashqi so'rov yo'q, FOUT yo'q.
+
+   Alfa Slab One — asosiy sarlavhalar. Og'ir slab-serif, faqat 400
+   og'irligi bor, shuning uchun font-weight ta'sir qilmaydi.
+
+   Bebas Neue — kichik yozuvlar (yorliq, bo'lim sarlavhasi, tugma
+   matni). DIQQAT: bu shriftda kichik harflar YO'Q — hamma narsa bosh
+   harfda chiqadi. Shuning uchun u faqat qisqa yorliqlarda ishlatiladi.
+
+   Plus Jakarta Sans — uzun matn va raqamlar. Bebas Neue da o'qish
+   sekinlashadi, raqamlari esa juda tor. */
+@import '@fontsource-variable/plus-jakarta-sans';
+@import '@fontsource/alfa-slab-one';
+@import '@fontsource/bebas-neue';
+
 /* ==========================================================================
    Luqma AI — dizayn tizimi
-   Palitra: oq/och kulrang fon, to'q siyoh (ink) va binafsha aksent
+
+   Yo'nalish: chuqur qora, materialli sirtlar, bitta issiq nur (za'faron).
+   Rang bezak emas — u yoritadi: asosiy raqam, faol element va aksent
+   shu nurdan oziqlanadi.
+
+   LUQMA BREND TIZIMI
+
+   krem (--bg)        = muhit. Ko'p bo'sh joy qoldiriladi.
+   oq (--surface)     = kontent
+   ko'mir (--ink)     = ierarxiya VA kuchli tugmalar
+   lime (--lime)      = BREND IMZOSI. Kam, lekin aniq joylarda:
+                        progress, faol holat, AI belgisi, muvaffaqiyat,
+                        kichik urg'ular.
+
+   MUHIM: lime (#A8E63D) MATN sifatida oq fonda o'qilmaydi (kontrast
+   ~1.7:1). To'ldirish uchun — lime, matn va ingichka ikonka uchun —
+   --lime-text (to'q lime). Bu ikkisi almashtirib qo'yilmasin.
+
+   Lime interfeysning asosiy rangi EMAS. Agar ekranning katta qismi
+   lime bo'lib qolsa, imzo bo'lish xususiyatini yo'qotadi. Kuchli
+   birlamchi tugmalar ko'mir rangda, lime ular ustidagi detal sifatida
+   ishlatiladi.
+
+   Motion tamoyili: faqat transform va opacity animatsiya qilinadi.
+   Kenglik/balandlik/soya animatsiyasi brauzerni har kadrda qayta
+   hisoblashga majbur qiladi va telefonda seziladi. Shuning uchun
+   kutubxona ham ishlatilmagan — bularning hammasi CSS.
    ========================================================================== */
 
 :root {
-  /* Fon va sirtlar */
-  --bg: #f4f4f7;
-  --surface: #ffffff;
-  --surface-2: #fafafc;
+  /* --- Sirtlar: pastdan yuqoriga yorishadi --- */
+  --bg: #12161c;
+  --bg-top: #1b2430;
+  --bg-mid: #151a21;
+  --bg-bottom: #10141a;
+  --surface: #1c2229;
+  --surface-2: #262a2d;
+  --surface-3: #2f3438;
 
-  /* Matn */
-  --ink: #111116;
-  --ink-2: #55555f;
-  --ink-3: #9a9aa6;
+  /* --- Matn --- */
+  --ink: #f2f3f1;
+  --ink-2: #9aa09c;
+  --ink-3: #6e746f;
 
-  /* Brend */
-  --accent: #6b4eff;
-  --accent-soft: #efecff;
-  --accent-ink: #4a32d1;
+  /* --- Nur: za'faron. Osh rangi, lekin bezak emas — aksent --- */
+  --lime: #a8e63d;
+  --lime-dark: #79b82b;
+  --lime-soft: rgba(168, 230, 61, 0.15);
+  --lime-glow: rgba(168, 230, 61, 0.3);
+  /* Qora rejimda lime allaqachon yorqin — matn uchun ham mos */
+  --lime-text: #a8e63d;
 
-  /* Makro ranglari — to'yingan, pastel emas */
-  --protein: #ff5a5f;
-  --protein-soft: #ffecec;
-  --carbs: #ffb020;
-  --carbs-soft: #fff4e0;
-  --fat: #3ba9ff;
-  --fat-soft: #e6f4ff;
-  --water: #2fc4d8;
+  --accent: var(--lime);
+  --accent-soft: var(--lime-soft);
+  --accent-glow: var(--lime-glow);
+  --on-accent: #16181a;
+  --accent-subtle: var(--lime-soft);
 
-  /* Gradientlar — ikonka fonlari va aksentlar uchun */
-  --grad-accent: linear-gradient(135deg, #8b72ff 0%, #6b4eff 100%);
-  --grad-protein: linear-gradient(135deg, #ff8a8d 0%, #ff5a5f 100%);
-  --grad-carbs: linear-gradient(135deg, #ffcb5c 0%, #ffb020 100%);
-  --grad-fat: linear-gradient(135deg, #74c6ff 0%, #3ba9ff 100%);
-  --grad-water: linear-gradient(135deg, #5fd9e8 0%, #2fc4d8 100%);
-  --grad-danger: linear-gradient(135deg, #ff7a7d 0%, #e8474b 100%);
+  /* Qora rejimda kuchli tugma oq bo'ladi — ko'mir fonda ko'rinmaydi */
+  --btn: #f2f3f1;
+  --on-btn: #16181a;
 
-  /* Holat */
-  --ok: #2fbf71;
-  --warn: #f0902b;
-  --danger: #e8474b;
+  /* --- Holat --- */
+  --ok: var(--lime);
+  --over: #ff6b5a;
+  --over-soft: rgba(255, 107, 90, 0.13);
 
-  /* Chegara va soya */
-  --line: #ececf1;
-  --shadow-sm: 0 1px 2px rgba(17, 17, 22, 0.04);
-  --shadow: 0 1px 2px rgba(17, 17, 22, 0.04), 0 6px 18px -6px rgba(17, 17, 22, 0.1);
-  --shadow-lg: 0 8px 28px rgba(17, 17, 22, 0.12);
-  --shadow-float: 0 8px 24px rgba(107, 78, 255, 0.38);
+  /* Sirt yaltirashi: qorada yuqoridan yorug'lik tushadi. Oq rejimda bu
+     ko'rinmaydi — u yerda chuqurlik soya bilan beriladi. */
+  --sheen: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.035),
+    rgba(255, 255, 255, 0.012)
+  );
+  --card-shadow: none;
 
-  /* Radius */
-  --r-sm: 12px;
-  --r: 16px;
-  --r-lg: 22px;
-  --r-xl: 28px;
+  /* Pastki panel foni — blur ostidan ko'rinadigan rang */
+  --bar-bg: rgba(18, 22, 28, 0.94);
+  --bar-edge: rgba(255, 255, 255, 0.16);
 
-  /* Tipografik shkala — ko'z qayerga qarashni bilishi uchun */
-  --t-hero: 56px;
-  --t-title: 30px;
-  --t-lead: 22px;
+  /* Tepa zonadagi matn oddiy matn rangini oladi (fon bir xil ochlikda). */
+  --ink-top: var(--ink);
+  --ink-top-2: var(--ink-2);
+
+  --fresh: var(--lime);
+  --fresh-soft: var(--lime-soft);
+  --fresh-glow: var(--lime-glow);
+
+  /* Yoyiluvchi menyu plitalari */
+  --fan-tile: #2f3438;
+  --fan-tile-ink: #f5f4f1;
+
+  /* --- Chegara --- */
+  --line: rgba(255, 255, 255, 0.07);
+  --line-2: rgba(255, 255, 255, 0.12);
+  --track: rgba(255, 255, 255, 0.08);
+
+  /* --- Radius --- */
+  --r-sm: 16px;
+  --r: 24px;
+  --r-lg: 32px;
+
+  /* --- Tipografiya ---
+     Webshrift ataylab ishlatilmaydi: yuklanguncha matn sakraydi (FOUT),
+     bu premium hissini birinchi soniyadayoq buzadi. Tizim shrifti —
+     iOS da SF Pro, Android da Roboto — darhol chiqadi va ikkalasi ham
+     a'lo. Xarakter oraliq va og'irlik bilan beriladi. */
+  --font: 'Plus Jakarta Sans Variable', -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, sans-serif;
+  --font-num: var(--font);
+  --font-head: 'Alfa Slab One', Georgia, serif;
+  --font-label: 'Bebas Neue', 'Plus Jakarta Sans Variable', sans-serif;
+
+  /* Shkala: har qadam ~1.25 barobar. Oraliq o'lchamlar yo'q — shuning
+     uchun matn "baland-past" bo'lib ko'rinmaydi. */
+  --t-hero: 58px;
+  --t-title: 28px;
+  --t-head: 22px;
+  --t-lead: 17px;
   --t-body: 15px;
-  --t-sub: 14px;
-  --t-mini: 12px;
+  --t-sub: 13px;
+  --t-mini: 11px;
 
-  /* Bo'sh joy shkalasi */
+  /* --- Motion ---
+     Bitta "prujina" egri chizig'i butun ilovada. Turlicha egrilardan
+     foydalanish interfeysni bir-biriga yopishmagandek ko'rsatadi. */
+  --ease: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+
+  --dur-fast: 140ms;
+  --dur: 260ms;
+  --dur-slow: 420ms;
+  --dur-ring: 1100ms;
+
+  /* --- Eski nomlar -----------------------------------------------------
+     Ilgari har makro va tugma o'z rangiga ega edi. Endi ilova bitta nur
+     atrofida qurilgan — eski nomlar shunga bog'lanadi, shunda qolgan
+     sahifalar avtomatik izchil bo'ladi. Yangi kodda bularni emas,
+     yuqoridagi asosiy nomlarni ishlating. */
+  --accent-ink: var(--accent);
+  --protein: var(--accent);
+  --carbs: var(--accent);
+  --fat: var(--accent);
+  --water: var(--accent);
+  --protein-soft: var(--surface-2);
+  --carbs-soft: var(--surface-2);
+  --fat-soft: var(--surface-2);
+  --grad-accent: var(--accent);
+  --grad-protein: var(--accent);
+  --grad-carbs: var(--accent);
+  --grad-fat: var(--accent);
+  --grad-water: var(--accent);
+  --grad-danger: var(--over);
+  --danger: var(--over);
+  --warn: var(--ink-2);
+  --r-xl: var(--r-lg);
+  --label-h: 18px;
+
+  /* Qora fonda soya ko'rinmaydi — chuqurlik chegara va yorug'lik bilan
+     beriladi. Eski soya nomlari shu sababli deyarli ko'rinmas qilingan. */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.6);
+  --shadow-float: 0 8px 28px -6px var(--accent-glow);
+
+  /* --- Layout --- */
+  --tabbar-h: 78px;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+
   --s-2: 8px;
   --s-3: 12px;
   --s-4: 16px;
   --s-5: 24px;
   --s-6: 32px;
-
-  /* Layout */
-  --tabbar-h: 68px;
-  --safe-top: env(safe-area-inset-top, 0px);
-  --safe-bottom: env(safe-area-inset-bottom, 0px);
-
-  --font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto,
-    'Helvetica Neue', Arial, sans-serif;
 }
 
 * {
@@ -83,21 +198,49 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-html,
-body {
+html {
   margin: 0;
   padding: 0;
-  height: 100%;
+  min-height: 100%;
+  background: var(--bg-bottom);
+}
+
+/* Gradient alohida qatlamda: body ga qo'yilsa u cho'zilganda rang
+   pastda uzilib qolardi. */
+html::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    var(--bg-top) 0%,
+    var(--bg-mid, var(--bg-bottom)) 46%,
+    var(--bg-bottom) 100%
+  );
+  z-index: -1;
+  pointer-events: none;
 }
 
 body {
-  background: var(--bg);
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  /* Fon html da — bu yerda shaffof qoladi, aks holda body o'z fonini
+     gradient qatlami ustiga chizadi va gradient ko'rinmaydi. */
+  background: transparent;
+}
+
+
+
+body {
   color: var(--ink);
   font-family: var(--font);
-  font-size: 16px;
+  font-size: var(--t-body);
   line-height: 1.45;
   -webkit-font-smoothing: antialiased;
   overscroll-behavior-y: none;
+  /* Interfeys biroz qalinroq: yupqa matn premium emas, kuchsiz ko'rinadi. */
+  font-weight: 500;
 }
 
 #root {
@@ -107,6 +250,7 @@ body {
 button {
   font-family: inherit;
   font-size: inherit;
+  font-weight: inherit;
   color: inherit;
   border: none;
   background: none;
@@ -122,111 +266,232 @@ textarea {
   color: inherit;
 }
 
-/* --- Umumiy layout ------------------------------------------------------- */
+::placeholder {
+  color: var(--ink-3);
+}
+
+::selection {
+  background: var(--accent-soft);
+}
+
+/* --- Layout --------------------------------------------------------------- */
 .app {
-  max-width: 560px;
+  max-width: 440px;
   margin: 0 auto;
   min-height: 100vh;
-  padding: calc(var(--safe-top) + 8px) 16px
-    calc(var(--tabbar-h) + var(--safe-bottom) + 24px);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: calc(var(--safe-top) + 8px) 20px
+    calc(var(--tabbar-h) + var(--safe-bottom) + 20px);
 }
 
 .page-title {
+  font-family: var(--font-head);
   font-size: var(--t-title);
-  font-weight: 800;
-  letter-spacing: -0.9px;
-  margin: 8px 0 14px;
+  font-weight: 400;
+  letter-spacing: -0.3px;
+  line-height: 1.2;
+  margin: 12px 0 4px;
 }
 
+/* Bo'lim sarlavhasi ataylab yengil: ekrandagi asosiy vizual langar —
+   katta raqam. Sarlavha u bilan raqobat qilmasligi kerak, faqat
+   yo'naltirishi kerak. */
 .section-title {
-  font-size: 16px;
-  font-weight: 750;
-  color: var(--ink);
-  margin: 0 0 12px;
-  letter-spacing: -0.2px;
+  font-family: var(--font-label);
+  font-size: 15px;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  color: var(--ink-3);
+  margin: 0;
 }
 
-.card {
-  background: var(--surface);
-  border-radius: var(--r-lg);
-  box-shadow: var(--shadow);
-  padding: 16px;
+/* Kartochka: yassi rang emas, yuqoridan pastga sezilmas yorug'lik —
+   sirt "material" bo'lib ko'rinadi. */
+.card,
+.surface {
+  background: var(--sheen);
+  background-color: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  box-shadow: var(--card-shadow);
+}
+
+/* ==========================================================================
+   OQ REJIM
+
+   Bu shunchaki ranglarni teskari qilish emas. Qorada chuqurlik yorug'lik
+   bilan beriladi (yuqoridan tushuvchi yaltirash), oqda esa soya bilan —
+   shuning uchun --sheen o'chadi va --card-shadow yoqiladi.
+
+   Aksent ham o'zgaradi: och za'faron oq fonda deyarli o'qilmaydi,
+   shuning uchun to'qroq oltin ishlatiladi.
+   ========================================================================== */
+html[data-theme='light'] {
+  /* Nozik ko'k-oq gradient: tepasi och ko'k, o'rtasi oq, pasti yana
+     sal ko'k. Ikkala uchi ham och, shuning uchun matn rangi butun
+     ekran bo'ylab bir xil qoladi.
+
+     Pastki tus ataylab: oq pastki panel oq fonda yo'qolib ketmasin. */
+  --bg-top: #e6edf8;
+  --bg-mid: #ffffff;
+  --bg-bottom: #eef2f9;
+
+  --bg: #f7f6f2;
+  --surface: #ffffff;
+  --surface-2: #f2f1ec;
+  --surface-3: #e8e8e4;
+
+  --ink: #202321;
+  --ink-2: #777b78;
+  --ink-3: #a3a6a3;
+
+  --lime: #a8e63d;
+  --lime-dark: #79b82b;
+  --lime-soft: rgba(168, 230, 61, 0.18);
+  --lime-glow: rgba(168, 230, 61, 0.35);
+  /* Matn va ingichka elementlar uchun — oq fonda o'qiladi */
+  --lime-text: #5f9420;
+
+  --accent: var(--lime);
+  --accent-soft: var(--lime-soft);
+  --accent-glow: var(--lime-glow);
+  --on-accent: #202321;
+  --accent-subtle: var(--lime-soft);
+
+  /* Kuchli birlamchi tugma — ko'mir, lime emas */
+  --btn: #202321;
+  --on-btn: #ffffff;
+
+  --ok: var(--lime-dark);
+  --over: #c4402e;
+  --over-soft: rgba(196, 64, 46, 0.09);
+
+  --line: #e8e8e4;
+  --line-2: #dcdcd7;
+  --track: #ececE8;
+
+  --sheen: none;
+  --card-shadow: 0 1px 3px rgba(32, 35, 33, 0.05);
+  --bar-bg: rgba(255, 255, 255, 0.94);
+  /* O'yiq qirrasi — oq bar oq fonda yo'qolib ketmasligi uchun */
+  --bar-edge: rgba(24, 34, 54, 0.16);
+
+  --ink-top: var(--ink);
+  --ink-top-2: var(--ink-2);
+
+  --fresh: var(--lime);
+  --fresh-soft: var(--lime-soft);
+  --fresh-glow: var(--lime-glow);
+
+  --fan-tile: #202321;
+  --fan-tile-ink: #ffffff;
+
+  --shadow-sm: 0 1px 2px rgba(20, 20, 15, 0.05);
+  --shadow: 0 2px 8px rgba(20, 20, 15, 0.07);
+  --shadow-lg: 0 12px 40px rgba(20, 20, 15, 0.12);
+}
+
+/* Oq rejimda matn ingichkaroq bo'lishi mumkin — qorada og'irroq kerak edi */
+html[data-theme='light'] body {
+  font-weight: 500;
 }
 
 .muted {
   color: var(--ink-3);
 }
 
-/* --- Tugmalar ------------------------------------------------------------ */
+.num {
+  font-family: var(--font-num);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+/* --- Bosilish javobi ------------------------------------------------------
+   Har bosiladigan element barmoqqa javob beradi. Bu eng ko'p seziladigan
+   "sifat" belgisi va deyarli hech narsa turmaydi. */
+.tap {
+  transition: transform var(--dur-fast) var(--ease-out),
+    opacity var(--dur-fast) linear;
+}
+
+.tap:active {
+  transform: scale(0.97);
+}
+
+/* --- Tugmalar ------------------------------------------------------------- */
 .btn {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
   width: 100%;
-  min-height: 52px;
+  min-height: 54px;
   padding: 0 18px;
-  border-radius: var(--r);
-  font-size: 16px;
-  font-weight: 650;
-  transition: transform 0.12s ease, opacity 0.12s ease;
+  border-radius: 99px;
+  font-size: var(--t-body);
+  font-weight: 600;
+  transition: transform var(--dur-fast) var(--ease-out),
+    opacity var(--dur-fast) linear, background var(--dur-fast) linear;
 }
 
 .btn:active {
-  transform: scale(0.975);
+  transform: scale(0.97);
 }
 
 .btn:disabled {
-  opacity: 0.45;
+  opacity: 0.35;
   cursor: default;
   transform: none;
 }
 
-.btn-primary {
-  background: var(--ink);
-  color: #fff;
+/* Kuchli birlamchi tugma ko'mir rangda. Lime unda detal sifatida
+   ishlatiladi (masalan ikonka yoki chiziq), fon sifatida emas —
+   aks holda lime imzo bo'lishdan to'xtaydi. */
+.btn-primary,
+.btn-accent {
+  background: var(--btn);
+  color: var(--on-btn);
 }
 
-.btn-accent {
-  background: var(--accent);
-  color: #fff;
-  box-shadow: var(--shadow-float);
+/* Lime to'ldirilgan tugma — faqat brend momentlari uchun (masalan
+   onboarding yakuni). Kundalik amallarda ishlatilmaydi. */
+.btn-lime {
+  background: var(--lime);
+  color: var(--on-accent);
 }
 
 .btn-soft {
-  background: var(--surface);
+  background: var(--surface-2);
   color: var(--ink);
-  box-shadow: var(--shadow-sm);
 }
 
 .btn-ghost {
   background: transparent;
   color: var(--ink-2);
-  box-shadow: inset 0 0 0 1.5px var(--line);
+  box-shadow: inset 0 0 0 1px var(--line-2);
 }
 
 .btn-danger {
-  background: #fdecec;
-  color: var(--danger);
+  background: var(--over-soft);
+  color: var(--over);
 }
 
-/* --- Animatsiyalar ------------------------------------------------------- */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* --- Animatsiyalar --------------------------------------------------------
+   Hammasi transform/opacity — brauzer bularni GPU da bajaradi. */
 @keyframes fade-up {
   from {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translate3d(0, 10px, 0);
   }
   to {
     opacity: 1;
-    transform: none;
-  }
-}
-
-@keyframes sheet-up {
-  from {
-    transform: translateY(100%);
-  }
-  to {
     transform: none;
   }
 }
@@ -240,34 +505,101 @@ textarea {
   }
 }
 
-@keyframes spin {
+@keyframes sheet-up {
+  from {
+    transform: translate3d(0, 100%, 0);
+  }
   to {
-    transform: rotate(360deg);
+    transform: none;
+  }
+}
+
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translate3d(24px, 0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
   }
 }
 
 @keyframes pulse-soft {
   0%,
   100% {
-    opacity: 1;
+    opacity: 0.3;
   }
-  50% {
-    opacity: 0.45;
+  45% {
+    opacity: 1;
   }
 }
 
-@keyframes bob {
+@keyframes shimmer {
+  from {
+    transform: translate3d(-100%, 0, 0);
+  }
+  to {
+    transform: translate3d(100%, 0, 0);
+  }
+}
+
+@keyframes glow-breathe {
   0%,
   100% {
-    transform: translateY(0);
+    opacity: 0.55;
   }
   50% {
-    transform: translateY(6px);
+    opacity: 0.95;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
   }
 }
 
 .fade-up {
-  animation: fade-up 0.32s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+  animation: fade-up var(--dur) var(--ease-out) both;
+}
+
+.page-in {
+  animation: page-in var(--dur) var(--ease-out) both;
+}
+
+/* Ro'yxat elementlari birin-ketin chiqadi — bir vaqtda paydo bo'lgandan
+   ko'ra ancha jonli, lekin kechikish sezilmasligi uchun juda qisqa. */
+.stagger > * {
+  animation: fade-up var(--dur) var(--ease-out) both;
+}
+.stagger > *:nth-child(1) { animation-delay: 0ms; }
+.stagger > *:nth-child(2) { animation-delay: 40ms; }
+.stagger > *:nth-child(3) { animation-delay: 80ms; }
+.stagger > *:nth-child(4) { animation-delay: 120ms; }
+.stagger > *:nth-child(5) { animation-delay: 160ms; }
+.stagger > *:nth-child(6) { animation-delay: 200ms; }
+.stagger > *:nth-child(n + 7) { animation-delay: 240ms; }
+
+/* Yuklanayotgan joy bo'sh turmasin */
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: var(--surface-2);
+  border-radius: var(--r-sm);
+}
+
+.skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.05),
+    transparent
+  );
+  animation: shimmer 1.4s infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {

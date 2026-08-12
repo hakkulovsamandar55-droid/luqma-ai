@@ -5,6 +5,18 @@ from datetime import date, timedelta
 
 import pytest
 
+from db import SessionLocal
+from models import User as _User
+
+
+async def _premium_qil(client):
+    """Tahlil endpointlari premium talab qiladi — testda uni yoqamiz."""
+    me = (await client.get("/api/user/me")).json()
+    async with SessionLocal() as session:
+        u = await session.get(_User, me["id"])
+        u.is_premium = True
+        await session.commit()
+
 import vision
 from schemas import MealAnalysis
 from tests.test_auth import make_init_data
@@ -198,6 +210,7 @@ async def test_sevimli_taomlar(client):
 
 
 async def test_rasm_tahlili(client, monkeypatch):
+    await _premium_qil(client)
     async def fake(image_bytes, mime="image/jpeg"):
         assert image_bytes  # rasm haqiqatan yetib keldi
         return MealAnalysis(
@@ -217,6 +230,7 @@ async def test_rasm_tahlili(client, monkeypatch):
 
 
 async def test_rasm_bolmagan_fayl_rad_etiladi(client):
+    await _premium_qil(client)
     r = await client.post(
         "/api/meals/analyze",
         files={"rasm": ("virus.exe", io.BytesIO(b"MZ"), "application/octet-stream")},
@@ -225,6 +239,7 @@ async def test_rasm_bolmagan_fayl_rad_etiladi(client):
 
 
 async def test_ai_xatosi_502_qaytaradi(client, monkeypatch):
+    await _premium_qil(client)
     async def fail(*a, **kw):
         raise vision.VisionError("OpenAI javob bermadi")
 
@@ -237,6 +252,7 @@ async def test_ai_xatosi_502_qaytaradi(client, monkeypatch):
 
 
 async def test_matn_tahlili(client, monkeypatch):
+    await _premium_qil(client)
     async def fake(matn):
         assert matn == "150g osh"
         return MealAnalysis(

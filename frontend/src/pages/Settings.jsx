@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import EditModal from '../components/EditModal'
 import {
   ActivityIcon,
@@ -22,7 +22,8 @@ import {
   MAQSAD_NOMLARI,
   raqam,
 } from '../lib/format'
-import { haptic, showAlert, showConfirm } from '../lib/telegram'
+import { haptic, showAlert, showConfirm, tg } from '../lib/telegram'
+import { TEMA_NOMI, temaniOqi, temaniOzgartir } from '../lib/theme'
 import './Settings.css'
 
 const YORDAM_MANZILI = 'https://t.me/luqma_support'
@@ -95,7 +96,7 @@ const MAYDONLAR = {
   },
   kunlik_kaloriya_limit: {
     key: 'kunlik_kaloriya_limit',
-    label: 'Kunlik kaloriya limiti',
+    label: "Kunlik me'yor",
     type: 'number',
     unit: 'kcal',
     min: 800,
@@ -105,7 +106,7 @@ const MAYDONLAR = {
   },
   kunlik_protein_limit: {
     key: 'kunlik_protein_limit',
-    label: 'Kunlik oqsil limiti',
+    label: 'Kunlik oqsil',
     type: 'number',
     unit: 'g',
     min: 0,
@@ -114,7 +115,7 @@ const MAYDONLAR = {
   },
   kunlik_suv_limit_ml: {
     key: 'kunlik_suv_limit_ml',
-    label: 'Kunlik suv maqsadi',
+    label: 'Kunlik suv',
     type: 'number',
     unit: 'ml',
     min: 0,
@@ -123,23 +124,63 @@ const MAYDONLAR = {
   },
 }
 
-function Row({ field, value, onClick }) {
-  const { Icon, label } = field
+/**
+ * Sozlama qatori.
+ *
+ * Ikonka plitasi (kremrang kvadrat) olib tashlandi: u hech qanday
+ * ma'lumot qo'shmasdi va har qatorga og'irlik berardi. Ikonka o'zi
+ * och rangda qoldi — u yo'naltiradi, e'tibor tortmaydi.
+ */
+function Row({ field, value, onClick, danger }) {
+  const { Icon, label, sub } = field
   return (
-    <button className="row" onClick={onClick}>
-      <span className="row-icon">
-        <Icon size={18} />
+    <button className={`row ${danger ? 'is-danger' : ''}`} onClick={onClick}>
+      {/* Ikonka bo'lmasa ham joy band qoladi: aks holda ikonkasiz
+          qatorlar chapga siljib, ro'yxatning chap qirrasi tishli
+          bo'lib ko'rinadi. */}
+      <span className="row-icon">{Icon && <Icon size={19} />}</span>
+      <span className="row-text">
+        <b>{label}</b>
+        {sub && <span>{sub}</span>}
       </span>
-      <span className="row-label">{label}</span>
-      <span className={`row-value ${value == null ? 'is-empty' : ''}`}>
-        {value ?? 'Kiritilmagan'}
-      </span>
-      <ChevronRight size={17} className="row-chev" />
+      {value !== undefined && (
+        <span className={`row-value ${value == null ? 'is-empty' : ''}`}>
+          {value ?? 'Kiritilmagan'}
+        </span>
+      )}
+      <ChevronRight size={16} className="row-chev" />
     </button>
   )
 }
 
-export default function Settings({ user, onUserChange }) {
+export default function Settings({
+  user,
+  onUserChange,
+  onOpenWeight,
+  onOpenPrivacy,
+  onOpenAdmin,
+  onOpenPremium,
+}) {
+  // Admin tugmasi faqat adminlarga ko'rinadi. Backend baribir har so'rovda
+  // huquqni tekshiradi — bu shunchaki UI, himoya emas.
+  const [adminmi, setAdminmi] = useState(false)
+  const [tema, setTema] = useState(temaniOqi)
+  const [yordamUser, setYordamUser] = useState('')
+
+  useEffect(() => {
+    api
+      .getPaymentInfo()
+      .then((r) => setYordamUser(r?.yordam_username || ''))
+      .catch(() => {})
+  }, [])
+
+  useEffect(() => {
+    api
+      .getAdminMe()
+      .then((r) => setAdminmi(Boolean(r?.admin)))
+      .catch(() => setAdminmi(false))
+  }, [])
+
   const [tahrir, setTahrir] = useState(null)
 
   async function saqla(key, value) {
@@ -174,21 +215,39 @@ export default function Settings({ user, onUserChange }) {
 
   const joriyQiymat = tahrir ? user[tahrir.key] : null
 
+  const bosh = (user.ism || '?').trim().charAt(0).toUpperCase()
+  const xulosa = [
+    user.yosh && `${user.yosh} yosh`,
+    user.boy_sm && `${user.boy_sm} sm`,
+    user.joriy_vazn_kg && `${user.joriy_vazn_kg} kg`,
+  ]
+    .filter(Boolean)
+    .join(' · ')
+
   return (
     <div className="settings">
-      <h1 className="page-title">Sozlamalar</h1>
+      {/* Sahifaning "egasi". Ilgari faqat sarlavha bor edi va sahifa
+          kimning sozlamasi ekani ko'rinmasdi. */}
+      <header className="prof">
+        <div className="prof-ava">{bosh}</div>
+        <div className="prof-txt">
+          <b>{user.ism || 'Ismsiz'}</b>
+          <span>{xulosa || "Profilingizni to'ldiring"}</span>
+        </div>
+        {user.premium_faolmi && <span className="prof-tag">Premium</span>}
+      </header>
 
       {!user.profil_toliq && (
         <div className="warn-card fade-up">
           <b>Profilingiz to'liq emas</b>
           <p>
-            Yosh, jins, bo'y va vaznni kiriting — shunda kunlik kaloriya limitingiz
+            Yosh, jins, bo'y va vaznni kiriting — shunda kunlik me'yoringiz
             aniq hisoblanadi.
           </p>
         </div>
       )}
 
-      <h2 className="section-title">Hisob</h2>
+      <h2 className="section-title">Siz haqingizda</h2>
       <div className="group">
         {['ism', 'telefon', 'yosh', 'jins', 'boy_sm', 'joriy_vazn_kg', 'istalgan_vazn_kg'].map(
           (k) => (
@@ -205,43 +264,113 @@ export default function Settings({ user, onUserChange }) {
         )}
       </div>
 
-      <h2 className="section-title">Maqsadlar va kuzatuv</h2>
+      <h2 className="section-title">Maqsad va me'yor</h2>
       <div className="group">
-        {[
-          'maqsad_turi',
-          'faollik_darajasi',
-          'kunlik_kaloriya_limit',
-          'kunlik_protein_limit',
-          'kunlik_suv_limit_ml',
-        ].map((k) => (
-          <Row
-            key={k}
-            field={MAYDONLAR[k]}
-            value={qiymat[k]}
-            onClick={() => {
-              haptic('light')
-              setTahrir(MAYDONLAR[k])
-            }}
-          />
-        ))}
+        {['maqsad_turi', 'faollik_darajasi', 'kunlik_kaloriya_limit', 'kunlik_protein_limit', 'kunlik_suv_limit_ml'].map(
+          (k) => (
+            <Row
+              key={k}
+              field={MAYDONLAR[k]}
+              value={qiymat[k]}
+              onClick={() => {
+                haptic('light')
+                setTahrir(MAYDONLAR[k])
+              }}
+            />
+          )
+        )}
+        <Row
+          field={{ label: 'Vazn kuzatuvi', sub: "O'zgarishni grafikda ko'ring", Icon: ScaleIcon }}
+          onClick={() => {
+            haptic('light')
+            onOpenWeight?.()
+          }}
+        />
       </div>
 
       {user.limit_qolda && (
-        <button className="reset-btn" onClick={limitlarniTikla}>
-          Limitlarni formula bo'yicha qayta hisoblash
+        <button className="link-btn" onClick={limitlarniTikla}>
+          Me'yorni profil asosida qayta hisoblash
         </button>
       )}
 
-      <h2 className="section-title">Yordam xizmati</h2>
+      <h2 className="section-title">Ko'rinish</h2>
+      <div className="theme-row">
+        {['auto', 'dark', 'light'].map((t) => (
+          <button
+            key={t}
+            className={`theme-opt ${tema === t ? 'is-on' : ''}`}
+            onClick={() => {
+              haptic('light')
+              temaniOzgartir(t)
+              setTema(t)
+            }}
+          >
+            {TEMA_NOMI[t]}
+          </button>
+        ))}
+      </div>
+
+      <h2 className="section-title">Boshqa</h2>
       <div className="group">
-        <a className="row" href={YORDAM_MANZILI} target="_blank" rel="noreferrer">
+        {/* Manzil admin panelda sozlanadi — kodda qattiq yozilmagan. */}
+        <a
+          className="row"
+          href={
+            yordamUser
+              ? `https://t.me/${yordamUser.replace('@', '')}`
+              : YORDAM_MANZILI
+          }
+          target="_blank"
+          rel="noreferrer"
+        >
           <span className="row-icon">
-            <SupportIcon size={18} />
+            <SupportIcon size={19} />
           </span>
-          <span className="row-label">Qo'llab-quvvatlash</span>
-          <span className="row-value">Telegram</span>
-          <ChevronRight size={17} className="row-chev" />
+          <span className="row-text">
+            <b>Yordam</b>
+            <span>Telegramda adminga yozing</span>
+          </span>
+          <ChevronRight size={16} className="row-chev" />
         </a>
+
+        <Row
+          field={{ label: 'Maxfiylik siyosati', sub: "Qanday ma'lumot saqlaymiz" }}
+          onClick={() => {
+            haptic('light')
+            onOpenPrivacy?.()
+          }}
+        />
+
+        {adminmi && (
+          <Row
+            field={{ label: 'Admin panel', sub: 'Statistika, foydalanuvchilar' }}
+            onClick={() => {
+              haptic('light')
+              onOpenAdmin?.()
+            }}
+          />
+        )}
+
+        <Row
+          danger
+          field={{ label: "Hisobni o'chirish", sub: "Hamma ma'lumot butunlay o'chadi" }}
+          onClick={async () => {
+            const tasdiq = await showConfirm(
+              "Hisobingiz va barcha ma'lumotlaringiz butunlay o'chiriladi. " +
+                "Buni ortga qaytarib bo'lmaydi. Davom etasizmi?"
+            )
+            if (!tasdiq) return
+            haptic('warning')
+            try {
+              await api.deleteUser()
+              await showAlert("Hisobingiz o'chirildi.")
+              tg?.close?.()
+            } catch (e) {
+              showAlert(e.message)
+            }
+          }}
+        />
       </div>
 
       <p className="version">Luqma AI · v1.0.0</p>
