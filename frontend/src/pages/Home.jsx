@@ -9,7 +9,7 @@ import Sheet from '../components/Sheet'
 import ProgressRing from '../components/ProgressRing'
 import WeeklyChart from '../components/WeeklyChart'
 import { api, toApiDate } from '../lib/api'
-import { birXilKun, raqam, sanaSarlavha } from '../lib/format'
+import { birXilKun, raqam } from '../lib/format'
 import { haptic, showConfirm } from '../lib/telegram'
 import './Home.css'
 
@@ -27,7 +27,6 @@ export default function Home({
   const [tavsiya, setTavsiya] = useState(null)
   const [statsOchiq, setStatsOchiq] = useState(false)
   const [royxatOchiq, setRoyxatOchiq] = useState(false)
-  // Bosilgan ovqat — tahrirlash oynasida ochiladi.
   const [tanlangan, setTanlangan] = useState(null)
   const [yuklanmoqda, setYuklanmoqda] = useState(true)
   const [xato, setXato] = useState(null)
@@ -53,7 +52,6 @@ export default function Home({
     yukla()
   }, [yukla, refreshKey])
 
-  // Murabbiyning bir qatorlik maslahati — kartochka ichida ko'rinadi.
   useEffect(() => {
     if (!bugunmi) return setTavsiya(null)
     api
@@ -90,7 +88,7 @@ export default function Home({
 
   return (
     <div className="home">
-      {/* Sozlamalar pastki panelda — bu yerda takrorlanmaydi. */}
+      {/* Gradientning to'q zonasi: nom, kunlar va halqa */}
       <header className="home-head">
         <Logo size="md" />
       </header>
@@ -106,56 +104,61 @@ export default function Home({
         </div>
       )}
 
-      {/* Ekran skroll qilinmaydi: hamma narsa bir ko'rinishda turadi.
-          Ovqatlar ro'yxati va haftalik statistika pastdan chiquvchi
-          oynaga ko'chirildi — ular kerak bo'lganda ochiladi. */}
       <div className={`home-body ${yuklanmoqda ? 'is-loading' : ''}`}>
-        {/* O'lcham kichikroq: ekranga sig'ishi kerak, skroll yo'q. */}
         <ProgressRing
           istemol={summary?.kaloriya?.istemol || 0}
           limit={summary?.kaloriya?.limit || user?.kunlik_kaloriya_limit || 2000}
         />
 
-        <MacroCards
-          summary={summary}
-          suvMl={summary?.suv_ml || 0}
-          suvLimit={summary?.suv_limit_ml || user?.kunlik_suv_limit_ml || 2000}
-        />
+        <MacroCards summary={summary} />
 
         {bugunmi && <CoachCard tavsiya={tavsiya} onOpen={onOpenChat} />}
 
-        {/* Ovqatlar ro'yxati ekranning o'zida turadi — foydalanuvchi
-            uni ko'rish uchun hech narsa bosmaydi. Faqat ro'yxatning
-            o'zi skroll qilinadi, sahifa emas. */}
         <div className="home-meals">
           <div className="home-meals-head">
-            <span>
-              {meals.length > 0
-                ? `Bugun ${meals.length} ta ovqat`
-                : 'Bugungi ovqatlar'}
-            </span>
-            <button
-              className="home-more"
-              onClick={() => {
-                haptic('light')
-                setRoyxatOchiq(true)
-              }}
-            >
-              Batafsil
-            </button>
-          </div>
-
-          <div className="home-meals-scroll">
-            {meals.length === 0 ? (
-              <p className="home-empty-txt">Hali hech narsa qo'shilmagan</p>
-            ) : (
-              <MealList
-                meals={meals}
-                onDelete={ovqatniOchir}
-                onOpen={setTanlangan}
-              />
+            <h2>Yaqinda iste'mol qilindi</h2>
+            {meals.length > 0 && (
+              <button
+                className="home-more"
+                onClick={() => {
+                  haptic('light')
+                  setRoyxatOchiq(true)
+                }}
+              >
+                Batafsil
+              </button>
             )}
           </div>
+
+          {meals.length === 0 ? (
+            /* Bo'sh holat — namunadagidek oq kartochka va pastga
+               ishora qiluvchi qo'lda chizilgan strelka. */
+            <div className="home-empty">
+              <b>Hozircha ma'lumot yo'q!</b>
+              <p>Bugungi ovqatlaringizni tez suratga olib kuzatishni boshlang</p>
+              <svg
+                className="home-empty-arrow"
+                width="52"
+                height="60"
+                viewBox="0 0 52 60"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M17 3c9 6 10 14 4 17-5 2.6-8-1.4-5.6-5.4C18.4 10 27 9 30 18c2.6 7.8-1 17-6 28" />
+                <path d="M31 40c-2 3.4-4.4 7.6-7 11M14 42c3.6 2.6 7.2 5.6 10 9" />
+              </svg>
+            </div>
+          ) : (
+            <MealList
+              meals={meals}
+              onDelete={ovqatniOchir}
+              onOpen={setTanlangan}
+            />
+          )}
         </div>
       </div>
 

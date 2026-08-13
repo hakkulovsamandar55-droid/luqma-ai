@@ -1,29 +1,14 @@
-/* Shriftlar npm orqali keladi — tashqi so'rov yo'q, FOUT yo'q.
+/* Shrift: Poppins — geometrik, dumaloq, bitta qavatli "a" va "g".
+   Namuna dizayndagi tipografika aynan shu oiladan: sarlavha yengil
+   (300), raqamlar o'rtacha (500), yorliqlar yarim qalin (600).
 
-   IKKI OVOZLI TIZIM. Ko'p shrift aralashtirilgan interfeys tarqoq
-   ko'rinadi, shuning uchun bu yerda faqat ikkitasi bor va har birining
-   aniq vazifasi bor:
-
-   Archivo — SON va SARLAVHA ovozi. Ilovaning butun mazmuni raqamda:
-   qolgan kaloriya, makro, vazn. Archivo — grotesk: raqamlari keng,
-   qat'iy va bir xil kenglikda (tabular), shuning uchun son o'zgarganda
-   qatorlar sakramaydi. Sarlavhalar ham shu shriftda: son va sarlavha
-   bitta oilada bo'lgani uchun ekran yaxlit ko'rinadi.
-
-   Nega Space Grotesk emas: undagi "1" ning tepa bayrog'i deyarli butun
-   belgi enini egallaydi va ketma-ket kelgan "11", "111" bitta uzun
-   chiziqqa qo'shilib ketadi. Kaloriya ilovasida "1" eng ko'p uchraydigan
-   raqam — bu uslub emas, nuqson bo'lardi.
-
-   Plus Jakarta Sans — MATN ovozi. Tanа matn, tugma, yorliq, ro'yxat.
-   Uzoq o'qishga mo'ljallangan, o'zbek diakritikasi (o', g') to'liq.
-
-   Ilgari sarlavhada Alfa Slab One (og'ir slab-serif) va yorliqda
-   Bebas Neue (siqilgan, faqat bosh harf) ishlatilgan edi. Ikkalasi
-   ham afisha shrifti: kichik o'lchamda o'qilmaydi va zamonaviy,
-   toza interfeys bilan to'qnashadi. */
-@import '@fontsource-variable/plus-jakarta-sans';
-@import '@fontsource-variable/archivo';
+   Bitta oila butun ilovada ishlatiladi — alohida "sarlavha shrifti"
+   yo'q. Ierarxiya og'irlik va o'lcham bilan beriladi. */
+@import '@fontsource/poppins/300.css';
+@import '@fontsource/poppins/400.css';
+@import '@fontsource/poppins/500.css';
+@import '@fontsource/poppins/600.css';
+@import '@fontsource/poppins/700.css';
 
 /* ==========================================================================
    Luqma AI — dizayn tizimi
@@ -71,13 +56,14 @@
   --ink-2: #9aa09c;
   --ink-3: #6e746f;
 
-  /* --- Nur: za'faron. Osh rangi, lekin bezak emas — aksent --- */
-  --lime: #a8e63d;
-  --lime-dark: #79b82b;
-  --lime-soft: rgba(168, 230, 61, 0.15);
-  --lime-glow: rgba(168, 230, 61, 0.3);
-  /* Qora rejimda lime allaqachon yorqin — matn uchun ham mos */
-  --lime-text: #a8e63d;
+  /* Aksent neytral — namuna dizaynda rangli aksent YO'Q. Interfeys
+     rangsiz qoladi, rang faqat ovqat rasmidan keladi. Qora rejimda
+     "kuchli" element oq bo'ladi, oq rejimda esa deyarli qora. */
+  --lime: #f2f3f1;
+  --lime-dark: #d7d9d5;
+  --lime-soft: rgba(242, 243, 241, 0.12);
+  --lime-glow: rgba(242, 243, 241, 0.22);
+  --lime-text: #f2f3f1;
 
   --accent: var(--lime);
   --accent-soft: var(--lime-soft);
@@ -136,15 +122,15 @@
      --font-head va --font-num ataylab bitta oila: ekrandagi eng katta
      element — raqam, sarlavha esa uni tanishtiradi. Ikkalasi bir
      ovozda gapirsa, ekran yaxlit ko'rinadi. */
-  --font: 'Plus Jakarta Sans Variable', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, sans-serif;
-  --font-num: 'Archivo Variable', 'Plus Jakarta Sans Variable', sans-serif;
-  --font-head: 'Archivo Variable', 'Plus Jakarta Sans Variable', sans-serif;
+  --font: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    sans-serif;
+  --font-num: var(--font);
+  --font-head: var(--font);
   --font-label: var(--font);
 
   /* Sarlavha va yorliq og'irliklari — bitta joyda turadi, shunda butun
      ilovada bir xil bo'ladi. */
-  --w-head: 700;
+  --w-head: 600;
   --w-label: 600;
 
   /* Shkala: har qadam ~1.25 barobar. Oraliq o'lchamlar yo'q — shuning
@@ -233,8 +219,8 @@ html::before {
   background: linear-gradient(
     180deg,
     var(--bg-top) 0%,
-    var(--bg-mid, var(--bg-bottom)) 46%,
-    var(--bg-bottom) 100%
+    var(--bg-mid, var(--bg-bottom)) 26%,
+    var(--bg-bottom) 50%
   );
   z-index: -1;
   pointer-events: none;
@@ -294,15 +280,18 @@ textarea {
 }
 
 /* --- Layout --------------------------------------------------------------- */
+/* Ekran endi SKROLL qilinadi. Ilgari `height: 100vh` qo'yilgan va
+   hamma narsa bitta ko'rinishga siqilgan edi — natijada ro'yxatga joy
+   qolmasdi. Gradient `html::before` da fixed turadi, shuning uchun
+   skroll paytida fon joyidan qimirlamaydi. */
 .app {
   max-width: 440px;
   margin: 0 auto;
   min-height: 100vh;
-  height: 100vh;
   display: flex;
   flex-direction: column;
   padding: calc(var(--safe-top) + 8px) 20px
-    calc(var(--tabbar-h) + var(--safe-bottom) + 20px);
+    calc(var(--tabbar-h) + var(--safe-bottom) + 28px);
 }
 
 .page-title {
@@ -352,68 +341,72 @@ textarea {
    shuning uchun to'qroq oltin ishlatiladi.
    ========================================================================== */
 html[data-theme='light'] {
-  /* Nozik ko'k-oq gradient: tepasi och ko'k, o'rtasi oq, pasti yana
-     sal ko'k. Ikkala uchi ham och, shuning uchun matn rangi butun
-     ekran bo'ylab bir xil qoladi.
+  /* Namuna dizayndagi kalit yechim: ekran bitta uzun gradient.
+     TEPASI to'q (kulrang-binafsha), PASTI och kulrang. Shuning uchun
+     yuqoridagi matn oq, pastdagisi qora — bu ikki xil tema emas,
+     bitta sahifaning ikki zonasi. */
+  --bg-top: #6a6470;
+  --bg-mid: #d6d3da;
+  --bg-bottom: #eeedf0;
+  --bg: #eeedf0;
 
-     Pastki tus ataylab: oq pastki panel oq fonda yo'qolib ketmasin. */
-  --bg-top: #e6edf8;
-  --bg-mid: #ffffff;
-  --bg-bottom: #eef2f9;
-
-  --bg: #f7f6f2;
   --surface: #ffffff;
-  --surface-2: #f2f1ec;
-  --surface-3: #e8e8e4;
+  --surface-2: #f4f3f6;
+  --surface-3: #e9e8ec;
 
-  --ink: #202321;
-  --ink-2: #777b78;
-  --ink-3: #a3a6a3;
+  --ink: #16151b;
+  --ink-2: #6d6b76;
+  --ink-3: #85838f;
 
-  --lime: #a8e63d;
-  --lime-dark: #79b82b;
-  --lime-soft: rgba(168, 230, 61, 0.18);
-  --lime-glow: rgba(168, 230, 61, 0.35);
-  /* Matn va ingichka elementlar uchun — oq fonda o'qiladi */
-  --lime-text: #5f9420;
+  /* Gradientning to'q zonasidagi matn */
+  --ink-top: #ffffff;
+  --ink-top-2: rgba(255, 255, 255, 0.72);
 
-  --accent: var(--lime);
-  --accent-soft: var(--lime-soft);
-  --accent-glow: var(--lime-glow);
-  --on-accent: #202321;
-  --accent-subtle: var(--lime-soft);
+  /* Aksent — deyarli qora. Namunadagi "+" tugmasi shu rangda.
+     Rangli aksent ataylab yo'q: ekranda rang faqat ovqat rasmidan
+     keladi, interfeys esa neytral qoladi. */
+  --accent: #221d2b;
+  --accent-soft: rgba(34, 29, 43, 0.07);
+  --accent-glow: rgba(34, 29, 43, 0.22);
+  --on-accent: #ffffff;
+  --accent-subtle: rgba(34, 29, 43, 0.06);
 
-  /* Kuchli birlamchi tugma — ko'mir, lime emas */
-  --btn: #202321;
+  --lime: var(--accent);
+  --lime-dark: var(--accent);
+  --lime-soft: var(--accent-soft);
+  --lime-glow: var(--accent-glow);
+  --lime-text: var(--accent);
+
+  --btn: #221d2b;
   --on-btn: #ffffff;
 
-  --ok: var(--lime-dark);
-  --over: #c4402e;
-  --over-soft: rgba(196, 64, 46, 0.09);
+  --ok: #221d2b;
+  --over: #d9534f;
+  --over-soft: rgba(217, 83, 79, 0.1);
 
-  --line: #e8e8e4;
-  --line-2: #dcdcd7;
-  --track: #ececE8;
+  --line: #eceaef;
+  --line-2: #e2e0e6;
+  --track: #ebe9ee;
 
   --sheen: none;
-  --card-shadow: 0 1px 3px rgba(32, 35, 33, 0.05);
-  --bar-bg: rgba(255, 255, 255, 0.94);
-  /* O'yiq qirrasi — oq bar oq fonda yo'qolib ketmasligi uchun */
-  --bar-edge: rgba(24, 34, 54, 0.16);
+  --card-shadow: 0 6px 18px -8px rgba(30, 26, 40, 0.18);
+  --bar-bg: #ffffff;
+  --bar-edge: rgba(30, 26, 40, 0.08);
 
-  --ink-top: var(--ink);
-  --ink-top-2: var(--ink-2);
+  --fresh: var(--accent);
+  --fresh-soft: var(--accent-soft);
+  --fresh-glow: var(--accent-glow);
 
-  --fresh: var(--lime);
-  --fresh-soft: var(--lime-soft);
-  --fresh-glow: var(--lime-glow);
-
-  --fan-tile: #202321;
+  --fan-tile: #221d2b;
   --fan-tile-ink: #ffffff;
 
-  --shadow-sm: 0 1px 2px rgba(20, 20, 15, 0.05);
-  --shadow: 0 2px 8px rgba(20, 20, 15, 0.07);
-  --shadow-lg: 0 12px 40px rgba(20, 20, 15, 0.12);
+  --shadow-sm: 0 1px 3px rgba(30, 26, 40, 0.08);
+  --shadow: 0 4px 14px -6px rgba(30, 26, 40, 0.16);
+  --shadow-lg: 0 16px 40px -14px rgba(30, 26, 40, 0.3);
+
+  --r-sm: 16px;
+  --r: 22px;
+  --r-lg: 30px;
 }
 
 /* Oq rejimda matn ingichkaroq bo'lishi mumkin — qorada og'irroq kerak edi */

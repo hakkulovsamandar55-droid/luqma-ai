@@ -1,80 +1,49 @@
+/* Pastki panel.
+
+   Namunadagi tuzilish: oq panel, markazida yarim doira o'yiq, o'yiqda
+   katta qora "+" tugmasi suzib turadi. Ikonkalar kontur, faol
+   bo'lganda to'q, aks holda so'nik.
+
+   O'yiq CSS mask bilan qilingan (radial-gradient) — SVG yoki rasm
+   ishlatilmagan, shuning uchun panel har qanday kenglikka moslashadi. */
 .tabbar {
   position: fixed;
   left: 0;
   right: 0;
   bottom: 0;
   z-index: 40;
-
-  /* O'yiq shakli. Ikki kubik bezye vodiy hosil qiladi va tekis qismga
-     gorizontal urinma bilan ulanadi — shuning uchun ulanish joyida
-     burchak ko'rinmaydi. Ilgari radial-gradient ishlatilgan, u doira
-     kesib olardi va qirralari keskin tugardi.
-
-     Vodiy kengligi tugma diametridan ~2.2 barobar katta, chuqurligi
-     tugma markazi darajasida — tugma o'yiqqa yotgandek ko'rinadi,
-     ustiga yopishtirilgandek emas.
-
-     SVG ga aniq width/height berilgan (usiz ichki o'lcham noaniq
-     qoladi), preserveAspectRatio='none' bilan ekran kengligiga
-     cho'ziladi: 393px da o'yiq ~11% torayadi, silliq egri chiziqda bu
-     sezilmaydi. */
-  --notch-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='440' height='78' viewBox='0 0 440 78' preserveAspectRatio='none'%3E%3Cpath d='M0,0 L150,0 C173,0 197,37 220,37 C243,37 267,0 290,0 L440,0 L440,78 L0,78 Z' fill='%23000'/%3E%3C/svg%3E");
-  --notch-line: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='440' height='78' viewBox='0 0 440 78' preserveAspectRatio='none'%3E%3Cpath d='M0,1 L150,1 C173,1 197,38 220,38 C243,38 267,1 290,1 L440,1' fill='none' stroke='%23000' stroke-width='2'/%3E%3C/svg%3E");
-}
-
-/* Bar foni — o'yiq shakli bo'yicha kesilgan. */
-.tabbar::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: var(--bar-bg);
-  backdrop-filter: blur(22px) saturate(150%);
-  -webkit-backdrop-filter: blur(22px) saturate(150%);
+  padding-bottom: var(--safe-bottom);
   pointer-events: none;
-  -webkit-mask: var(--notch-mask) center / 100% 100% no-repeat;
-  mask: var(--notch-mask) center / 100% 100% no-repeat;
 }
 
-/* Qirra chizig'i. Usiz oq bar oq fonda yo'qolib ketardi. box-shadow
-   yordam bermaydi: u ham mask bilan birga kesilar edi. */
-.tabbar::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: var(--bar-edge);
-  pointer-events: none;
-  -webkit-mask: var(--notch-line) center / 100% 100% no-repeat;
-  mask: var(--notch-line) center / 100% 100% no-repeat;
-}
-
-.tabbar-inner {
-  position: relative;
-}
-
-/* Uchta ustun teng: AI va Mashq markazdagi '+' atrofida aynan
-   simmetrik turadi. space-around bilan ular biroz siljigan edi. */
 .tabbar-inner {
   position: relative;
   max-width: 440px;
   margin: 0 auto;
   height: var(--tabbar-h);
-  padding-bottom: var(--safe-bottom);
-  box-sizing: content-box;
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  display: flex;
   align-items: center;
-  justify-items: center;
+  pointer-events: auto;
+  background: var(--bar-bg);
+  /* Markazdagi o'yiq: doira shaklidagi "teshik" */
+  -webkit-mask: radial-gradient(
+      circle 40px at 50% 0,
+      transparent 39px,
+      #000 40px
+    )
+    50% 0 / 100% 100% no-repeat;
+  mask: radial-gradient(circle 40px at 50% 0, transparent 39px, #000 40px) 50% 0 /
+    100% 100% no-repeat;
 }
 
+/* --- Oddiy bo'limlar --- */
 .tab {
+  flex: 1;
+  min-width: 0;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 5px;
-  width: 100%;
-  padding: 0 2px;
-  min-height: 48px;
   justify-content: center;
+  height: 100%;
   color: var(--ink-3);
   transition: color var(--dur-fast) linear,
     transform var(--dur-fast) var(--ease-out);
@@ -88,88 +57,60 @@
   color: var(--ink);
 }
 
-.tab span:last-child {
-  font-size: 9.5px;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  white-space: nowrap;
+/* Namunada bo'lim yozuvi yo'q — faqat ikonka. Matn ekranni
+   band qilardi va ikonkalar allaqachon tanish. */
+.tab > span:not(.tab-icon) {
+  display: none;
 }
 
 .tab-icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 24px;
-  transition: transform var(--dur) var(--spring);
 }
 
-.tab.is-active .tab-icon {
-  transform: translateY(-1px);
-}
-
-/* --- Markaziy tugma va yoyiluvchi menyu -------------------------------- */
+/* --- Markazdagi "+" ---
+   Slot faqat joy band qiladi; tugmaning o'zi mask tashqarisida. */
 .tab-add-slot {
-  position: relative;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  flex: 0 0 96px;
 }
 
 .tab-add {
-  position: relative;
-  z-index: 2;
-  width: 56px;
-  height: 56px;
+  position: absolute;
+  left: 50%;
+  bottom: calc(var(--safe-bottom) + 22px);
+  transform: translateX(-50%);
+  width: 66px;
+  height: 66px;
   border-radius: 50%;
-  /* Asosiy harakat tugmasi ko'mir rangda. Lime bu yerda ishlatilsa,
-     ekranning eng katta rangli dog'i bo'lib qolardi. */
-  background: var(--btn);
-  color: var(--on-btn);
+  background: var(--accent);
+  color: var(--on-accent);
   display: flex;
   align-items: center;
   justify-content: center;
-  /* Tugma markazi panel qirrasida turadi — shunda o'yiq unga
-     kontsentrik bo'ladi va halqa hamma tomondan teng ko'rinadi. */
-  margin-top: -26px;
-  box-shadow: 0 6px 18px -8px rgba(32, 35, 33, 0.4);
-  transition: transform var(--dur) var(--spring);
+  pointer-events: auto;
+  box-shadow: 0 8px 22px -8px rgba(30, 26, 40, 0.55);
+  transition: transform var(--dur-fast) var(--ease-out);
 }
 
 .tab-add:active {
-  transform: scale(0.92);
+  transform: translateX(-50%) scale(0.93);
 }
 
-/* Ochiq holatda '+' aylanib × ga aylanadi — alohida ikonka kerak emas */
-.tabbar.is-open .tab-add {
-  transform: rotate(135deg);
-}
-
-.tabbar.is-open .tab-add:active {
-  transform: rotate(135deg) scale(0.92);
-}
-
+/* --- Yoyiluvchi menyu (kamera / galereya / qidiruv / yozish) --- */
 .fan-veil {
   position: fixed;
   inset: 0;
   z-index: 39;
-  background: rgba(0, 0, 0, 0.45);
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
-  animation: fade-in var(--dur) linear both;
+  background: rgba(20, 18, 26, 0.45);
+  animation: fade-in var(--dur-fast) linear both;
 }
 
-/* Yoyiluvchi tugma: markazdan chiqadi, burchak bo'yicha joylashadi.
-   Yopiq holatda markazda va kichik — shuning uchun "ichidan chiqdi"
-   degan taassurot beradi. */
-/* Tik ro'yxat: "+" tugmasi ustida, markazga tekislangan.
-   column-reverse — birinchi element tugmaga eng yaqin turadi. */
 .fan {
   position: absolute;
-  bottom: 100%;
+  bottom: calc(var(--safe-bottom) + var(--tabbar-h) + 18px);
   left: 50%;
   transform: translateX(-50%);
-  margin-bottom: 20px;
   display: flex;
   flex-direction: column-reverse;
   align-items: center;
@@ -210,7 +151,6 @@
   align-items: center;
   justify-content: center;
   flex: none;
-  transition: transform var(--dur-fast) var(--ease-out);
 }
 
 .fan-item:active {
@@ -219,6 +159,6 @@
 
 .fan-label {
   font-size: var(--t-body);
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: -0.01em;
 }

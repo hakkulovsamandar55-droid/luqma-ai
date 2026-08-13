@@ -18,7 +18,7 @@ import './ProgressRing.css'
  */
 export default function ProgressRing({ istemol = 0, limit = 2000 }) {
   const VIEW = 200
-  const strokeWidth = 9
+  const strokeWidth = 4
   const radius = (VIEW - strokeWidth) / 2
   const circumference = 2 * Math.PI * radius
 
@@ -58,44 +58,28 @@ export default function ProgressRing({ istemol = 0, limit = 2000 }) {
             transform={`rotate(-90 ${VIEW / 2} ${VIEW / 2})`}
           />
 
-          {/* Progress uchidagi nuqta — halqa bo'ylab yuradi */}
+          {/* Nuqta halqa bo'ylab yuradi. Namunada u progress nol
+              bo'lganda ham ko'rinadi — bu halqaning boshlanish belgisi. */}
           <circle
             className="ring-dot"
             cx={VIEW / 2}
             cy={strokeWidth / 2}
-            r={strokeWidth / 2}
+            r={strokeWidth}
             style={{
               transform: `rotate(${progress * 360}deg)`,
               transformOrigin: `${VIEW / 2}px ${VIEW / 2}px`,
-              opacity: progress > 0.02 ? 1 : 0,
             }}
           />
         </svg>
 
         <div className="ring-center">
           <div className="ring-value num">{raqam(korsatilgan)}</div>
+          {/* Ikki qatorli izoh — halqa ichida shu ko'rinishda turadi */}
           <div className="ring-label">
-            {oshib ? 'kcal oshdi' : 'kcal qoldi'}
+            {oshib ? 'Ortiqcha kaloriyalar' : 'Qolgan kaloriyalar'}
           </div>
-          {/* Foiz — raqamning ma'nosini bir qarashda beradi.
-              Ataylab kichik: asosiy langar katta raqam bo'lib qolsin. */}
-          <div className="ring-pct num">{Math.round(nisbat * 100)}%</div>
         </div>
       </div>
-
-      {/* Raqamning ma'nosi so'z bilan ham yozilgan — hech kim
-          tushuntirmasdan tushunishi uchun. */}
-      <p className="ring-line">
-        {oshib ? (
-          <>
-            Me'yordan <b>{raqam(Math.abs(qolgan))} kcal</b> oshib ketdingiz
-          </>
-        ) : (
-          <>
-            Bugun yana <b>{raqam(qolgan)} kcal</b> yeyishingiz mumkin
-          </>
-        )}
-      </p>
     </div>
   )
 }

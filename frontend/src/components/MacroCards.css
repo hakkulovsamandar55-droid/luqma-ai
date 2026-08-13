@@ -1,79 +1,61 @@
-/* 2 ustun x 2 qator. Balandligi qat'iy — Home ekrani skroll qilinmasligi
-   kerak, shuning uchun bu blok o'zgaruvchan bo'lmasligi shart. */
+/* Uchta oq kartochka. Ular gradientning OCH zonasida turadi, shuning
+   uchun matn qora. Kartochkalar chegarasiz — faqat yumshoq soya. */
 .macros {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 7px;
-  margin-top: 8px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
 }
 
-.mring {
+.mcard {
+  background: var(--surface);
+  border-radius: var(--r);
+  box-shadow: var(--card-shadow);
+  padding: 14px 12px 12px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  background-color: var(--surface);
-  border: 1px solid var(--line);
-  box-shadow: var(--card-shadow);
-  border-radius: var(--r);
-  padding: 7px 8px 6px;
+  min-width: 0;
 }
 
-.mring-dial {
-  position: relative;
-  width: 40px;
-  height: 40px;
+/* Ikonka va raqam bitta qatorda — namunadagidek */
+.mcard-top {
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 8px;
+  color: var(--ink);
+  min-width: 0;
 }
 
-.mring-dial svg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
+.mcard-top b {
+  font-size: 21px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
 }
 
-.mring-track {
-  fill: none;
-  stroke: var(--track);
-}
-
-.mring-bar {
-  fill: none;
-  stroke: var(--lime);
-  stroke-linecap: round;
-  transition: stroke-dashoffset var(--dur-ring) var(--ease);
-}
-
-.mring.is-over .mring-bar {
-  stroke: var(--over);
-}
-
-.mring-val {
-  position: relative;
-  font-family: var(--font-head);
-  font-size: 14px;
-  font-weight: var(--w-head);
-  letter-spacing: 0;
-}
-
-.mring.is-over .mring-val {
-  color: var(--over);
-}
-
-.mring-label {
-  font-family: var(--font-label);
-  font-size: 11px;
-  font-weight: var(--w-label);
-  text-transform: uppercase;
-  letter-spacing: 0.11em;
-  color: var(--ink-2);
+.mcard-label {
   margin-top: 6px;
+  font-size: 12.5px;
+  font-weight: 400;
+  line-height: 1.3;
+  color: var(--ink);
+  /* Ikki qatorga sig'ishi kerak ("Qolgan uglevod") */
+  min-height: 2.6em;
 }
 
-.mring-limit {
-  font-size: var(--t-mini);
-  color: var(--ink-3);
+/* Pastdagi ingichka chiziq — to'ldirilgan qismi qancha yeyilganini
+   ko'rsatadi. Namunada u juda kuchsiz, e'tibor tortmaydi. */
+.mcard-bar {
+  margin-top: 8px;
+  height: 4px;
+  border-radius: 99px;
+  background: var(--track);
+  overflow: hidden;
+}
+
+.mcard-bar i {
+  display: block;
+  height: 100%;
+  border-radius: 99px;
+  background: var(--ink-3);
+  transition: width var(--dur-slow) var(--ease-out);
 }

@@ -369,3 +369,49 @@ export const RunIcon = (p) => (
     <path d="m12.35 16.5 2.5.95a1.4 1.4 0 0 1 .8.8l.9 2.1" />
   </Svg>
 )
+
+/* ---------- Makro ikonkalari (qo'lda chizilgan uslub) ----------
+   Namuna dizayndagi ikonkalar geometrik emas, "eskiz" ko'rinishida:
+   chiziq biroz notekis, uchlari ochiq. Shuning uchun bular umumiy
+   `Svg` yordamchisidan foydalanmaydi — ularning qalinligi va
+   xarakteri boshqacha. */
+
+const eskiz = {
+  fill: 'none',
+  stroke: 'currentColor',
+  strokeWidth: 1.5,
+  strokeLinecap: 'round',
+  strokeLinejoin: 'round',
+}
+
+/** Oqsil — baliq */
+export const FishIcon = ({ size = 26, ...p }) => (
+  <svg width={size} height={size} viewBox="0 0 32 32" {...eskiz} {...p}>
+    <path d="M4.4 16.2c2.6-4.1 6.6-6.3 10.6-6.3 4.3 0 7.7 2.2 9.6 5.1.4.6.4 1.4 0 2-1.9 3-5.3 5.2-9.6 5.2-4 0-8-2.1-10.6-6Z" />
+    <path d="M24.6 14.6c1.3-1.2 2.6-2 3.9-2.4.4-.1.7.2.6.6-.3 1.4-.4 2.7-.3 4 .1 1.3.4 2.5.9 3.7.2.4-.2.8-.6.6-1.6-.7-3-1.6-4.3-2.8" />
+    <circle cx="10.6" cy="14.4" r="1.1" fill="currentColor" stroke="none" />
+    <path d="M14.6 12.6c1.3 2.1 1.3 4.7 0 6.9" />
+  </svg>
+)
+
+/** Uglevod — boshoq */
+export const WheatIcon = ({ size = 26, ...p }) => (
+  <svg width={size} height={size} viewBox="0 0 32 32" {...eskiz} {...p}>
+    <path d="M6.2 26.6 15 17.8" />
+    <path d="M16.4 5.2c1.9 1.1 2.4 3.4 1.2 5.3-1.9-1.1-2.4-3.4-1.2-5.3Z" />
+    <path d="M12 9.6c2.2.2 3.7 2 3.5 4.2-2.2-.2-3.7-2-3.5-4.2Z" />
+    <path d="M20.6 9.6c-.2 2.2-2 3.7-4.2 3.5.2-2.2 2-3.7 4.2-3.5Z" />
+    <path d="M9.8 14.6c2.2.2 3.7 2 3.5 4.2-2.2-.2-3.7-2-3.5-4.2Z" />
+    <path d="M22.8 14.6c-.2 2.2-2 3.7-4.2 3.5.2-2.2 2-3.7 4.2-3.5Z" />
+  </svg>
+)
+
+/** Yog' — meva (nok va olma) */
+export const FruitIcon = ({ size = 26, ...p }) => (
+  <svg width={size} height={size} viewBox="0 0 32 32" {...eskiz} {...p}>
+    <path d="M13.4 13.2c1.5-1.9 1.9-3.4 1.7-5.2" />
+    <path d="M15.1 8c1.6-.9 3-1.1 4.4-.7" />
+    <path d="M12.5 12.6c2.5-1.3 4.9-.5 6.2 1.7 1.6 2.7 1 6.6-1 9.2-1.2 1.5-2.6 2.3-3.9 2.3s-2.7-.8-3.9-2.3c-2-2.6-2.6-6.5-1-9.2.7-1.1 1.7-1.6 2.7-1.7" />
+    <path d="M21 11.6c2.6 0 4.6 2.2 4.6 5.2 0 2.2-1 4.4-2.4 5.7" />
+  </svg>
+)

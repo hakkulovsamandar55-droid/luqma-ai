@@ -1,16 +1,9 @@
 import './Logo.css'
 
 /**
- * Ilova nomi. Qo'lyozma logotip olib tashlandi — interfeysda oddiy,
- * o'qiladigan matn turadi. Brend belgisi (lime nuqta) qoldi: u eng
- * kichik tanilish elementi va bezakka aylanmaydi.
+ * Ilova nomi. Ilgari "Luqma • AI" ko'rinishida, o'rtasida lime nuqta
+ * bilan yozilardi. Namuna dizaynda nom oddiy va yengil — bezaksiz.
  */
 export default function Logo({ size = 'md' }) {
-  return (
-    <span className={`logo logo-${size}`} aria-label="Luqma AI">
-      Luqma
-      <span className="logo-dot" aria-hidden="true" />
-      AI
-    </span>
-  )
+  return <span className={`logo logo-${size}`}>Luqma AI</span>
 }

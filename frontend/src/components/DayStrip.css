@@ -1,12 +1,17 @@
+/* Kun tanlagich — gradientning to'q zonasida, shuning uchun oq matn.
+
+   Namunadagi tuzilish: tepada kun nomi, ostida sana. Tanlangan kun
+   yumaloq to'rtburchak kontur ichida, sana ostida kichik nuqta bor.
+   Kelajakdagi kunlar so'nik. */
 .daystrip {
   display: flex;
-  gap: 5px;
+  gap: 2px;
   overflow-x: auto;
   scrollbar-width: none;
-  padding: 16px 20px 6px;
-  margin: 0 -20px;
-  scroll-padding: 20px;
   -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x proximity;
+  margin: 2px -20px 0;
+  padding: 0 20px;
 }
 
 .daystrip::-webkit-scrollbar {
@@ -14,52 +19,51 @@
 }
 
 .day {
-  flex: none;
-  min-width: 48px;
-  min-height: 58px;
+  flex: 0 0 auto;
+  width: 56px;
+  padding: 7px 0 9px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 3px;
-  padding: 9px 0;
-  border-radius: 15px;
-  border: 1px solid transparent;
-  transition: background var(--dur-fast) linear,
-    border-color var(--dur-fast) linear,
-    transform var(--dur-fast) var(--ease-out);
-}
-
-.day:active {
-  transform: scale(0.93);
+  gap: 9px;
+  border-radius: 18px;
+  border: 1.5px solid transparent;
+  color: var(--ink-top);
+  scroll-snap-align: center;
+  transition: border-color var(--dur-fast) linear,
+    opacity var(--dur-fast) linear;
 }
 
 .day-name {
-  font-size: var(--t-mini);
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  color: var(--ink-top-2);
-  transition: color var(--dur-fast) linear;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1;
 }
 
 .day-num {
-  font-family: var(--font-num);
-  font-size: var(--t-lead);
-  font-weight: 600;
-  color: var(--ink-top);
-  transition: color var(--dur-fast) linear;
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
 }
 
+/* Tanlangan kun — kontur. To'ldirish YO'Q: namunada ham shunday,
+   shuning uchun tanlov sezilarli, lekin dog' bo'lib turmaydi. */
 .day.is-selected {
-  background: var(--surface);
-  border-color: transparent;
-  box-shadow: var(--shadow);
+  border-color: rgba(255, 255, 255, 0.75);
 }
 
-.day.is-selected .day-name {
-  color: var(--lime-text);
+/* Sana ostidagi nuqta — "bu kunda yozuv bor" degani */
+.day.is-selected::after {
+  content: '';
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--ink-top);
+  margin-top: -4px;
 }
 
-.day.is-selected .day-num {
-  color: var(--ink);
+/* Bugundan keyingi kunlar hali kelmagan */
+.day.is-future {
+  opacity: 0.42;
 }

@@ -1,18 +1,20 @@
-/* Halqa bloki qolgan joyni egallaydi va shunga moslashadi. */
+/* Asosiy halqa.
+
+   Namuna dizayndagidek: bitta INGICHKA halqa, ichida katta raqam va
+   ikki qatorli izoh. Foiz belgisi va ostidagi jumla olib tashlandi —
+   ular halqa bilan raqobat qilardi.
+
+   Halqa gradientning to'q zonasida turadi, shuning uchun oq rangda. */
 .ring-wrap {
-  flex: 0 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 2px 0 0;
+  padding: 26px 0 22px;
 }
 
 .ring {
   position: relative;
-  /* vh bo'yicha: foiz ishlatilsa ota-element balandligi aniq bo'lmagani
-     uchun halqa qulab tushardi. vh har doim hisoblanadi. */
-  height: clamp(108px, 16vh, 146px);
+  width: min(45vw, 196px);
   aspect-ratio: 1;
 }
 
@@ -20,58 +22,33 @@
   width: 100%;
   height: 100%;
   display: block;
+  overflow: visible;
 }
 
-/* Halqa ortidagi nur. Blur qimmat, lekin bu bitta statik element —
-   har kadrda qayta hisoblanmaydi, shuning uchun tekin deyish mumkin. */
-.ring::before {
-  content: '';
-  position: absolute;
-  inset: 14%;
-  border-radius: 50%;
-  background: radial-gradient(circle, var(--accent-glow), transparent 68%);
-  filter: blur(26px);
-  animation: glow-breathe 5s ease-in-out infinite;
-  pointer-events: none;
-}
-
-.ring-wrap.is-over .ring::before {
-  background: radial-gradient(
-    circle,
-    rgba(255, 107, 90, 0.3),
-    transparent 68%
-  );
-}
-
+/* Yo'l — halqaning ko'rinmas qismi. Namunada u YO'Q: butun aylana
+   bir xil qalinlikda va bir xil rangda. Shuning uchun juda kuchsiz. */
 .ring-track {
   fill: none;
-  stroke: var(--track);
+  stroke: rgba(255, 255, 255, 0.32);
 }
 
 .ring-bar {
   fill: none;
-  stroke: var(--accent);
+  stroke: var(--ink-top);
   stroke-linecap: round;
-  transition: stroke-dashoffset var(--dur-ring) var(--ease),
-    stroke var(--dur-slow) linear;
-  /* Chiziqning o'zi ham nurlanadi */
-  filter: drop-shadow(0 0 5px var(--accent-glow));
+  transition: stroke-dashoffset var(--dur-ring) var(--ease-out);
 }
 
-.ring-wrap.is-over .ring-bar {
-  stroke: var(--over);
-  filter: drop-shadow(0 0 7px rgba(255, 107, 90, 0.4));
-}
-
-/* Halqa uchidagi nuqta — progressni "tirik" qiladi */
+/* Progress uchidagi nuqta — namunadagi kichik oq doira */
 .ring-dot {
-  fill: var(--accent);
-  transition: transform var(--dur-ring) var(--ease);
-  transform-origin: center;
-  filter: drop-shadow(0 0 6px var(--accent-glow));
+  fill: var(--ink-top);
+  transition: transform var(--dur-ring) var(--ease-out),
+    opacity var(--dur) linear;
 }
 
+.ring-wrap.is-over .ring-bar,
 .ring-wrap.is-over .ring-dot {
+  stroke: var(--over);
   fill: var(--over);
 }
 
@@ -82,59 +59,24 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2px;
+  gap: 4px;
+  color: var(--ink-top);
 }
 
-/* Ekrandagi asosiy vizual langar. Qolgan hamma narsa bundan
-   yengilroq va kichikroq bo'lishi kerak. */
 .ring-value {
-  font-family: var(--font-head);
-  font-size: clamp(27px, 4.2vh, 42px);
-  font-weight: var(--w-head);
-  letter-spacing: -0.015em;
+  font-size: clamp(34px, 8vw, 44px);
+  font-weight: 500;
+  letter-spacing: -0.01em;
   line-height: 1;
   font-variant-numeric: tabular-nums;
 }
 
-.ring-wrap.is-over .ring-value {
-  color: var(--over);
-}
-
+/* Ikki qatorli izoh — namunada aynan shunday sindirilgan */
 .ring-label {
-  font-family: var(--font-label);
-  font-size: 11px;
-  font-weight: var(--w-label);
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  color: var(--ink-2);
-  margin-top: 5px;
-}
-
-.ring-pct {
-  margin-top: 6px;
-  font-size: var(--t-sub);
-  font-weight: 700;
-  color: var(--lime-text);
-  background: var(--accent-soft);
-  padding: 3px 10px;
-  border-radius: 99px;
-}
-
-.ring-wrap.is-over .ring-pct {
-  color: var(--over);
-  background: var(--over-soft);
-}
-
-.ring-line {
-  margin: 7px 0 0;
-  font-size: var(--t-sub);
-  max-width: 280px;
+  max-width: 76%;
   text-align: center;
-  color: var(--ink-2);
-  animation: fade-up var(--dur-slow) var(--ease-out) 240ms both;
-}
-
-.ring-line b {
-  color: var(--ink);
-  font-weight: 600;
+  font-size: clamp(13px, 3.3vw, 15px);
+  font-weight: 400;
+  line-height: 1.25;
+  color: var(--ink-top-2);
 }

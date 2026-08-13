@@ -1,22 +1,17 @@
-/* Home skroll qilinmaydi: balandlik ekran bilan cheklangan va
-   ichidagi bloklar shunga moslanadi.
+/* Bosh sahifa.
 
-   overflow YO'Q: overflow-y qo'yilsa brauzer overflow-x ni ham
-   'auto' ga aylantiradi, bu skroll konteyner yaratadi va ichidagi
-   kontent chapga siljib kesiladi. Balandlik flex bilan cheklanadi,
-   skrollni esa faqat ovqatlar ro'yxati oladi. */
+   Namuna dizayndagi kalit farq: ekran SKROLL QILINADI. Ilgari hamma
+   narsa bir ko'rinishga siqilardi va pastda joy qolmasdi. Endi tepa
+   qismi (nom, kunlar, halqa) gradientning to'q zonasida, ostidagi
+   kontent esa och zonada — va ro'yxat pastga cho'ziladi. */
 .home {
-  height: 100%;
   display: flex;
   flex-direction: column;
-  min-height: 0;
+  min-height: 100%;
 }
 
 .home-head {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 12px 0 2px;
+  padding: 6px 0 10px;
   animation: fade-up var(--dur) var(--ease-out) both;
 }
 
@@ -25,7 +20,7 @@
 }
 
 .home-body.is-loading {
-  opacity: 0.4;
+  opacity: 0.45;
 }
 
 .home-error {
@@ -47,324 +42,119 @@
   font-size: var(--t-sub);
 }
 
-.home .home-list-head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  margin: 32px 4px 14px;
-}
-
-.home-list-count {
-  font-size: var(--t-sub);
-  color: var(--ink-3);
-}
-
-.home-empty {
-  background: var(--sheen);
-  background-color: var(--surface);
-  border: 1px solid var(--line);
-  box-shadow: var(--card-shadow);
-  border-radius: var(--r);
-  padding: 34px 24px;
-  text-align: center;
-}
-
-.home-empty p {
-  font-size: var(--t-body);
-  color: var(--ink-2);
-  margin: 0 0 18px;
-}
-
-.home-empty-btn {
-  background: var(--btn);
-  color: var(--on-btn);
-  font-weight: 600;
-  font-size: var(--t-body);
-  padding: 13px 26px;
-  border-radius: 99px;
-  min-height: 48px;
-  transition: transform var(--dur-fast) var(--ease-out);
-}
-
-.home-empty-btn:active {
-  transform: scale(0.96);
-}
-
-.stats-toggle {
-  width: 100%;
-  min-height: 52px;
-  margin-top: 12px;
-  border-radius: var(--r);
-  background: var(--sheen);
-  background-color: var(--surface);
-  border: 1px solid var(--line);
-  box-shadow: var(--card-shadow);
-  color: var(--ink-2);
-  font-size: var(--t-body);
-  font-weight: 600;
-  transition: transform var(--dur-fast) var(--ease-out),
-    color var(--dur-fast) linear;
-}
-
-.stats-toggle:active {
-  transform: scale(0.985);
-  color: var(--ink);
-}
-
-.home-body {
-  flex: 1;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-  /* Yuqoridan boshlanadi: markazlash ro'yxat o'sganda qolgan bloklarni
-     siljitib yubordi. */
-  justify-content: flex-start;
-  gap: 2px;
-}
-
-/* Hech bir blok qisilmasin: flex default holatda ularni siqib, matnni
-   kesib qo'yardi (Murabbiy kartochkasi 66px dan 23px ga tushgan edi). */
-.home-body > * {
-  flex: none;
-}
-
-/* Ro'yxat qolgan bo'sh joyni egallaydi va ichida skroll qilinadi.
-   min-height: kamida bitta ovqat ko'rinsin, aks holda blok butunlay
-   yopilib, sarlavhasi ham kesilib qolardi. */
-.home-body > .home-meals {
-  flex: 1 1 auto;
-  /* Kamida ikkita ovqat ko'rinsin */
-  min-height: 152px;
-}
-
-/* Past ekranlar (iPhone SE va shunga o'xshash): hamma element biroz
-   ixchamlashadi, shunda skroll paydo bo'lmaydi. */
-@media (max-height: 820px) {
-  .ring-line {
-    display: none;
-  }
-
-  /* Yetishmagan joy halqadan olinadi — u eng moslashuvchan element. */
-  .ring {
-    height: clamp(104px, 19vh, 160px);
-  }
-
-  .macros {
-    gap: 6px;
-    margin-top: 6px;
-  }
-
-  .mring {
-    padding: 7px 6px 6px;
-  }
-
-  .mring-dial {
-    width: 42px;
-    height: 42px;
-  }
-
-  .coach {
-    margin-top: 6px;
-    padding: 10px 13px;
-  }
-
-  .coach-tip {
-    font-size: 12.5px;
-  }
-
-  .home-meals-btn {
-    margin-top: 6px;
-    min-height: 44px;
-    padding: 10px 16px;
-  }
-
-  .daystrip {
-    padding-top: 8px;
-    padding-bottom: 2px;
-  }
-
-  .day {
-    min-height: 50px;
-    padding: 6px 0;
-  }
-}
-
-/* Ovqatlar ro'yxatiga kirish — bitta qator, ekranni uzaytirmaydi */
-.home-meals-btn {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  width: 100%;
-  margin-top: 10px;
-  padding: 12px 18px;
-  min-height: 48px;
-  border-radius: var(--r);
-  background-color: var(--surface);
-  border: 1px solid var(--line);
-  box-shadow: var(--card-shadow);
-  font-size: var(--t-body);
-  font-weight: 600;
-  transition: transform var(--dur-fast) var(--ease-out);
-}
-
-.home-meals-btn:active {
-  transform: scale(0.985);
-}
-
-.home-meals-chev {
-  color: var(--ink-3);
-  font-size: 18px;
-}
-
-.home-empty-txt {
-  text-align: center;
-  color: var(--ink-3);
-  padding: 24px 0;
-  margin: 0;
-}
-
-/* Suv boshqaruvi — endi oynada */
-.home-water {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 14px;
-  padding: 14px 16px;
-  border-radius: var(--r);
-  background: var(--surface-2);
-}
-
-.home-water-txt {
-  flex: 1;
-  min-width: 0;
-}
-
-.home-water-txt b {
-  display: block;
-  font-size: var(--t-body);
-  font-weight: 600;
-}
-
-.home-water-txt span {
-  font-size: var(--t-sub);
-  color: var(--ink-3);
-}
-
-.home-water-btn {
-  flex: none;
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  background: var(--surface-3);
-  color: var(--ink);
-  font-size: 20px;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform var(--dur-fast) var(--ease-out);
-}
-
-.home-water-btn.is-primary {
-  background: var(--btn);
-  color: var(--on-btn);
-}
-
-.home-water-btn:active {
-  transform: scale(0.92);
-}
-
-/* Juda past ekranlar (iPhone SE, 667px): halqa yana kichrayadi va
-   makro kataklari zichlashadi. Bundan pastda kontentni kesishdan
-   boshqa yo'l qolmasdi. */
-@media (max-height: 690px) {
-  .ring {
-    height: 96px;
-  }
-
-  .macros {
-    gap: 5px;
-    margin-top: 5px;
-  }
-
-  .mring {
-    padding: 6px 5px 5px;
-  }
-
-  .mring-dial {
-    width: 38px;
-    height: 38px;
-  }
-
-  .mring-limit {
-    display: none;
-  }
-
-  .coach-tip {
-    font-size: 12px;
-  }
-}
-
-/* --- Ovqatlar ro'yxati ekranda --- */
+/* --- Ovqatlar bo'limi --- */
 .home-meals {
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-  margin-top: 8px;
+  margin-top: 26px;
 }
 
 .home-meals-head {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  padding: 0 4px 7px;
-  font-size: var(--t-sub);
-  font-weight: 700;
-  color: var(--ink-2);
+  margin: 0 2px 12px;
+}
+
+.home-meals-head h2 {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin: 0;
 }
 
 .home-more {
   font-size: var(--t-sub);
-  font-weight: 700;
-  color: var(--lime-text);
+  font-weight: 500;
+  color: var(--ink-2);
 }
 
-/* Faqat ro'yxat skroll qilinadi — sahifa qimirlamaydi. */
-/* Faqat vertikal skroll: overflow-y bilan birga overflow-x avtomatik
-   'auto' bo'lib qoladi va kartochka soyasi kesiladi — shuning uchun
-   yon tomonlarga joy qoldiramiz. */
-.home-meals-scroll {
-  min-height: 0;
-  margin: 0 -6px;
-  padding: 0 6px;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
+/* Bo'sh holat — oq kartochka, markazda matn, ostida strelka */
+.home-empty {
+  background: var(--surface);
+  border-radius: var(--r);
+  box-shadow: var(--card-shadow);
+  padding: 22px 24px 24px;
+  text-align: center;
+  position: relative;
 }
 
-.home-meals-scroll::-webkit-scrollbar {
-  display: none;
+.home-empty b {
+  display: block;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--ink);
 }
 
-/* Logotip aynan markazda qolishi uchun chapda teng bo'sh joy */
-.home-head-spacer,
-.home-gear {
-  flex: none;
-  width: 40px;
-  height: 40px;
+.home-empty p {
+  margin: 8px 0 0;
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: var(--ink-2);
 }
 
-.home-gear {
+/* Strelka kartochkadan pastga chiqib, "+" tugmasiga ishora qiladi */
+.home-empty-arrow {
+  position: absolute;
+  left: 26%;
+  top: 100%;
+  margin-top: 6px;
+  color: var(--ink);
+}
+
+/* --- Suv boshqaruvi (pastdan chiquvchi oynada) --- */
+.home-water {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--surface-2);
+  border-radius: var(--r);
+  padding: 14px 16px;
+  margin-bottom: 14px;
+}
+
+.home-water-txt {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.home-water-txt b {
+  font-size: var(--t-body);
+  font-weight: 600;
+}
+
+.home-water-txt span {
+  font-size: var(--t-sub);
+  color: var(--ink-2);
+}
+
+.home-water-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--ink);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--ink-3);
-  transition: transform var(--dur-fast) var(--ease-out), color var(--dur-fast) linear;
 }
 
-.home-gear:active {
-  transform: scale(0.9);
+.home-water-btn.is-primary {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.stats-toggle {
+  width: 100%;
+  min-height: 48px;
+  border-radius: 99px;
+  background: var(--surface-2);
   color: var(--ink);
+  font-size: var(--t-body);
+  font-weight: 500;
+  margin-bottom: 14px;
 }
