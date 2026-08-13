@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="uz"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>C · Minimalizm — bosh sahifa</title>
+<link rel="stylesheet" href="./node_modules/@fontsource-variable/archivo/index.css">
+<style>
+/* ============================================================
+   C — MINIMALIZM · faqat oq va qora
+   Rang YO'Q. Kulrang ham deyarli yo'q — ierarxiya o'lcham,
+   qalinlik va bo'sh joy bilan beriladi.
+   To'ldirish yo'q: hamma narsa 1px kontur. Soya yo'q.
+   Radius yo'q — faqat doira va to'g'ri burchak.
+   Tugma "quti" emas: matn + ustidagi ingichka chiziq.
+   ============================================================ */
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--ink:#000;--paper:#fff;--hair:#000}
+body{width:420px;min-height:900px;background:var(--paper);color:var(--ink);
+  font-family:'Archivo Variable',sans-serif;position:relative}
+
+/* --- Sarlavha --- */
+.head{padding:34px 26px 0}
+.head span{display:block;font-size:9.5px;letter-spacing:.26em;text-transform:uppercase}
+.head b{display:block;font-size:56px;font-weight:700;letter-spacing:-.05em;line-height:1;
+  margin-top:10px;font-variant-numeric:tabular-nums}
+.head b s{text-decoration:none;font-weight:400;font-size:26px;letter-spacing:-.02em}
+/* Yagona progress: sahifa bo'ylab ingichka chiziq */
+.pline{margin:16px 26px 0;height:1px;background:var(--hair);position:relative}
+.pline i{position:absolute;left:0;top:-1px;height:3px;background:var(--ink)}
+
+/* --- Tana maydoni --- */
+.stage{position:relative;margin:26px 26px 0;height:360px}
+.fig{position:absolute;left:50%;top:12px;transform:translateX(-50%)}
+
+/* --- Halqa: 1.5px kontur, to'ldirish yo'q --- */
+.dial{position:absolute;width:72px;text-align:center}
+.dial .face{position:relative;width:64px;height:64px;margin:0 auto}
+.dial svg{position:absolute;inset:0}
+.dial .v{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.dial u{display:block;margin-top:8px;font-size:9px;letter-spacing:.2em;text-transform:uppercase;
+  text-decoration:none}
+
+/* --- Qatorlar: quti yo'q, faqat ajratuvchi chiziq --- */
+.rows{margin:30px 26px 0;border-top:1px solid var(--hair)}
+.row{display:flex;align-items:center;gap:16px;padding:17px 0;
+  border-bottom:1px solid var(--hair)}
+.row .tag{font-size:9px;letter-spacing:.2em;text-transform:uppercase;
+  width:60px;flex:none;padding-top:2px}
+.row p{flex:1;font-size:16px;font-weight:600;letter-spacing:-.01em}
+.row .go{font-size:15px}
+
+/* --- Pastki navigatsiya: chiziq + uchta belgi --- */
+.nav{position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-around;
+  align-items:center;padding:20px 40px 30px;border-top:1px solid var(--hair)}
+.nav button{border:none;background:none;display:flex;flex-direction:column;align-items:center;
+  gap:7px;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink);
+  opacity:.35}
+.nav button.on{opacity:1}
+.nav button.on::after{content:'';width:4px;height:4px;background:var(--ink);border-radius:50%}
+</style></head>
+<body>
+
+<div class="head">
+  <span>Bugungi kaloriya</span>
+  <b>1700<s> / 2000</s></b>
+</div>
+<div class="pline"><i style="width:85%"></i></div>
+
+<div class="stage">
+  <svg class="fig" width="172" height="286" viewBox="0 0 240 400">
+    <path fill="none" stroke="#000" stroke-width="2.4"
+      d="M120,8 C96,8 86,26 86,52 C86,72 92,86 100,94 C100,100 100,104 98,108 C74,116 58,132 52,156 C46,180 42,206 40,228 C38,246 40,258 48,260 C56,262 62,252 64,234 C66,214 70,192 76,176 C78,196 78,216 80,236 C82,262 84,286 86,308 C88,336 90,364 92,382 C93,392 104,394 107,384 C112,362 116,336 119,310 C120,300 120,300 121,310 C124,336 128,362 133,384 C136,394 147,392 148,382 C150,364 152,336 154,308 C156,286 158,262 160,236 C162,216 162,196 164,176 C170,192 174,214 176,234 C178,252 184,262 192,260 C200,258 202,246 200,228 C198,206 194,180 188,156 C182,132 166,116 142,108 C140,104 140,100 140,94 C148,86 154,72 154,52 C154,26 144,8 120,8 Z"/>
+  </svg>
+
+  <div class="dial" style="left:0;top:34px">
+    <div class="face">
+      <svg width="64" height="64" viewBox="0 0 64 64" style="transform:rotate(-90deg)">
+        <circle cx="32" cy="32" r="29" fill="none" stroke="#000" stroke-width="1"/>
+        <circle cx="32" cy="32" r="29" fill="none" stroke="#000" stroke-width="4"
+                stroke-dasharray="182" stroke-dashoffset="0"/>
+      </svg>
+      <div class="v">15/15</div>
+    </div>
+    <u>Oqsil</u>
+  </div>
+
+  <div class="dial" style="right:0;top:34px">
+    <div class="face">
+      <svg width="64" height="64" viewBox="0 0 64 64" style="transform:rotate(-90deg)">
+        <circle cx="32" cy="32" r="29" fill="none" stroke="#000" stroke-width="1"/>
+        <circle cx="32" cy="32" r="29" fill="none" stroke="#000" stroke-width="4"
+                stroke-dasharray="182" stroke-dashoffset="19"/>
+      </svg>
+      <div class="v">9/10</div>
+    </div>
+    <u>Yog'</u>
+  </div>
+
+  <div class="dial" style="right:0;top:180px">
+    <div class="face">
+      <svg width="64" height="64" viewBox="0 0 64 64" style="transform:rotate(-90deg)">
+        <circle cx="32" cy="32" r="29" fill="none" stroke="#000" stroke-width="1"/>
+        <circle cx="32" cy="32" r="29" fill="none" stroke="#000" stroke-width="4"
+                stroke-dasharray="182" stroke-dashoffset="128"/>
+      </svg>
+      <div class="v">3/10</div>
+    </div>
+    <u>Suv</u>
+  </div>
+
+  <div class="dial" style="left:0;top:222px">
+    <div class="face">
+      <svg width="64" height="64" viewBox="0 0 64 64" style="transform:rotate(-90deg)">
+        <circle cx="32" cy="32" r="29" fill="none" stroke="#000" stroke-width="1"/>
+        <circle cx="32" cy="32" r="29" fill="none" stroke="#000" stroke-width="4"
+                stroke-dasharray="182" stroke-dashoffset="0"/>
+      </svg>
+      <div class="v">15/15</div>
+    </div>
+    <u>Uglevod</u>
+  </div>
+</div>
+
+<div class="rows">
+  <div class="row"><span class="tag">AI</span><p>Bitta tuxum ye</p><span class="go">→</span></div>
+  <div class="row"><span class="tag">Eslatma</span><p>Kechki ovqat 19:00</p><span class="go">→</span></div>
+  <div class="row"><span class="tag">Mashq</span><p>Kunlik mashq</p><span class="go">→</span></div>
+</div>
+
+<div class="nav">
+  <button class="on"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.6a2 2 0 0 1 .74-1.55l6-4.8a2 2 0 0 1 2.52 0l6 4.8A2 2 0 0 1 20 10.6v7.9a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 18.5Z"/></svg></button>
+  <button><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 8.25h2.4a1.6 1.6 0 0 0 1.36-.76l.86-1.4a1.6 1.6 0 0 1 1.36-.76h3.04a1.6 1.6 0 0 1 1.36.76l.86 1.4a1.6 1.6 0 0 0 1.36.76h2.4a2.5 2.5 0 0 1 2.5 2.5v6.5a2.5 2.5 0 0 1-2.5 2.5h-15a2.5 2.5 0 0 1-2.5-2.5v-6.5a2.5 2.5 0 0 1 2.5-2.5Z"/><circle cx="12" cy="13.9" r="3.1"/></svg></button>
+  <button><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9.54,2.82 A9.5,9.5 0 0 1 14.46,2.82 L13.81,5.24 A7.0,7.0 0 0 1 16.95,7.05 L18.72,5.28 A9.5,9.5 0 0 1 21.18,9.54 L18.76,10.19 A7.0,7.0 0 0 1 18.76,13.81 L21.18,14.46 A9.5,9.5 0 0 1 18.72,18.72 L16.95,16.95 A7.0,7.0 0 0 1 13.81,18.76 L14.46,21.18 A9.5,9.5 0 0 1 9.54,21.18 L10.19,18.76 A7.0,7.0 0 0 1 7.05,16.95 L5.28,18.72 A9.5,9.5 0 0 1 2.82,14.46 L5.24,13.81 A7.0,7.0 0 0 1 5.24,10.19 L2.82,9.54 A9.5,9.5 0 0 1 5.28,5.28 L7.05,7.05 A7.0,7.0 0 0 1 10.19,5.24 Z"/><circle cx="12" cy="12" r="3.4"/></svg></button>
+</div>
+</body></html>

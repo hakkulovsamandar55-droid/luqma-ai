@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="uz"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>C · Minimalizm — kamera</title>
+<link rel="stylesheet" href="./node_modules/@fontsource-variable/archivo/index.css">
+<style>
+/* ============================================================
+   C — MINIMALIZM · kamera ekrani
+   Vizir — oddiy to'rtburchak kontur. Ovqat ham kontur bilan
+   chizilgan: to'ldirish yo'q, soya yo'q, rang yo'q.
+   Zatvor — ikkita konsentrik doira, boshqa hech narsa.
+   Galereya "tugma" emas: kvadrat kontur + ostida yozuv.
+   ============================================================ */
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--ink:#000;--paper:#fff}
+body{width:420px;min-height:900px;background:var(--paper);color:var(--ink);
+  font-family:'Archivo Variable',sans-serif;position:relative}
+
+/* --- Tepa --- */
+.top{display:flex;justify-content:space-between;align-items:center;padding:26px 26px 0}
+.top span{font-size:9.5px;letter-spacing:.26em;text-transform:uppercase}
+.gear{border:none;background:none;color:var(--ink);display:flex}
+
+/* --- Vizir: yakka kontur --- */
+.finder{position:relative;margin:22px 26px 0;height:566px;border:1.5px solid var(--ink);
+  display:flex;align-items:center;justify-content:center;overflow:hidden}
+/* burchak belgilari ichkarida, ingichka */
+.mark{position:absolute;width:22px;height:22px;border:1.5px solid var(--ink)}
+.mark.tl{left:14px;top:14px;border-right:none;border-bottom:none}
+.mark.tr{right:14px;top:14px;border-left:none;border-bottom:none}
+.mark.bl{left:14px;bottom:14px;border-right:none;border-top:none}
+.mark.br{right:14px;bottom:14px;border-left:none;border-top:none}
+.cap{position:absolute;left:0;right:0;bottom:20px;text-align:center;
+  font-size:9.5px;letter-spacing:.24em;text-transform:uppercase}
+
+/* --- Pastki qator --- */
+.deck{position:absolute;left:0;right:0;bottom:0;display:flex;align-items:center;
+  justify-content:space-between;padding:0 34px 42px}
+.gal{border:none;background:none;color:var(--ink);display:flex;flex-direction:column;
+  align-items:center;gap:8px}
+.gal .box{width:46px;height:46px;border:1.5px solid var(--ink)}
+.gal span{font-size:8.5px;letter-spacing:.2em;text-transform:uppercase}
+.shutter{width:92px;height:92px;border-radius:50%;border:1.5px solid var(--ink);
+  background:none;display:flex;align-items:center;justify-content:center}
+.shutter::after{content:'';width:72px;height:72px;border-radius:50%;background:var(--ink)}
+.search{border:none;background:none;color:var(--ink);display:flex;flex-direction:column;
+  align-items:center;gap:8px}
+.search .box{width:46px;height:46px;border:1.5px solid var(--ink);border-radius:50%;
+  display:flex;align-items:center;justify-content:center}
+.search span{font-size:8.5px;letter-spacing:.2em;text-transform:uppercase}
+</style></head>
+<body>
+
+<div class="top">
+  <span>Ovqatni suratga oling</span>
+  <button class="gear">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9.54,2.82 A9.5,9.5 0 0 1 14.46,2.82 L13.81,5.24 A7.0,7.0 0 0 1 16.95,7.05 L18.72,5.28 A9.5,9.5 0 0 1 21.18,9.54 L18.76,10.19 A7.0,7.0 0 0 1 18.76,13.81 L21.18,14.46 A9.5,9.5 0 0 1 18.72,18.72 L16.95,16.95 A7.0,7.0 0 0 1 13.81,18.76 L14.46,21.18 A9.5,9.5 0 0 1 9.54,21.18 L10.19,18.76 A7.0,7.0 0 0 1 7.05,16.95 L5.28,18.72 A9.5,9.5 0 0 1 2.82,14.46 L5.24,13.81 A7.0,7.0 0 0 1 5.24,10.19 L2.82,9.54 A9.5,9.5 0 0 1 5.28,5.28 L7.05,7.05 A7.0,7.0 0 0 1 10.19,5.24 Z"/><circle cx="12" cy="12" r="3.4"/></svg>
+  </button>
+</div>
+
+<div class="finder">
+  <i class="mark tl"></i><i class="mark tr"></i><i class="mark bl"></i><i class="mark br"></i>
+  <svg width="250" height="270" viewBox="0 0 240 260">
+    <g transform="rotate(34 120 130)" fill="#fff" stroke="#000" stroke-width="2.4"
+       stroke-linecap="round" stroke-linejoin="round">
+      <rect x="107" y="120" width="26" height="80" rx="13"/>
+      <circle cx="102" cy="204" r="19"/>
+      <circle cx="138" cy="204" r="19"/>
+      <ellipse cx="120" cy="76" rx="56" ry="66"/>
+    </g>
+  </svg>
+  <div class="cap">Ramka ichiga joylang</div>
+</div>
+
+<div class="deck">
+  <button class="gal"><span class="box"></span><span>Galereya</span></button>
+  <button class="shutter"></button>
+  <button class="search">
+    <span class="box">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="10.9" cy="10.9" r="6.15"/><path d="m15.6 15.6 3.65 3.65"/></svg>
+    </span>
+    <span>Qidirish</span>
+  </button>
+</div>
+</body></html>

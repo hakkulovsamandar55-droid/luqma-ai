@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="uz"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A · Skeuomorphism — kamera</title>
+<link rel="stylesheet" href="./node_modules/@fontsource-variable/archivo/index.css">
+<link rel="stylesheet" href="./node_modules/@fontsource/ibm-plex-mono/500.css">
+<style>
+/* ============================================================
+   A — SKEUOMORPHISM · kamera ekrani
+   Vizir haqiqiy fotoapparat oynasidek: metall ramka, ichkariga
+   o'yilgan oyna, burchak belgilari. Zatvor tugmasi — konsentrik
+   metall halqalar, bosilganda cho'kadi.
+   ============================================================ */
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--amber:#ffb545;--ink:#f0ece4}
+body{width:420px;min-height:900px;color:var(--ink);
+  font-family:'Archivo Variable',sans-serif;position:relative;overflow:hidden;
+  background:radial-gradient(120% 80% at 50% 0%,#46423c 0%,#23211e 55%,#16150f 100%)}
+body::before{content:'';position:absolute;inset:0;pointer-events:none;opacity:.5;
+  background-image:radial-gradient(rgba(255,255,255,.045) 1px,transparent 1px);
+  background-size:3px 3px}
+
+/* --- Tepa: sozlama tugmasi --- */
+.top{position:relative;display:flex;justify-content:flex-end;padding:18px 20px 0}
+.gear{width:48px;height:48px;border-radius:14px;border:none;
+  background:linear-gradient(180deg,#565248,#312e28);color:#c9c0ae;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.24),0 3px 7px rgba(0,0,0,.6);
+  display:flex;align-items:center;justify-content:center}
+
+/* --- Vizir: metall ramka + o'yilgan oyna --- */
+.finder{position:relative;margin:16px 18px 0;padding:10px;border-radius:22px;
+  background:linear-gradient(180deg,#6a665d,#302d28);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 8px 20px rgba(0,0,0,.6)}
+.glass{position:relative;height:566px;border-radius:14px;overflow:hidden;
+  background:radial-gradient(120% 100% at 50% 30%,#2b2822,#171511 70%,#0e0d0b);
+  box-shadow:inset 0 4px 14px rgba(0,0,0,.9)}
+/* oyna yaltirashi */
+.glass::after{content:'';position:absolute;left:-30%;top:-20%;width:90%;height:60%;
+  background:linear-gradient(120deg,rgba(255,255,255,.09),transparent 60%);
+  transform:rotate(-18deg);pointer-events:none}
+/* burchak belgilari */
+.mark{position:absolute;width:26px;height:26px;border:2px solid rgba(255,181,69,.75)}
+.mark.tl{left:14px;top:14px;border-right:none;border-bottom:none}
+.mark.tr{right:14px;top:14px;border-left:none;border-bottom:none}
+.mark.bl{left:14px;bottom:14px;border-right:none;border-top:none}
+.mark.br{right:14px;bottom:14px;border-left:none;border-top:none}
+.food{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}
+.hint{position:absolute;left:0;right:0;bottom:24px;text-align:center;
+  font-family:'IBM Plex Mono';font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+  color:rgba(255,181,69,.8);text-shadow:0 0 10px rgba(255,181,69,.4)}
+
+/* --- Pastki boshqaruv paneli --- */
+.deck{position:absolute;left:0;right:0;bottom:0;height:170px;
+  display:flex;align-items:center;justify-content:space-around;padding:0 26px;
+  background:linear-gradient(180deg,#413d36,#211f1a);
+  border-top:1px solid #14130f;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 -6px 16px rgba(0,0,0,.6)}
+
+/* Galereya: rasm slaydiga o'xshash kvadrat */
+.gal{width:62px;height:62px;border-radius:12px;border:none;position:relative;
+  background:linear-gradient(180deg,#5b574d,#333029);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.26),0 3px 7px rgba(0,0,0,.6);
+  display:flex;align-items:flex-end;justify-content:center;padding-bottom:7px}
+.gal span{font-family:'IBM Plex Mono';font-size:8px;letter-spacing:.12em;color:#b9b0a0;
+  text-transform:uppercase;text-shadow:0 1px 0 rgba(0,0,0,.8)}
+.gal::before{content:'';position:absolute;left:9px;right:9px;top:9px;height:30px;border-radius:5px;
+  background:linear-gradient(160deg,#8a8171,#4a463d);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.3)}
+
+/* Zatvor: konsentrik metall halqalar */
+.shutter{width:98px;height:98px;border-radius:50%;border:none;position:relative;
+  background:linear-gradient(180deg,#8d887c,#3b3831);
+  box-shadow:0 6px 14px rgba(0,0,0,.7),inset 0 2px 0 rgba(255,255,255,.4)}
+.shutter::before{content:'';position:absolute;inset:8px;border-radius:50%;
+  background:linear-gradient(180deg,#2b2823,#15140f);
+  box-shadow:inset 0 3px 8px rgba(0,0,0,.9)}
+.shutter::after{content:'';position:absolute;inset:17px;border-radius:50%;
+  background:linear-gradient(180deg,#f6f1e6,#b9b0a0);
+  box-shadow:inset 0 -3px 7px rgba(0,0,0,.35),inset 0 3px 0 rgba(255,255,255,.9),
+             0 0 16px rgba(255,181,69,.25)}
+
+/* Qidiruv */
+.search{width:62px;height:62px;border-radius:50%;border:none;
+  background:linear-gradient(180deg,#5b574d,#333029);color:#c9c0ae;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.26),0 3px 7px rgba(0,0,0,.6);
+  display:flex;align-items:center;justify-content:center}
+</style></head>
+<body>
+
+<div class="top">
+  <button class="gear">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9.54,2.82 A9.5,9.5 0 0 1 14.46,2.82 L13.81,5.24 A7.0,7.0 0 0 1 16.95,7.05 L18.72,5.28 A9.5,9.5 0 0 1 21.18,9.54 L18.76,10.19 A7.0,7.0 0 0 1 18.76,13.81 L21.18,14.46 A9.5,9.5 0 0 1 18.72,18.72 L16.95,16.95 A7.0,7.0 0 0 1 13.81,18.76 L14.46,21.18 A9.5,9.5 0 0 1 9.54,21.18 L10.19,18.76 A7.0,7.0 0 0 1 7.05,16.95 L5.28,18.72 A9.5,9.5 0 0 1 2.82,14.46 L5.24,13.81 A7.0,7.0 0 0 1 5.24,10.19 L2.82,9.54 A9.5,9.5 0 0 1 5.28,5.28 L7.05,7.05 A7.0,7.0 0 0 1 10.19,5.24 Z"/><circle cx="12" cy="12" r="3.4"/></svg>
+  </button>
+</div>
+
+<div class="finder">
+  <div class="glass">
+    <i class="mark tl"></i><i class="mark tr"></i><i class="mark bl"></i><i class="mark br"></i>
+    <svg class="food" width="250" height="270" viewBox="0 0 240 260">
+      <defs>
+        <linearGradient id="meat" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#c88a4e"/><stop offset="100%" stop-color="#7a4a1e"/>
+        </linearGradient>
+        <linearGradient id="bone" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#f2ead6"/><stop offset="100%" stop-color="#b8ac92"/>
+        </linearGradient>
+      </defs>
+      <g transform="rotate(34 120 130)">
+        <rect x="106" y="120" width="28" height="86" rx="14" fill="url(#bone)"/>
+        <circle cx="102" cy="206" r="19" fill="url(#bone)"/>
+        <circle cx="138" cy="206" r="19" fill="url(#bone)"/>
+        <ellipse cx="120" cy="76" rx="56" ry="66" fill="url(#meat)"/>
+        <ellipse cx="104" cy="58" rx="20" ry="26" fill="rgba(255,255,255,.16)"/>
+      </g>
+    </svg>
+    <div class="hint">Ovqatni ramkaga joylang</div>
+  </div>
+</div>
+
+<div class="deck">
+  <button class="gal"><span>Galereya</span></button>
+  <button class="shutter"></button>
+  <button class="search">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="10.9" cy="10.9" r="6.15"/><path d="m15.6 15.6 3.65 3.65"/></svg>
+  </button>
+</div>
+</body></html>

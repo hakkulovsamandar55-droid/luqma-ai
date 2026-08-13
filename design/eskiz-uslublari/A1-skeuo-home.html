@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="uz"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A · Skeuomorphism — bosh sahifa</title>
+<link rel="stylesheet" href="./node_modules/@fontsource-variable/archivo/index.css">
+<link rel="stylesheet" href="./node_modules/@fontsource/ibm-plex-mono/500.css">
+<link rel="stylesheet" href="./node_modules/@fontsource/ibm-plex-mono/600.css">
+<style>
+/* ============================================================
+   A — SKEUOMORPHISM
+   Haqiqiy materialga taqlid: charm fon, metall kant, shisha
+   qoplama, o'yilgan yozuv. Har element hajmga ega — yuqoridan
+   yorug'lik tushadi, pastda soya qoladi.
+   Raqamlar LED tabloga o'xshaydi (amber, monospace).
+   ============================================================ */
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --amber:#ffb545; --amber-d:#c67a12; --glow:rgba(255,181,69,.55);
+  --metal-l:#6c6a66; --metal-d:#2a2926;
+  --ink:#f0ece4; --ink2:#a49c8e;
+}
+body{
+  width:420px;min-height:900px;color:var(--ink);
+  font-family:'Archivo Variable',sans-serif;
+  /* Charm: mayda donador shovqin + qorong'i vinyetka */
+  background:
+    radial-gradient(120% 80% at 50% 0%, #46423c 0%, #23211e 55%, #16150f 100%);
+  position:relative;overflow:hidden
+}
+body::before{content:'';position:absolute;inset:0;pointer-events:none;opacity:.5;
+  background-image:radial-gradient(rgba(255,255,255,.045) 1px,transparent 1px);
+  background-size:3px 3px}
+
+/* --- Tepa: metall panel + o'yilgan sarlavha --- */
+.bar{position:relative;padding:16px 20px 14px;text-align:center;
+  background:linear-gradient(180deg,#5c5952,#37342e 60%,#2b2925);
+  border-bottom:1px solid #14130f;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 3px 8px rgba(0,0,0,.5)}
+.bar .lbl{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#9a9287;
+  text-shadow:0 1px 0 rgba(0,0,0,.7)}
+/* LED tablo */
+.led{margin-top:8px;display:inline-block;padding:8px 20px;border-radius:8px;
+  background:linear-gradient(180deg,#171512,#0d0c0a);
+  border:1px solid #0a0908;
+  box-shadow:inset 0 2px 6px rgba(0,0,0,.9),0 1px 0 rgba(255,255,255,.14)}
+.led b{font-family:'IBM Plex Mono';font-size:34px;font-weight:600;letter-spacing:.02em;
+  color:var(--amber);text-shadow:0 0 12px var(--glow),0 0 30px rgba(255,181,69,.3)}
+.led s{text-decoration:none;font-family:'IBM Plex Mono';font-size:17px;color:#7b6642}
+
+/* --- Tana maydoni: ichkariga o'yilgan oyna --- */
+.stage{position:relative;margin:20px 18px 0;height:376px;border-radius:20px;
+  background:linear-gradient(180deg,#1b1a16,#141310);
+  box-shadow:inset 0 3px 10px rgba(0,0,0,.85),inset 0 -1px 0 rgba(255,255,255,.06),
+             0 1px 0 rgba(255,255,255,.09)}
+.stage svg.fig{position:absolute;left:50%;top:20px;transform:translateX(-50%)}
+
+/* --- Halqa: metall kant + shisha qoplama --- */
+.dial{position:absolute;width:74px;text-align:center}
+.dial .face{position:relative;width:66px;height:66px;margin:0 auto;border-radius:50%;
+  background:linear-gradient(160deg,var(--metal-l),var(--metal-d));
+  box-shadow:0 3px 6px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.35)}
+.dial .face::after{content:'';position:absolute;inset:5px;border-radius:50%;
+  background:linear-gradient(180deg,#1a1916,#0e0d0b);
+  box-shadow:inset 0 2px 5px rgba(0,0,0,.9)}
+/* shisha yaltirashi */
+.dial .face::before{content:'';position:absolute;left:9px;right:22px;top:7px;height:20px;
+  border-radius:50% 50% 40% 40%;background:linear-gradient(180deg,rgba(255,255,255,.3),transparent);
+  z-index:3;pointer-events:none}
+.dial svg{position:absolute;inset:5px;z-index:2}
+.dial .v{position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;
+  font-family:'IBM Plex Mono';font-size:14px;font-weight:600;color:var(--amber);
+  text-shadow:0 0 8px var(--glow)}
+.dial u{display:block;margin-top:7px;font-size:9px;letter-spacing:.14em;text-transform:uppercase;
+  text-decoration:none;color:#8d8578;text-shadow:0 1px 0 rgba(0,0,0,.8)}
+
+/* --- Qatorlar: bo'rtib chiqqan panel --- */
+.rows{margin:20px 18px 0;display:flex;flex-direction:column;gap:12px}
+.row{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:14px;
+  background:linear-gradient(180deg,#4a4740,#312e29);
+  border:1px solid #14130f;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 4px 9px rgba(0,0,0,.55)}
+.row .cap{width:42px;height:42px;border-radius:11px;flex:none;display:flex;
+  align-items:center;justify-content:center;
+  background:linear-gradient(180deg,#6b6760,#3a3730);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 2px 4px rgba(0,0,0,.5)}
+.row .cap svg{filter:drop-shadow(0 1px 0 rgba(0,0,0,.6))}
+.row p{flex:1;font-size:15px;font-weight:600;text-shadow:0 1px 0 rgba(0,0,0,.65)}
+.row .go{width:26px;height:26px;border-radius:50%;flex:none;
+  background:linear-gradient(180deg,#5d594f,#332f29);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 2px 4px rgba(0,0,0,.5);
+  display:flex;align-items:center;justify-content:center;color:#c9c0ae;font-size:13px}
+
+/* --- Pastki panel: fizik tugmalar --- */
+.nav{position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-around;
+  align-items:center;padding:14px 26px 20px;
+  background:linear-gradient(180deg,#3d3a34,#232019);
+  border-top:1px solid #14130f;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 -4px 12px rgba(0,0,0,.55)}
+.nav button{width:62px;height:52px;border:none;border-radius:14px;
+  background:linear-gradient(180deg,#565248,#312e28);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.24),0 3px 6px rgba(0,0,0,.55);
+  display:flex;align-items:center;justify-content:center;color:#b7ae9c}
+.nav button.on{background:linear-gradient(180deg,#8a6a2c,#4d3610);
+  color:var(--amber);box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 0 12px rgba(255,181,69,.35),
+  0 3px 6px rgba(0,0,0,.6)}
+</style></head>
+<body>
+
+<div class="bar">
+  <div class="lbl">Bugungi kaloriya</div>
+  <div class="led"><b>1700</b><s> / 2000</s></div>
+</div>
+
+<div class="stage">
+  <svg class="fig" width="186" height="310" viewBox="0 0 240 400">
+    <defs>
+      <linearGradient id="bodyg" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#4a463e"/><stop offset="100%" stop-color="#26241f"/>
+      </linearGradient>
+    </defs>
+    <path fill="url(#bodyg)" stroke="#0f0e0c" stroke-width="2"
+      d="M120,8 C96,8 86,26 86,52 C86,72 92,86 100,94 C100,100 100,104 98,108 C74,116 58,132 52,156 C46,180 42,206 40,228 C38,246 40,258 48,260 C56,262 62,252 64,234 C66,214 70,192 76,176 C78,196 78,216 80,236 C82,262 84,286 86,308 C88,336 90,364 92,382 C93,392 104,394 107,384 C112,362 116,336 119,310 C120,300 120,300 121,310 C124,336 128,362 133,384 C136,394 147,392 148,382 C150,364 152,336 154,308 C156,286 158,262 160,236 C162,216 162,196 164,176 C170,192 174,214 176,234 C178,252 184,262 192,260 C200,258 202,246 200,228 C198,206 194,180 188,156 C182,132 166,116 142,108 C140,104 140,100 140,94 C148,86 154,72 154,52 C154,26 144,8 120,8 Z"/>
+  </svg>
+
+  <!-- Halqalar tananing atrofida: chap-tepa, o'ng-tepa, o'ng-o'rta, chap-past -->
+  <div class="dial" style="left:14px;top:42px">
+    <div class="face">
+      <svg width="56" height="56" viewBox="0 0 56 56" style="transform:rotate(-90deg)">
+        <circle cx="28" cy="28" r="22" fill="none" stroke="#2c2a25" stroke-width="5"/>
+        <circle cx="28" cy="28" r="22" fill="none" stroke="#ffb545" stroke-width="5"
+                stroke-linecap="round" stroke-dasharray="138" stroke-dashoffset="0"/>
+      </svg>
+      <div class="v">15/15</div>
+    </div>
+    <u>Oqsil</u>
+  </div>
+
+  <div class="dial" style="right:14px;top:42px">
+    <div class="face">
+      <svg width="56" height="56" viewBox="0 0 56 56" style="transform:rotate(-90deg)">
+        <circle cx="28" cy="28" r="22" fill="none" stroke="#2c2a25" stroke-width="5"/>
+        <circle cx="28" cy="28" r="22" fill="none" stroke="#ffb545" stroke-width="5"
+                stroke-linecap="round" stroke-dasharray="138" stroke-dashoffset="14"/>
+      </svg>
+      <div class="v">9/10</div>
+    </div>
+    <u>Yog'</u>
+  </div>
+
+  <div class="dial" style="right:14px;top:186px">
+    <div class="face">
+      <svg width="56" height="56" viewBox="0 0 56 56" style="transform:rotate(-90deg)">
+        <circle cx="28" cy="28" r="22" fill="none" stroke="#2c2a25" stroke-width="5"/>
+        <circle cx="28" cy="28" r="22" fill="none" stroke="#ffb545" stroke-width="5"
+                stroke-linecap="round" stroke-dasharray="138" stroke-dashoffset="97"/>
+      </svg>
+      <div class="v">3/10</div>
+    </div>
+    <u>Suv</u>
+  </div>
+
+  <div class="dial" style="left:14px;top:230px">
+    <div class="face">
+      <svg width="56" height="56" viewBox="0 0 56 56" style="transform:rotate(-90deg)">
+        <circle cx="28" cy="28" r="22" fill="none" stroke="#2c2a25" stroke-width="5"/>
+        <circle cx="28" cy="28" r="22" fill="none" stroke="#ffb545" stroke-width="5"
+                stroke-linecap="round" stroke-dasharray="138" stroke-dashoffset="0"/>
+      </svg>
+      <div class="v">15/15</div>
+    </div>
+    <u>Uglevod</u>
+  </div>
+</div>
+
+<div class="rows">
+  <div class="row">
+    <span class="cap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffb545" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.25 11.7a8.05 8.05 0 0 1-8.6 8.05 8.7 8.7 0 0 1-3.05-.6l-3.9 1.05a.7.7 0 0 1-.87-.87l1.05-3.9a8 8 0 0 1-.63-3.23 8.05 8.05 0 0 1 8.05-8.05 8.05 8.05 0 0 1 7.95 7.55Z"/></svg></span>
+    <p>Bitta tuxum ye</p>
+    <span class="go">›</span>
+  </div>
+  <div class="row">
+    <span class="cap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e6dcc6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17.75 9.4a5.75 5.75 0 1 0-11.5 0c0 4.4-1.2 6-1.85 6.7a.7.7 0 0 0 .5 1.2h14.2a.7.7 0 0 0 .5-1.2c-.65-.7-1.85-2.3-1.85-6.7Z"/><path d="M13.75 19.6a2 2 0 0 1-3.5 0"/></svg></span>
+    <p>Eslatma!</p>
+    <span class="go">›</span>
+  </div>
+  <div class="row">
+    <span class="cap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e6dcc6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 9.4v5.2M7.6 7.2v9.6M16.4 7.2v9.6M19.5 9.4v5.2"/><path d="M7.6 12h8.8"/></svg></span>
+    <p>Kunlik mashq</p>
+    <span class="go">›</span>
+  </div>
+</div>
+
+<div class="nav">
+  <button class="on"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.6a2 2 0 0 1 .74-1.55l6-4.8a2 2 0 0 1 2.52 0l6 4.8A2 2 0 0 1 20 10.6v7.9a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 18.5Z"/></svg></button>
+  <button><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 8.25h2.4a1.6 1.6 0 0 0 1.36-.76l.86-1.4a1.6 1.6 0 0 1 1.36-.76h3.04a1.6 1.6 0 0 1 1.36.76l.86 1.4a1.6 1.6 0 0 0 1.36.76h2.4a2.5 2.5 0 0 1 2.5 2.5v6.5a2.5 2.5 0 0 1-2.5 2.5h-15a2.5 2.5 0 0 1-2.5-2.5v-6.5a2.5 2.5 0 0 1 2.5-2.5Z"/><circle cx="12" cy="13.9" r="3.1"/></svg></button>
+  <button><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.54,2.82 A9.5,9.5 0 0 1 14.46,2.82 L13.81,5.24 A7.0,7.0 0 0 1 16.95,7.05 L18.72,5.28 A9.5,9.5 0 0 1 21.18,9.54 L18.76,10.19 A7.0,7.0 0 0 1 18.76,13.81 L21.18,14.46 A9.5,9.5 0 0 1 18.72,18.72 L16.95,16.95 A7.0,7.0 0 0 1 13.81,18.76 L14.46,21.18 A9.5,9.5 0 0 1 9.54,21.18 L10.19,18.76 A7.0,7.0 0 0 1 7.05,16.95 L5.28,18.72 A9.5,9.5 0 0 1 2.82,14.46 L5.24,13.81 A7.0,7.0 0 0 1 5.24,10.19 L2.82,9.54 A9.5,9.5 0 0 1 5.28,5.28 L7.05,7.05 A7.0,7.0 0 0 1 10.19,5.24 Z"/><circle cx="12" cy="12" r="3.4"/></svg></button>
+</div>
+</body></html>
