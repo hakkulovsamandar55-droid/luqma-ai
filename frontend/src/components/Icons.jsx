@@ -35,10 +35,15 @@ export const HomeIcon = (p) => (
   </Svg>
 )
 
+/* Sozlamalar — 6 tishli shesterna.
+   Eski konturda tishlar bir-biriga qo'shilib ketgan va shakl amyobaga
+   o'xshab qolgan edi. Bu yo'l aniq geometriya bo'yicha qurilgan: tish
+   uchlari r=9.5 yoyida, tublari r=7.0 yoyida, oralari teng. 8 tish
+   sinab ko'rildi — 23px da zich chiqdi, 6 tish toza o'qiladi. */
 export const GearIcon = (p) => (
   <Svg {...p}>
-    <circle cx="12" cy="12" r="3.1" />
-    <path d="M10.3 3.9a1.9 1.9 0 0 1 3.4 0l.4.8a1.9 1.9 0 0 0 2.1 1l.9-.2a1.9 1.9 0 0 1 1.9 2.9l-.5.8a1.9 1.9 0 0 0 0 2.1l.5.8a1.9 1.9 0 0 1-1.9 2.9l-.9-.2a1.9 1.9 0 0 0-2.1 1l-.4.8a1.9 1.9 0 0 1-3.4 0l-.4-.8a1.9 1.9 0 0 0-2.1-1l-.9.2a1.9 1.9 0 0 1-1.9-2.9l.5-.8a1.9 1.9 0 0 0 0-2.1l-.5-.8a1.9 1.9 0 0 1 1.9-2.9l.9.2a1.9 1.9 0 0 0 2.1-1Z" />
+    <path d="M9.54,2.82 A9.5,9.5 0 0 1 14.46,2.82 L13.81,5.24 A7.0,7.0 0 0 1 16.95,7.05 L18.72,5.28 A9.5,9.5 0 0 1 21.18,9.54 L18.76,10.19 A7.0,7.0 0 0 1 18.76,13.81 L21.18,14.46 A9.5,9.5 0 0 1 18.72,18.72 L16.95,16.95 A7.0,7.0 0 0 1 13.81,18.76 L14.46,21.18 A9.5,9.5 0 0 1 9.54,21.18 L10.19,18.76 A7.0,7.0 0 0 1 7.05,16.95 L5.28,18.72 A9.5,9.5 0 0 1 2.82,14.46 L5.24,13.81 A7.0,7.0 0 0 1 5.24,10.19 L2.82,9.54 A9.5,9.5 0 0 1 5.28,5.28 L7.05,7.05 A7.0,7.0 0 0 1 10.19,5.24 Z" />
+    <circle cx="12" cy="12" r="3.4" />
   </Svg>
 )
 

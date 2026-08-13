@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="uz"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>2 — Yumshoq wellness</title>
+<link rel="stylesheet" href="./node_modules/@fontsource-variable/fraunces/index.css">
+<link rel="stylesheet" href="./node_modules/@fontsource-variable/nunito/index.css">
+<style>
+/* ============================================================
+   2 — YUMSHOQ WELLNESS
+   Issiq krem fon, shalfey yashil, terrakota. Qora rang YO'Q.
+   Katta radius, yumshoq soya, chegara yo'q.
+   Shrift: Fraunces (yumshoq serif) + Nunito.
+   Tugmalar to'liq dumaloq, past kontrastli.
+   ============================================================ */
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --paper:#f7f2e9; --card:#fffdf8; --ink:#3b3a34; --ink2:#8a877c;
+  --sage:#7c9a73; --sage-d:#5f7b58; --sage-s:#e6ede2;
+  --clay:#c97b5a; --clay-s:#f6e6de;
+  --r:30px; --sh:0 10px 30px -14px rgba(90,80,60,.35);
+}
+body{width:420px;min-height:900px;background:var(--paper);color:var(--ink);
+  font-family:'Nunito Variable',sans-serif;font-weight:600;padding:0 0 10px}
+
+.head{padding:26px 24px 6px}
+.hello{font-family:'Fraunces Variable',serif;font-weight:600;font-size:27px;
+  letter-spacing:-.02em;font-variation-settings:'SOFT' 60,'WONK' 1}
+.sub{color:var(--ink2);font-size:14px;margin-top:2px}
+
+/* --- Kun tanlagich: yumshoq nuqtalar --- */
+.days{display:flex;gap:8px;padding:16px 24px 4px}
+.d{flex:1;text-align:center;padding:9px 0;border-radius:20px;background:transparent}
+.d span{display:block;font-size:10px;color:var(--ink2);letter-spacing:.04em}
+.d b{font-size:15px;font-weight:700}
+.d.on{background:var(--sage);color:#fff}
+.d.on span{color:rgba(255,255,255,.75)}
+
+/* --- Asosiy: yumshoq halqa + barg --- */
+.hero{margin:18px 24px;background:var(--card);border-radius:var(--r);
+  box-shadow:var(--sh);padding:28px 22px 24px;text-align:center;position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;right:-40px;top:-40px;width:150px;height:150px;
+  border-radius:50%;background:var(--sage-s)}
+.ring{position:relative;width:168px;height:168px;margin:0 auto}
+.ring svg{transform:rotate(-90deg)}
+.ring .v{position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center}
+.ring .v b{font-family:'Fraunces Variable',serif;font-weight:600;font-size:44px;
+  line-height:1;letter-spacing:-.03em;font-variation-settings:'SOFT' 80}
+.ring .v span{font-size:12px;color:var(--ink2);margin-top:5px;letter-spacing:.02em}
+.hero p{margin-top:16px;font-size:14px;color:var(--ink2);position:relative}
+.hero p b{color:var(--sage-d)}
+
+/* --- Makro: yumshoq gorizontal chiziqlar --- */
+.macros{margin:0 24px;background:var(--card);border-radius:var(--r);
+  box-shadow:var(--sh);padding:20px 22px}
+.m{display:flex;align-items:center;gap:12px;padding:9px 0}
+.m .lbl{width:76px;font-size:13px;color:var(--ink2)}
+.m .tr{flex:1;height:9px;border-radius:99px;background:var(--sage-s)}
+.m .tr i{display:block;height:100%;border-radius:99px;background:var(--sage)}
+.m .tr.c i{background:var(--clay)}
+.m .tr.c{background:var(--clay-s)}
+.m .val{width:64px;text-align:right;font-size:13px;font-weight:700}
+.m .val s{text-decoration:none;color:var(--ink2);font-weight:600}
+
+/* --- Suv: alohida yumshoq kartochka --- */
+.water{margin:16px 24px;background:var(--sage-s);border-radius:var(--r);
+  padding:18px 22px;display:flex;align-items:center;gap:14px}
+.water .t{flex:1}
+.water .t b{display:block;font-family:'Fraunces Variable',serif;font-weight:600;font-size:24px}
+.water .t span{font-size:12px;color:var(--ink2)}
+.water button{width:42px;height:42px;border:none;border-radius:50%;background:#fff;
+  color:var(--sage-d);font-size:20px;font-weight:700;box-shadow:var(--sh)}
+
+/* --- Maslahat --- */
+.tip{margin:0 24px 18px;background:var(--clay-s);border-radius:var(--r);padding:18px 22px}
+.tip span{font-size:11px;color:var(--clay);letter-spacing:.1em;text-transform:uppercase}
+.tip p{margin-top:6px;font-size:14.5px;line-height:1.5}
+
+/* --- Ovqatlar --- */
+.h2{margin:0 24px 10px;font-family:'Fraunces Variable',serif;font-weight:600;font-size:18px}
+.meals{margin:0 24px;display:flex;flex-direction:column;gap:10px}
+.meal{background:var(--card);border-radius:24px;box-shadow:var(--sh);
+  padding:14px 18px;display:flex;align-items:center;gap:14px}
+.dot{width:40px;height:40px;border-radius:50%;background:var(--sage-s)}
+.meal .n{flex:1}
+.meal .n b{display:block;font-size:15px}
+.meal .n s{text-decoration:none;font-size:12px;color:var(--ink2)}
+.meal .k{font-family:'Fraunces Variable',serif;font-weight:600;font-size:19px}
+
+/* --- Suzuvchi pastki panel --- */
+.nav{margin:26px auto 20px;width:max-content;
+  background:var(--card);border-radius:99px;box-shadow:0 14px 34px -10px rgba(90,80,60,.4);
+  display:flex;align-items:center;gap:6px;padding:8px}
+.nav a{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-size:11px;color:var(--ink2);text-decoration:none}
+.nav a.on{background:var(--sage-s);color:var(--sage-d);font-weight:700}
+.nav .plus{width:60px;height:60px;border-radius:50%;background:var(--sage);color:#fff;
+  font-size:26px;font-weight:400;box-shadow:0 8px 20px -6px rgba(124,154,115,.8)}
+</style></head>
+<body>
+
+<div class="head">
+  <div class="hello">Xayrli kun, Samandar</div>
+  <div class="sub">Chorshanba, 12-avgust · 9 kun ketma-ket</div>
+</div>
+
+<div class="days">
+  <div class="d"><span>Pay</span><b>6</b></div>
+  <div class="d"><span>Jum</span><b>7</b></div>
+  <div class="d"><span>Shan</span><b>8</b></div>
+  <div class="d"><span>Yak</span><b>9</b></div>
+  <div class="d"><span>Dush</span><b>10</b></div>
+  <div class="d"><span>Sesh</span><b>11</b></div>
+  <div class="d on"><span>Chor</span><b>12</b></div>
+</div>
+
+<div class="hero">
+  <div class="ring">
+    <svg width="168" height="168">
+      <circle cx="84" cy="84" r="72" fill="none" stroke="#e6ede2" stroke-width="14"/>
+      <circle cx="84" cy="84" r="72" fill="none" stroke="#7c9a73" stroke-width="14"
+              stroke-linecap="round" stroke-dasharray="452" stroke-dashoffset="371"/>
+    </svg>
+    <div class="v"><b>1 723</b><span>kaloriya qoldi</span></div>
+  </div>
+  <p>Bugun <b>377 kcal</b> yedingiz — yaxshi boshlanish</p>
+</div>
+
+<div class="macros">
+  <div class="m"><span class="lbl">Oqsil</span><div class="tr"><i style="width:7%"></i></div><span class="val">11<s> / 150</s></span></div>
+  <div class="m"><span class="lbl">Yog'</span><div class="tr"><i style="width:18%"></i></div><span class="val">12<s> / 67</s></span></div>
+  <div class="m"><span class="lbl">Uglevod</span><div class="tr c"><i style="width:29%"></i></div><span class="val">58<s> / 200</s></span></div>
+</div>
+
+<div class="water">
+  <div class="t"><b>1,4 l</b><span>2 litrdan · yana 3 stakan</span></div>
+  <button>−</button><button>+</button>
+</div>
+
+<div class="tip">
+  <span>Murabbiy</span>
+  <p>Oqsil bugun kam qoldi — kechqurun tovuq yoki tuxum qo'shsangiz me'yorga chiqasiz.</p>
+</div>
+
+<div class="h2">Bugungi ovqatlar</div>
+<div class="meals">
+  <div class="meal"><div class="dot"></div><div class="n"><b>Sabzavotli salat</b><s>13:40 · 260 g</s></div><div class="k">145</div></div>
+  <div class="meal"><div class="dot"></div><div class="n"><b>Non va choy</b><s>08:20 · 180 g</s></div><div class="k">232</div></div>
+</div>
+
+<div class="nav">
+  <a class="on">Uy</a>
+  <a>AI</a>
+  <a class="plus">+</a>
+  <a>Vazn</a>
+  <a>Profil</a>
+</div>
+</body></html>

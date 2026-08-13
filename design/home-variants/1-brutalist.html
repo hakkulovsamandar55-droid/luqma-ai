@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="uz"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>1 — Brutalist</title>
+<link rel="stylesheet" href="./node_modules/@fontsource/archivo-black/index.css">
+<link rel="stylesheet" href="./node_modules/@fontsource-variable/archivo/index.css">
+<link rel="stylesheet" href="./node_modules/@fontsource/ibm-plex-mono/400.css">
+<link rel="stylesheet" href="./node_modules/@fontsource/ibm-plex-mono/600.css">
+<style>
+/* ============================================================
+   1 — BRUTALIST GRID
+   Qat'iy to'r, qora kontur, qattiq soya. Radius YO'Q.
+   Rang: qora + kislotali sariq. Shrift: Archivo Black.
+   Tugmalar to'rtburchak, hammasi BOSH HARF.
+   ============================================================ */
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#000; --paper:#fff; --acid:#e4ff1a; --red:#ff3b1f;
+  --line:3px solid #000;
+}
+body{
+  width:420px;min-height:900px;background:var(--paper);color:var(--ink);
+  font-family:'Archivo Variable',sans-serif;font-weight:600;
+}
+.wrap{padding:0}
+
+/* --- Tepa: to'liq qora satr --- */
+.top{background:var(--ink);color:var(--paper);padding:14px 16px;
+  display:flex;justify-content:space-between;align-items:center}
+.logo{font-family:'Archivo Black';font-size:20px;letter-spacing:-.02em;text-transform:uppercase}
+.logo b{background:var(--acid);color:var(--ink);padding:0 6px}
+.date{font-family:'IBM Plex Mono';font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+
+/* --- Kun tanlagich: kvadrat kataklar --- */
+.days{display:grid;grid-template-columns:repeat(7,1fr);border-bottom:var(--line)}
+.day{border-right:var(--line);padding:8px 0;text-align:center;background:var(--paper)}
+.day:last-child{border-right:none}
+.day span{display:block;font-family:'IBM Plex Mono';font-size:9px;text-transform:uppercase;letter-spacing:.08em}
+.day b{font-family:'Archivo Black';font-size:17px}
+.day.on{background:var(--acid)}
+
+/* --- Asosiy raqam: konturli quti + qattiq soya --- */
+.hero{margin:16px;border:var(--line);background:var(--paper);
+  box-shadow:8px 8px 0 var(--ink)}
+.hero-top{border-bottom:var(--line);padding:7px 12px;background:var(--ink);color:var(--paper);
+  font-family:'IBM Plex Mono';font-size:10px;letter-spacing:.16em;text-transform:uppercase}
+.hero-num{font-family:'Archivo Black';font-size:82px;line-height:.92;letter-spacing:-.05em;
+  padding:14px 12px 4px}
+.hero-unit{font-family:'IBM Plex Mono';font-size:12px;padding:0 12px 12px;letter-spacing:.1em;text-transform:uppercase}
+
+/* Progress: bloklar, silliq emas */
+.blocks{display:flex;gap:3px;padding:0 12px 14px}
+.blocks i{flex:1;height:16px;border:2px solid var(--ink);background:var(--paper)}
+.blocks i.f{background:var(--acid)}
+
+/* --- Makro: 3 ustunli to'r, chegaralar bilan --- */
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);margin:0 16px;border:var(--line)}
+.cell{border-right:var(--line);padding:10px 8px}
+.cell:last-child{border-right:none}
+.cell u{display:block;font-family:'IBM Plex Mono';font-size:9px;text-transform:uppercase;
+  letter-spacing:.1em;text-decoration:none;margin-bottom:4px}
+.cell b{font-family:'Archivo Black';font-size:26px;line-height:1;letter-spacing:-.03em}
+.cell s{display:block;font-family:'IBM Plex Mono';font-size:10px;text-decoration:none;opacity:.55;margin-top:2px}
+.bar{height:6px;border:2px solid var(--ink);margin-top:8px}
+.bar i{display:block;height:100%;background:var(--ink)}
+
+/* --- Suv: alohida sariq satr --- */
+.water{margin:16px;border:var(--line);background:var(--acid);padding:11px 12px;
+  display:flex;justify-content:space-between;align-items:center}
+.water span{font-family:'IBM Plex Mono';font-size:10px;letter-spacing:.14em;text-transform:uppercase}
+.water b{font-family:'Archivo Black';font-size:22px;letter-spacing:-.03em}
+.water .btns{display:flex;gap:6px}
+.water button{width:30px;height:30px;border:var(--line);background:var(--paper);
+  font-family:'Archivo Black';font-size:16px;line-height:1}
+
+/* --- Maslahat: qizil kontur --- */
+.tip{margin:0 16px 16px;border:var(--line);border-left:14px solid var(--red);padding:11px 12px}
+.tip u{display:block;font-family:'IBM Plex Mono';font-size:9px;letter-spacing:.14em;
+  text-transform:uppercase;text-decoration:none;margin-bottom:5px}
+.tip p{font-size:14px;line-height:1.35;font-weight:600}
+
+/* --- Ovqatlar: chiziqli ro'yxat --- */
+.h2{margin:0 16px 8px;font-family:'IBM Plex Mono';font-size:10px;letter-spacing:.16em;
+  text-transform:uppercase;display:flex;justify-content:space-between}
+.meals{margin:0 16px;border:var(--line)}
+.meal{display:flex;align-items:center;gap:10px;padding:11px 12px;border-bottom:var(--line)}
+.meal:last-child{border-bottom:none}
+.meal .n{flex:1}
+.meal .n b{display:block;font-family:'Archivo Black';font-size:15px;letter-spacing:-.02em}
+.meal .n s{font-family:'IBM Plex Mono';font-size:10px;text-decoration:none;opacity:.55}
+.meal .k{font-family:'Archivo Black';font-size:19px;letter-spacing:-.03em}
+.meal .k em{font-family:'IBM Plex Mono';font-size:9px;font-style:normal;opacity:.55;margin-left:3px}
+.sq{width:34px;height:34px;border:var(--line);background:var(--acid)}
+
+/* --- Pastki panel: to'rtburchak tugmalar --- */
+.nav{width:420px;margin:22px auto 0;
+  display:grid;grid-template-columns:1fr 1fr 1.3fr 1fr 1fr;border-top:var(--line);background:var(--paper)}
+.nav button{padding:12px 0;border-right:var(--line);background:var(--paper);
+  font-family:'IBM Plex Mono';font-size:9px;letter-spacing:.1em;text-transform:uppercase}
+.nav button:last-child{border-right:none}
+.nav button.on{background:var(--ink);color:var(--paper)}
+.nav button.add{background:var(--acid);font-family:'Archivo Black';font-size:15px;letter-spacing:0}
+</style></head>
+<body><div class="wrap">
+
+<div class="top">
+  <div class="logo">LUQMA<b>AI</b></div>
+  <div class="date">12 / 08 · CHOR</div>
+</div>
+
+<div class="days">
+  <div class="day"><span>Pay</span><b>6</b></div>
+  <div class="day"><span>Jum</span><b>7</b></div>
+  <div class="day"><span>Shan</span><b>8</b></div>
+  <div class="day"><span>Yak</span><b>9</b></div>
+  <div class="day"><span>Dush</span><b>10</b></div>
+  <div class="day"><span>Sesh</span><b>11</b></div>
+  <div class="day on"><span>Chor</span><b>12</b></div>
+</div>
+
+<div class="hero">
+  <div class="hero-top">QOLGAN KALORIYA / 2100 DAN</div>
+  <div class="hero-num">1723</div>
+  <div class="hero-unit">377 KCAL YEYILDI · 18%</div>
+  <div class="blocks">
+    <i class="f"></i><i class="f"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+  </div>
+</div>
+
+<div class="grid3">
+  <div class="cell"><u>Oqsil</u><b>11</b><s>/150 G</s><div class="bar"><i style="width:7%"></i></div></div>
+  <div class="cell"><u>Yog'</u><b>12</b><s>/67 G</s><div class="bar"><i style="width:18%"></i></div></div>
+  <div class="cell"><u>Uglevod</u><b>58</b><s>/200 G</s><div class="bar"><i style="width:29%"></i></div></div>
+</div>
+
+<div class="water">
+  <div><span>SUV</span><br><b>1,4 / 2 L</b></div>
+  <div class="btns"><button>−</button><button>+</button></div>
+</div>
+
+<div class="tip">
+  <u>MURABBIY</u>
+  <p>Oqsil bugun kam qoldi — kechqurun tovuq yoki tuxum qo'shsangiz me'yorga chiqasiz.</p>
+</div>
+
+<div class="h2"><span>BUGUNGI OVQATLAR</span><span>2 TA</span></div>
+<div class="meals">
+  <div class="meal">
+    <div class="sq"></div>
+    <div class="n"><b>SABZAVOTLI SALAT</b><s>13:40</s></div>
+    <div class="k">145<em>KCAL</em></div>
+  </div>
+  <div class="meal">
+    <div class="sq"></div>
+    <div class="n"><b>NON VA CHOY</b><s>08:20</s></div>
+    <div class="k">232<em>KCAL</em></div>
+  </div>
+</div>
+
+</div>
+<div class="nav">
+  <button class="on">Asosiy</button>
+  <button>AI</button>
+  <button class="add">+ OVQAT</button>
+  <button>Mashq</button>
+  <button>Sozlama</button>
+</div>
+</body></html>

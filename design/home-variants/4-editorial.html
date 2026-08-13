@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="uz"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>4 — Jurnal</title>
+<link rel="stylesheet" href="./node_modules/@fontsource/instrument-serif/400.css">
+<link rel="stylesheet" href="./node_modules/@fontsource/instrument-serif/400-italic.css">
+<link rel="stylesheet" href="./node_modules/@fontsource-variable/inter/index.css">
+<style>
+/* ============================================================
+   4 — JURNAL (editorial)
+   Oq qog'oz, qora siyoh, bitta issiq qizil. Kartochka YO'Q —
+   ierarxiya faqat tipografika va ingichka chiziqlar bilan.
+   Shrift: Instrument Serif (juda katta) + Inter (mayda kapitel).
+   Tugmalar — matn havolasi; faqat bitta to'ldirilgan tugma bor.
+   Assimetrik joylashuv, keng chekka.
+   ============================================================ */
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--paper:#fbfaf7;--ink:#14130f;--ink2:#6f6c63;--ink3:#a8a49a;
+  --red:#c0392b;--rule:#e2ded4}
+body{width:420px;min-height:900px;background:var(--paper);color:var(--ink);
+  font-family:'Inter Variable',sans-serif;padding:0 0 60px}
+.pad{padding:0 26px}
+.rule{height:1px;background:var(--rule);margin:20px 26px}
+.rule.thick{height:2px;background:var(--ink);margin:0 26px}
+
+/* --- Gazeta shapkasi --- */
+.masthead{padding:22px 26px 12px;display:flex;justify-content:space-between;
+  align-items:baseline;border-bottom:2px solid var(--ink)}
+.masthead h1{font-family:'Instrument Serif',serif;font-size:26px;font-weight:400;letter-spacing:-.01em}
+.masthead span{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink2)}
+
+/* --- Navigatsiya: matn havolalari --- */
+.nav{display:flex;gap:18px;padding:11px 26px;border-bottom:1px solid var(--rule)}
+.nav a{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3);
+  text-decoration:none;padding-bottom:2px}
+.nav a.on{color:var(--ink);border-bottom:1.5px solid var(--red)}
+
+/* --- Bosh maqola: ulkan serif raqam --- */
+.lede{padding:30px 26px 0}
+.kicker{font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--red);margin-bottom:12px}
+.figure{font-family:'Instrument Serif',serif;font-size:110px;line-height:.84;
+  font-weight:400;letter-spacing:-.045em}
+.figure em{font-style:italic;font-size:38px;letter-spacing:-.02em;margin-left:6px;color:var(--ink2)}
+.standfirst{font-family:'Instrument Serif',serif;font-style:italic;font-size:19px;
+  line-height:1.35;color:var(--ink2);margin-top:16px;max-width:300px}
+
+/* --- Progress: bitta ingichka chiziq --- */
+.line{margin:22px 26px 0;height:2px;background:var(--rule);position:relative}
+.line i{position:absolute;left:0;top:0;height:100%;background:var(--red)}
+.linecap{display:flex;justify-content:space-between;margin:7px 26px 0;
+  font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3)}
+
+/* --- Makro: gazeta ustunlari --- */
+.cols{display:grid;grid-template-columns:repeat(3,1fr);gap:0;padding:0 26px;margin-top:26px}
+.col{padding-right:14px;border-right:1px solid var(--rule)}
+.col:last-child{border-right:none;padding-right:0;padding-left:14px}
+.col:nth-child(2){padding-left:14px}
+.col dt{font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink3)}
+.col dd{font-family:'Instrument Serif',serif;font-size:34px;line-height:1;margin-top:5px;letter-spacing:-.03em}
+.col small{display:block;font-size:10px;color:var(--ink2);margin-top:3px}
+
+/* --- Iqtibos: murabbiy --- */
+.quote{margin:26px 26px 0;padding-left:16px;border-left:3px solid var(--red)}
+.quote p{font-family:'Instrument Serif',serif;font-size:21px;line-height:1.3;letter-spacing:-.01em}
+.quote span{display:block;margin-top:9px;font-size:9.5px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--ink3)}
+
+/* --- Ovqatlar: kontent ro'yxati --- */
+.sec{display:flex;justify-content:space-between;align-items:baseline;
+  padding:0 26px;margin-top:28px}
+.sec h2{font-family:'Instrument Serif',serif;font-size:22px;font-weight:400}
+.sec a{font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--red);text-decoration:none}
+.item{display:flex;align-items:baseline;gap:12px;padding:14px 26px;border-bottom:1px solid var(--rule)}
+.item .num{font-family:'Instrument Serif',serif;font-size:15px;color:var(--ink3);width:20px}
+.item .b{flex:1}
+.item .b b{display:block;font-family:'Instrument Serif',serif;font-size:19px;font-weight:400}
+.item .b span{font-size:11px;color:var(--ink2)}
+.item .kc{font-family:'Instrument Serif',serif;font-size:20px}
+
+/* --- Yagona to'ldirilgan tugma --- */
+.cta{margin:26px 26px 0;display:flex;gap:12px;align-items:center}
+.cta button{flex:1;background:var(--ink);color:var(--paper);border:none;padding:15px 0;
+  font-size:10px;letter-spacing:.18em;text-transform:uppercase;border-radius:0}
+.cta a{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink2);text-decoration:none}
+.foot{padding:22px 26px 0;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3)}
+</style></head>
+<body>
+
+<div class="masthead">
+  <h1>Luqma</h1>
+  <span>Chorshanba · 12 Avgust</span>
+</div>
+
+<div class="nav">
+  <a class="on">Bugun</a><a>Hafta</a><a>Murabbiy</a><a>Vazn</a><a>Profil</a>
+</div>
+
+<div class="lede">
+  <div class="kicker">Qolgan kaloriya</div>
+  <div class="figure">1723<em>kcal</em></div>
+  <div class="standfirst">Kuningizning atigi 18 foizini yeb bo'ldingiz — kechki ovqat uchun keng joy bor.</div>
+</div>
+
+<div class="line"><i style="width:18%"></i></div>
+<div class="linecap"><span>377 iste'mol</span><span>Me'yor 2100</span></div>
+
+<div class="cols">
+  <dl class="col"><dt>Oqsil</dt><dd>11</dd><small>150 g dan</small></dl>
+  <dl class="col"><dt>Yog'</dt><dd>12</dd><small>67 g dan</small></dl>
+  <dl class="col"><dt>Uglevod</dt><dd>58</dd><small>200 g dan</small></dl>
+</div>
+
+<div class="rule"></div>
+
+<div class="quote">
+  <p>Oqsil bugun kam qoldi — kechqurun tovuq yoki tuxum qo'shsangiz me'yorga chiqasiz.</p>
+  <span>Luqma murabbiy</span>
+</div>
+
+<div class="sec"><h2>Bugungi ovqatlar</h2><a>Barchasi</a></div>
+<div class="item">
+  <span class="num">01</span>
+  <span class="b"><b>Sabzavotli salat</b><span>13:40 — 260 gramm</span></span>
+  <span class="kc">145</span>
+</div>
+<div class="item">
+  <span class="num">02</span>
+  <span class="b"><b>Non va choy</b><span>08:20 — 180 gramm</span></span>
+  <span class="kc">232</span>
+</div>
+
+<div class="cta">
+  <button>Ovqat qo'shish</button>
+  <a>Suv +250</a>
+</div>
+
+<div class="foot">Suv 1,4 / 2 l · Ketma-ket 9 kun</div>
+</body></html>

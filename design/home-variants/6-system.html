@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="uz"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>6 — Tizim uslubi</title>
+<link rel="stylesheet" href="./node_modules/@fontsource-variable/inter/index.css">
+<style>
+/* ============================================================
+   6 — TIZIM USLUBI (iOS-native)
+   Telefon operatsion tizimining o'z uslubi: kulrang fon,
+   guruhlangan oq ro'yxatlar, katta sarlavha, segment boshqaruv,
+   ko'k harakat rangi. Bezak YO'Q — hamma narsa standart.
+   Foydalanuvchi hech narsani o'rganmaydi: allaqachon biladi.
+   Shrift: Inter (SF o'rniga).
+   ============================================================ */
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f2f2f7; --card:#fff; --ink:#000; --ink2:#3c3c43; --ink3:#8e8e93;
+  --sep:#c6c6c8; --blue:#007aff; --green:#34c759; --orange:#ff9500; --red:#ff3b30;
+}
+body{width:420px;min-height:900px;background:var(--bg);color:var(--ink);
+  font-family:'Inter Variable',-apple-system,sans-serif;
+  letter-spacing:-.01em;padding-bottom:96px;-webkit-font-smoothing:antialiased}
+
+/* --- Katta sarlavha (iOS Large Title) --- */
+.nav-l{padding:8px 16px 2px;display:flex;justify-content:space-between;align-items:center}
+.nav-l span{font-size:15px;color:var(--blue)}
+.title{padding:0 16px 8px}
+.title h1{font-size:34px;font-weight:700;letter-spacing:-.03em}
+.title p{font-size:15px;color:var(--ink3);margin-top:1px}
+
+/* --- Segment boshqaruv --- */
+.seg{margin:10px 16px 18px;background:rgba(118,118,128,.12);border-radius:9px;
+  padding:2px;display:grid;grid-template-columns:repeat(3,1fr)}
+.seg button{border:none;background:none;padding:7px 0;font-size:13px;font-weight:500;
+  color:var(--ink);border-radius:7px;font-family:inherit}
+.seg button.on{background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.12);font-weight:600}
+
+/* --- Halqalar (Activity uslubi) --- */
+.rings{background:var(--card);border-radius:12px;margin:0 16px;padding:18px;
+  display:flex;align-items:center;gap:20px}
+.rings .rr{position:relative;width:112px;height:112px;flex:none}
+.rings .lg{flex:1}
+.lg .row{display:flex;justify-content:space-between;align-items:baseline;padding:5px 0}
+.lg .row .nm{font-size:13px;color:var(--ink2)}
+.lg .row .vl{font-size:15px;font-weight:600;font-variant-numeric:tabular-nums}
+.lg .row .vl s{text-decoration:none;color:var(--ink3);font-weight:400;font-size:13px}
+.dotc{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px}
+
+/* --- Guruhlangan ro'yxat --- */
+.gh{font-size:13px;color:var(--ink3);text-transform:uppercase;letter-spacing:.04em;
+  margin:26px 16px 7px;padding-left:16px}
+.group{background:var(--card);border-radius:12px;margin:0 16px;overflow:hidden}
+.li{display:flex;align-items:center;gap:12px;padding:11px 16px;min-height:46px;
+  border-bottom:.5px solid var(--sep)}
+.li:last-child{border-bottom:none}
+.li .ic{width:29px;height:29px;border-radius:7px;flex:none;
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:600}
+.li .tx{flex:1;font-size:16px}
+.li .tx s{display:block;text-decoration:none;font-size:13px;color:var(--ink3);margin-top:1px}
+.li .vv{font-size:16px;color:var(--ink3);font-variant-numeric:tabular-nums}
+.li .ch{color:#c4c4c6;font-size:17px;margin-left:2px}
+.li.btn .tx{color:var(--blue)}
+
+/* --- Suv qatori: stepper --- */
+.step{display:flex;align-items:center;gap:0;border:.5px solid var(--sep);border-radius:8px;overflow:hidden}
+.step button{width:38px;height:32px;border:none;background:rgba(118,118,128,.08);
+  font-size:17px;color:var(--blue);font-family:inherit}
+.step span{width:1px;height:32px;background:var(--sep)}
+
+/* --- Maslahat qatori --- */
+.tipbox{background:var(--card);border-radius:12px;margin:0 16px;padding:14px 16px;
+  display:flex;gap:12px}
+.tipbox .ic{width:29px;height:29px;border-radius:50%;background:var(--blue);flex:none;
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px;font-weight:600}
+.tipbox p{font-size:15px;line-height:1.4;color:var(--ink2)}
+
+/* --- Pastki tab bar --- */
+.tabbar{width:420px;margin:26px auto 0;
+  background:rgba(249,249,249,.94);backdrop-filter:blur(20px);
+  border-top:.5px solid var(--sep);display:grid;grid-template-columns:repeat(5,1fr);
+  padding:7px 0 16px}
+.tabbar a{display:flex;flex-direction:column;align-items:center;gap:3px;
+  font-size:10px;color:var(--ink3);text-decoration:none}
+.tabbar a.on{color:var(--blue)}
+.tabbar .gl{width:22px;height:22px;border:1.8px solid currentColor;border-radius:6px}
+.tabbar .gl.c{border-radius:50%}
+</style></head>
+<body>
+
+<div class="nav-l"><span>Tahrirlash</span><span>Bugun ▾</span></div>
+<div class="title">
+  <h1>Xulosa</h1>
+  <p>Chorshanba, 12-avgust</p>
+</div>
+
+<div class="seg">
+  <button class="on">Bugun</button><button>Hafta</button><button>Oy</button>
+</div>
+
+<div class="rings">
+  <div class="rr">
+    <svg width="112" height="112" style="transform:rotate(-90deg)">
+      <circle cx="56" cy="56" r="48" fill="none" stroke="rgba(0,122,255,.15)" stroke-width="11"/>
+      <circle cx="56" cy="56" r="48" fill="none" stroke="#007aff" stroke-width="11"
+              stroke-linecap="round" stroke-dasharray="302" stroke-dashoffset="248"/>
+      <circle cx="56" cy="56" r="34" fill="none" stroke="rgba(52,199,89,.15)" stroke-width="11"/>
+      <circle cx="56" cy="56" r="34" fill="none" stroke="#34c759" stroke-width="11"
+              stroke-linecap="round" stroke-dasharray="214" stroke-dashoffset="64"/>
+    </svg>
+  </div>
+  <div class="lg">
+    <div class="row"><span class="nm"><i class="dotc" style="background:#007aff"></i>Kaloriya</span>
+      <span class="vl">377<s> / 2100</s></span></div>
+    <div class="row"><span class="nm"><i class="dotc" style="background:#34c759"></i>Suv</span>
+      <span class="vl">1,4<s> / 2 l</s></span></div>
+    <div class="row"><span class="nm"><i class="dotc" style="background:#ff9500"></i>Qolgan</span>
+      <span class="vl">1723<s> kcal</s></span></div>
+    <div class="row"><span class="nm"><i class="dotc" style="background:#8e8e93"></i>Ketma-ket</span>
+      <span class="vl">9<s> kun</s></span></div>
+  </div>
+</div>
+
+<div class="gh">Makro</div>
+<div class="group">
+  <div class="li"><span class="ic" style="background:#5856d6">O</span>
+    <span class="tx">Oqsil<s>Me'yorning 7 foizi</s></span><span class="vv">11 / 150 g</span><span class="ch">›</span></div>
+  <div class="li"><span class="ic" style="background:#ff9500">Y</span>
+    <span class="tx">Yog'<s>Me'yorning 18 foizi</s></span><span class="vv">12 / 67 g</span><span class="ch">›</span></div>
+  <div class="li"><span class="ic" style="background:#34c759">U</span>
+    <span class="tx">Uglevod<s>Me'yorning 29 foizi</s></span><span class="vv">58 / 200 g</span><span class="ch">›</span></div>
+</div>
+
+<div class="gh">Suv</div>
+<div class="group">
+  <div class="li"><span class="ic" style="background:#32ade6">S</span>
+    <span class="tx">Bugungi suv<s>2 litrdan 1,4</s></span>
+    <span class="step"><button>−</button><span></span><button>+</button></span></div>
+</div>
+
+<div class="gh">Murabbiy</div>
+<div class="tipbox">
+  <span class="ic">AI</span>
+  <p>Oqsil bugun kam qoldi — kechqurun tovuq yoki tuxum qo'shsangiz me'yorga chiqasiz.</p>
+</div>
+
+<div class="gh">Bugungi ovqatlar</div>
+<div class="group">
+  <div class="li"><span class="ic" style="background:#8e8e93">1</span>
+    <span class="tx">Sabzavotli salat<s>13:40 · 260 g</s></span><span class="vv">145 kcal</span><span class="ch">›</span></div>
+  <div class="li"><span class="ic" style="background:#8e8e93">2</span>
+    <span class="tx">Non va choy<s>08:20 · 180 g</s></span><span class="vv">232 kcal</span><span class="ch">›</span></div>
+  <div class="li btn"><span class="ic" style="background:#007aff">+</span>
+    <span class="tx">Ovqat qo'shish</span></div>
+</div>
+
+<div class="tabbar">
+  <a class="on"><span class="gl"></span>Xulosa</a>
+  <a><span class="gl c"></span>Murabbiy</a>
+  <a><span class="gl"></span>Qo'shish</a>
+  <a><span class="gl c"></span>Mashq</a>
+  <a><span class="gl"></span>Profil</a>
+</div>
+</body></html>
