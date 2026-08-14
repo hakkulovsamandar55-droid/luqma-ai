@@ -384,13 +384,21 @@ const eskiz = {
   strokeLinejoin: 'round',
 }
 
-/** Oqsil — baliq */
-export const FishIcon = ({ size = 26, ...p }) => (
-  <svg width={size} height={size} viewBox="0 0 32 32" {...eskiz} {...p}>
-    <path d="M4.4 16.2c2.6-4.1 6.6-6.3 10.6-6.3 4.3 0 7.7 2.2 9.6 5.1.4.6.4 1.4 0 2-1.9 3-5.3 5.2-9.6 5.2-4 0-8-2.1-10.6-6Z" />
-    <path d="M24.6 14.6c1.3-1.2 2.6-2 3.9-2.4.4-.1.7.2.6.6-.3 1.4-.4 2.7-.3 4 .1 1.3.4 2.5.9 3.7.2.4-.2.8-.6.6-1.6-.7-3-1.6-4.3-2.8" />
-    <circle cx="10.6" cy="14.4" r="1.1" fill="currentColor" stroke="none" />
-    <path d="M14.6 12.6c1.3 2.1 1.3 4.7 0 6.9" />
+/** Oqsil — go'sht soni */
+export const MeatIcon = ({ size = 26, ...p }) => (
+  <svg width={size} height={size} viewBox="0 0 32 32" fill="none" {...p}>
+    <path
+      d="M23.2 5.3c3.1 2.7 3.3 7.6.7 11.4-2.7 3.9-7.7 5.7-11.4 4.4-1.3-.5-2.1-1.5-2.4-2.8-.5-2.5 1.3-6 4.7-9.1 3.4-3.1 7-5 8.4-3.9Z"
+      fill="currentColor"
+    />
+    <path
+      d="M11.5 21.5c-1.9 2.8-4.8 7.1-6.3 9.6"
+      stroke="currentColor"
+      strokeWidth="2.2"
+      strokeLinecap="round"
+    />
+    <circle cx="5.9" cy="28.3" r="3.05" fill="currentColor" />
+    <circle cx="9.3" cy="29.4" r="2.15" fill="currentColor" />
   </svg>
 )
 
@@ -406,12 +414,11 @@ export const WheatIcon = ({ size = 26, ...p }) => (
   </svg>
 )
 
-/** Yog' — meva (nok va olma) */
-export const FruitIcon = ({ size = 26, ...p }) => (
+/** Yog' — moy shishasi */
+export const OilIcon = ({ size = 26, ...p }) => (
   <svg width={size} height={size} viewBox="0 0 32 32" {...eskiz} {...p}>
-    <path d="M13.4 13.2c1.5-1.9 1.9-3.4 1.7-5.2" />
-    <path d="M15.1 8c1.6-.9 3-1.1 4.4-.7" />
-    <path d="M12.5 12.6c2.5-1.3 4.9-.5 6.2 1.7 1.6 2.7 1 6.6-1 9.2-1.2 1.5-2.6 2.3-3.9 2.3s-2.7-.8-3.9-2.3c-2-2.6-2.6-6.5-1-9.2.7-1.1 1.7-1.6 2.7-1.7" />
-    <path d="M21 11.6c2.6 0 4.6 2.2 4.6 5.2 0 2.2-1 4.4-2.4 5.7" />
+    <path d="M14 3h4v2.3h-4Z" />
+    <path d="M14.4 5.3v2.7M17.6 5.3v2.7" />
+    <path d="M14 8.3c-2.7.7-4.4 2.5-4.4 4.7 0 1.3.6 2.3 1.3 3.1-1.1 1.3-2.2 3.2-2.2 5.9 0 4.8 3.1 8 6.6 8s6.6-3.2 6.6-8c0-3.1-1.4-5.3-2.6-6.9.6-.9.9-1.8.9-2.8 0-2.2-1.5-3.9-3.5-4.7" />
   </svg>
 )
