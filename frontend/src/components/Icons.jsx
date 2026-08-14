@@ -384,41 +384,27 @@ const eskiz = {
   strokeLinejoin: 'round',
 }
 
-/** Oqsil — go'sht soni */
-export const MeatIcon = ({ size = 26, ...p }) => (
-  <svg width={size} height={size} viewBox="0 0 32 32" fill="none" {...p}>
-    <path
-      d="M23.2 5.3c3.1 2.7 3.3 7.6.7 11.4-2.7 3.9-7.7 5.7-11.4 4.4-1.3-.5-2.1-1.5-2.4-2.8-.5-2.5 1.3-6 4.7-9.1 3.4-3.1 7-5 8.4-3.9Z"
-      fill="currentColor"
-    />
-    <path
-      d="M11.5 21.5c-1.9 2.8-4.8 7.1-6.3 9.6"
-      stroke="currentColor"
-      strokeWidth="2.2"
-      strokeLinecap="round"
-    />
-    <circle cx="5.9" cy="28.3" r="3.05" fill="currentColor" />
-    <circle cx="9.3" cy="29.4" r="2.15" fill="currentColor" />
+/** Oqsil — baliq */
+export const FishIcon = ({ size = 26, ...p }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" {...eskiz} {...p}>
+    <path d="M3.5 12c2.6-3.4 5.7-5.1 9.3-5.1 3.6 0 6.3 1.7 8.2 5.1-1.9 3.4-4.6 5.1-8.2 5.1-3.6 0-6.7-1.7-9.3-5.1Z" />
+    <path d="M3.5 12 1.6 8.8M3.5 12l-1.9 3.2M16.6 10.6h.01" />
   </svg>
 )
 
-/** Uglevod — boshoq */
+/** Uglevod — nihol */
 export const WheatIcon = ({ size = 26, ...p }) => (
-  <svg width={size} height={size} viewBox="0 0 32 32" {...eskiz} {...p}>
-    <path d="M6.2 26.6 15 17.8" />
-    <path d="M16.4 5.2c1.9 1.1 2.4 3.4 1.2 5.3-1.9-1.1-2.4-3.4-1.2-5.3Z" />
-    <path d="M12 9.6c2.2.2 3.7 2 3.5 4.2-2.2-.2-3.7-2-3.5-4.2Z" />
-    <path d="M20.6 9.6c-.2 2.2-2 3.7-4.2 3.5.2-2.2 2-3.7 4.2-3.5Z" />
-    <path d="M9.8 14.6c2.2.2 3.7 2 3.5 4.2-2.2-.2-3.7-2-3.5-4.2Z" />
-    <path d="M22.8 14.6c-.2 2.2-2 3.7-4.2 3.5.2-2.2 2-3.7 4.2-3.5Z" />
+  <svg width={size} height={size} viewBox="0 0 24 24" {...eskiz} {...p}>
+    <path d="M12 21V9" />
+    <path d="M12 12c-1.4-2-3.4-2.9-6-2.7.2 2.6 1.5 4.3 3.9 5.1M12 12c1.4-2 3.4-2.9 6-2.7-.2 2.6-1.5 4.3-3.9 5.1" />
+    <path d="M12 7C10.9 5.2 9.1 4.3 6.7 4.4 6.8 6.8 8 8.4 10.2 9.2M12 7c1.1-1.8 2.9-2.7 5.3-2.6-.1 2.4-1.3 4-3.5 4.8" />
   </svg>
 )
 
-/** Yog' — moy shishasi */
-export const OilIcon = ({ size = 26, ...p }) => (
-  <svg width={size} height={size} viewBox="0 0 32 32" {...eskiz} {...p}>
-    <path d="M14 3h4v2.3h-4Z" />
-    <path d="M14.4 5.3v2.7M17.6 5.3v2.7" />
-    <path d="M14 8.3c-2.7.7-4.4 2.5-4.4 4.7 0 1.3.6 2.3 1.3 3.1-1.1 1.3-2.2 3.2-2.2 5.9 0 4.8 3.1 8 6.6 8s6.6-3.2 6.6-8c0-3.1-1.4-5.3-2.6-6.9.6-.9.9-1.8.9-2.8 0-2.2-1.5-3.9-3.5-4.7" />
+/** Yog' — tomchi barg */
+export const FruitIcon = ({ size = 26, ...p }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" {...eskiz} {...p}>
+    <path d="M12.4 7.6C10 5.4 5.9 6.9 5.1 10.4c-.9 3.9 2 8.1 6 8.6 3.9.5 6.9-2.7 6.4-6.3-.3-2.6-2.2-4.1-5.1-5.1Z" />
+    <path d="M13 7.4c.3-1.6 1.4-2.8 3-3.4M15.5 5.2c1.2-.2 2 .2 2.6 1.1" />
   </svg>
 )

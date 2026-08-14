@@ -1,4 +1,4 @@
-import { MeatIcon, OilIcon, WheatIcon } from './Icons'
+import { FishIcon, FruitIcon, WheatIcon } from './Icons'
 import { nisbat, raqam } from '../lib/format'
 import './MacroCards.css'
 
@@ -12,9 +12,9 @@ import './MacroCards.css'
  * to'rtinchisi qatorni siqib qo'yardi. Suv "Batafsil" oynasida qoladi.
  */
 const MAKROLAR = [
-  { key: 'protein', label: 'Qolgan oqsil', Icon: MeatIcon },
+  { key: 'protein', label: 'Qolgan oqsil', Icon: FishIcon },
   { key: 'uglevod', label: 'Qolgan uglevod', Icon: WheatIcon },
-  { key: 'yog', label: "Qolgan yog'lar", Icon: OilIcon },
+  { key: 'yog', label: "Qolgan yog'lar", Icon: FruitIcon },
 ]
 
 function MacroCard({ label, Icon, istemol, limit }) {
