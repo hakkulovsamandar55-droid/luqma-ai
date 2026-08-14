@@ -20,37 +20,46 @@
 
 .day {
   flex: 0 0 auto;
-  width: 56px;
-  padding: 7px 0 9px;
+  width: 48px;
+  padding: 4px 0 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 9px;
-  border-radius: 18px;
-  border: 1.5px solid transparent;
+  gap: 6px;
   color: var(--ink-top);
   scroll-snap-align: center;
-  transition: border-color var(--dur-fast) linear,
-    opacity var(--dur-fast) linear;
+  transition: opacity var(--dur-fast) linear;
 }
 
 .day-name {
   font-size: 14px;
-  font-weight: 400;
+  font-weight: 500;
   line-height: 1;
 }
 
+/* Sana faqat shu qutida — namunadagidek: dumaloq to'rtburchak,
+   faqat FAOL kunda kontur bor. Ism ustida, quti tashqarisida. */
 .day-num {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  border: 1.4px solid transparent;
   font-size: 17px;
-  font-weight: 400;
+  font-weight: 500;
   line-height: 1;
   font-variant-numeric: tabular-nums;
+  transition: border-color var(--dur-fast) linear,
+    background var(--dur-fast) linear;
 }
 
 /* Tanlangan kun — kontur. To'ldirish YO'Q: namunada ham shunday,
    shuning uchun tanlov sezilarli, lekin dog' bo'lib turmaydi. */
-.day.is-selected {
-  border-color: rgba(255, 255, 255, 0.75);
+.day.is-selected .day-num {
+  border-color: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.07);
 }
 
 /* Sana ostidagi nuqta — "bu kunda yozuv bor" degani */
@@ -60,7 +69,7 @@
   height: 4px;
   border-radius: 50%;
   background: var(--ink-top);
-  margin-top: -4px;
+  margin-top: -2px;
 }
 
 /* Bugundan keyingi kunlar hali kelmagan */

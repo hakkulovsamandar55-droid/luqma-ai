@@ -18,7 +18,7 @@ import './ProgressRing.css'
  */
 export default function ProgressRing({ istemol = 0, limit = 2000 }) {
   const VIEW = 200
-  const strokeWidth = 4
+  const strokeWidth = 4.6
   const radius = (VIEW - strokeWidth) / 2
   const circumference = 2 * Math.PI * radius
 

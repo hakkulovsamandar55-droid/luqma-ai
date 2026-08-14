@@ -1,25 +1,25 @@
 /* Ilova nomi — ekranning tepasida, markazda.
 
-   Namunadagidek YENGIL og'irlikda (300) va keng. Qalin sarlavha bu
-   yerda ortiqcha bo'lardi: ekrandagi asosiy element halqa ichidagi
-   raqam, nom esa uni tanishtiradi va orqaga chekinadi. */
+   Namunadagidek QALIN va katta — bosh ekrandagi brend sarlavhasi
+   ("Eda AI" namunada 34px/600). Ingichka vazn bu yerda kuchsiz
+   ko'rinardi, referensda esa nom o'zi vizual langar. */
 .logo {
   display: block;
   width: 100%;
   text-align: center;
   color: var(--ink-top);
   font-family: var(--font);
-  font-weight: 300;
-  letter-spacing: -0.005em;
+  font-weight: 600;
+  letter-spacing: -0.01em;
   user-select: none;
 }
 
 .logo-sm {
-  font-size: 20px;
+  font-size: 22px;
 }
 .logo-md {
-  font-size: 27px;
+  font-size: 32px;
 }
 .logo-lg {
-  font-size: 34px;
+  font-size: 38px;
 }
