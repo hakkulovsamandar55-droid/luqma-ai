@@ -88,12 +88,22 @@ export default function Home({
 
   return (
     <div className="home">
-      {/* Gradientning to'q zonasi: nom, kunlar va halqa */}
-      <header className="home-head">
-        <Logo size="md" />
-      </header>
+      {/* Gradientning to'q zonasi: nom, kunlar va halqa — referensdagi
+          `.top` blokining o'zi. */}
+      <header className="home-top">
+        <div className="home-streaks" aria-hidden="true">
+          <i></i><i></i><i></i><i></i>
+        </div>
 
-      <DayStrip selected={sana} onSelect={onSanaChange} />
+        <Logo size="md" />
+
+        <DayStrip selected={sana} onSelect={onSanaChange} />
+
+        <ProgressRing
+          istemol={summary?.kaloriya?.istemol || 0}
+          limit={summary?.kaloriya?.limit || user?.kunlik_kaloriya_limit || 2000}
+        />
+      </header>
 
       {xato && (
         <div className="home-error">
@@ -105,11 +115,6 @@ export default function Home({
       )}
 
       <div className={`home-body ${yuklanmoqda ? 'is-loading' : ''}`}>
-        <ProgressRing
-          istemol={summary?.kaloriya?.istemol || 0}
-          limit={summary?.kaloriya?.limit || user?.kunlik_kaloriya_limit || 2000}
-        />
-
         <MacroCards summary={summary} />
 
         {bugunmi && <CoachCard tavsiya={tavsiya} onOpen={onOpenChat} />}

@@ -64,12 +64,21 @@ export default function TabBar({ active, onNavigate, onAdd, premium, onPremium }
       {ochiq && <div className="fan-veil" onClick={() => setOchiq(false)} />}
 
       <nav className={`tabbar ${ochiq ? 'is-open' : ''}`}>
+        {/* Referensdagi aynan o'zi: to'lqinsimon panel foni SVG path
+            bilan chizilgan (CSS mask emas), markazda "+" uchun o'yiq.
+            Bizda referensdagi 3 tadan (Asosiy/+/Sozlamalar) ko'proq —
+            5 ta tugma bor, shuning uchun qo'shimcha ikkitasi (AI, Mashq)
+            ikki chetga simmetrik qo'yildi. */}
+        <svg className="tabbar-bg" viewBox="0 0 390 92" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0 30C0 16 11 5 25 5h104c9 0 16 6 19 14 5 16 20 27 37 27s32-11 37-27c3-8 10-14 19-14h104c14 0 25 11 25 25v62H0V30Z" />
+        </svg>
+
         <div className="tabbar-inner">
-          <Tab nom="Asosiy" belgi="home" Icon={HomeIcon} />
           <Tab nom="AI" belgi="chat" Icon={AiIcon} />
+          <Tab nom="Asosiy" belgi="home" Icon={HomeIcon} />
           <div className="tab-add-slot" aria-hidden="true" />
-          <Tab nom="Mashq" belgi="mashq" Icon={RunIcon} />
           <Tab nom="Sozlamalar" belgi="settings" Icon={GearIcon} />
+          <Tab nom="Mashq" belgi="mashq" Icon={RunIcon} />
         </div>
 
         <div className="fan">
@@ -106,7 +115,7 @@ export default function TabBar({ active, onNavigate, onAdd, premium, onPremium }
           aria-label={ochiq ? 'Yopish' : "Ovqat qo'shish"}
           aria-expanded={ochiq}
         >
-          <PlusIcon size={28} />
+          <PlusIcon size={32} />
         </button>
       </nav>
     </>

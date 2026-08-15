@@ -1,33 +1,21 @@
 /* Kun tanlagich — gradientning to'q zonasida, shuning uchun oq matn.
 
-   Namunadagi tuzilish: tepada kun nomi, ostida sana. Tanlangan kun
-   yumaloq to'rtburchak kontur ichida, sana ostida kichik nuqta bor.
-   Kelajakdagi kunlar so'nik. */
+   Referensdagi aynan o'zi: joriy haftaning 6 kuni (Dush-Shan) doim
+   ko'rinadi, skroll yo'q. Tepada kun nomi, ostida sana o'z qutisida —
+   tanlangan kun kontur bilan, sana ostida kichik nuqta bor. */
 .daystrip {
-  display: flex;
-  gap: 2px;
-  overflow-x: auto;
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
-  scroll-snap-type: x proximity;
-  margin: 2px -20px 0;
-  padding: 0 20px;
-}
-
-.daystrip::-webkit-scrollbar {
-  display: none;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  margin-top: 16px;
 }
 
 .day {
-  flex: 0 0 auto;
-  width: 48px;
   padding: 4px 0 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 6px;
   color: var(--ink-top);
-  scroll-snap-align: center;
   transition: opacity var(--dur-fast) linear;
 }
 

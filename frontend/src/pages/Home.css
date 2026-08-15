@@ -10,9 +10,43 @@
   min-height: 100%;
 }
 
-.home-head {
-  padding: 6px 0 10px;
+/* Referensdagi `.top` bloki: nom + kunlar + halqa, o'zining
+   gradientida. `.app` ning tepa/yon paddingidan chiqib, ekran
+   chetiga qadar cho'ziladi ("bleed") — pastroqdagi qism esa
+   `.app` ning odatiy paddingida qoladi. */
+.home-top {
+  position: relative;
+  margin: calc(-1 * (var(--safe-top) + 8px)) -20px 0;
+  padding: calc(var(--safe-top) + 14px) 20px 4px;
+  background: linear-gradient(
+    180deg,
+    var(--top-1) 0%,
+    var(--top-2) 26%,
+    var(--top-3) 54%,
+    var(--top-4) 72%,
+    var(--bg) 92%
+  );
+  overflow: hidden;
   animation: fade-up var(--dur) var(--ease-out) both;
+}
+
+/* Orqa fondagi ingichka vertikal chiziqlar — sof bezak */
+.home-streaks {
+  position: absolute;
+  top: 64px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 22px;
+  opacity: 0.14;
+  pointer-events: none;
+}
+
+.home-streaks i {
+  width: 2px;
+  height: 150px;
+  background: linear-gradient(180deg, #fff, transparent);
+  display: block;
 }
 
 .home-body {

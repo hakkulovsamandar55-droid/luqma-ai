@@ -1,39 +1,33 @@
-/* Pastki panel.
-
-   Namunadagi tuzilish: oq panel, markazida yarim doira o'yiq, o'yiqda
-   katta qora "+" tugmasi suzib turadi. Ikonkalar kontur, faol
-   bo'lganda to'q, aks holda so'nik.
-
-   O'yiq CSS mask bilan qilingan (radial-gradient) — SVG yoki rasm
-   ishlatilmagan, shuning uchun panel har qanday kenglikka moslashadi. */
+/* Pastki panel — referensdagi aynan o'zi: to'lqinsimon panel foni SVG
+   path bilan chizilgan, markazida katta qora "+" tugmasi suzib turadi.
+   Ikonkalar kontur, faol bo'lganda to'q, aks holda so'nik. */
 .tabbar {
   position: fixed;
   left: 0;
   right: 0;
   bottom: 0;
   z-index: 40;
-  padding-bottom: var(--safe-bottom);
+  max-width: 440px;
+  margin: 0 auto;
+  height: calc(var(--tabbar-h) + var(--safe-bottom));
   pointer-events: none;
+}
+
+.tabbar-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  fill: var(--bar-bg);
+  filter: var(--bar-shadow);
 }
 
 .tabbar-inner {
   position: relative;
-  max-width: 440px;
-  margin: 0 auto;
   height: var(--tabbar-h);
   display: flex;
   align-items: center;
   pointer-events: auto;
-  background: var(--bar-bg);
-  /* Markazdagi o'yiq: doira shaklidagi "teshik" */
-  -webkit-mask: radial-gradient(
-      circle 40px at 50% 0,
-      transparent 39px,
-      #000 40px
-    )
-    50% 0 / 100% 100% no-repeat;
-  mask: radial-gradient(circle 40px at 50% 0, transparent 39px, #000 40px) 50% 0 /
-    100% 100% no-repeat;
 }
 
 /* --- Oddiy bo'limlar --- */
@@ -78,10 +72,10 @@
 .tab-add {
   position: absolute;
   left: 50%;
-  bottom: calc(var(--safe-bottom) + 22px);
+  top: -4px;
   transform: translateX(-50%);
-  width: 66px;
-  height: 66px;
+  width: 78px;
+  height: 78px;
   border-radius: 50%;
   background: var(--accent);
   color: var(--on-accent);
@@ -89,7 +83,7 @@
   align-items: center;
   justify-content: center;
   pointer-events: auto;
-  box-shadow: 0 8px 22px -8px rgba(30, 26, 40, 0.55);
+  box-shadow: 0 10px 24px -6px rgba(30, 26, 40, 0.5);
   transition: transform var(--dur-fast) var(--ease-out);
 }
 

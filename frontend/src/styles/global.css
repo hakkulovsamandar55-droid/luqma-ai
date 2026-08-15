@@ -42,11 +42,16 @@
    ========================================================================== */
 
 :root {
-  /* --- Sirtlar: pastdan yuqoriga yorishadi --- */
+  /* --- Sirtlar --- */
   --bg: #12161c;
-  --bg-top: #1b2430;
-  --bg-mid: #151a21;
-  --bg-bottom: #10141a;
+
+  /* Bosh ekrandagi tepa blok (.home-top) gradienti — referensdagi
+     --top-1/2/3 xuddi shu nomlar bilan. To'rt bosqich: to'qdan
+     boshlab, sahifa foniga (--bg) erib tugaydi. */
+  --top-1: #22262d;
+  --top-2: #1c2029;
+  --top-3: #171b22;
+  --top-4: #14181e;
   --surface: #1c2229;
   --surface-2: #262a2d;
   --surface-3: #2f3438;
@@ -92,6 +97,7 @@
   /* Pastki panel foni — blur ostidan ko'rinadigan rang */
   --bar-bg: rgba(18, 22, 28, 0.94);
   --bar-edge: rgba(255, 255, 255, 0.16);
+  --bar-shadow: drop-shadow(0 -4px 14px rgba(0, 0, 0, 0.3));
 
   /* Tepa zonadagi matn oddiy matn rangini oladi (fon bir xil ochlikda). */
   --ink-top: var(--ink);
@@ -207,35 +213,19 @@ html {
   margin: 0;
   padding: 0;
   min-height: 100%;
-  background: var(--bg-bottom);
+  background: var(--bg);
 }
 
-/* Gradient alohida qatlamda: body ga qo'yilsa u cho'zilganda rang
-   pastda uzilib qolardi. */
-html::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background: linear-gradient(
-    180deg,
-    var(--bg-top) 0%,
-    var(--bg-mid, var(--bg-bottom)) 26%,
-    var(--bg-bottom) 50%
-  );
-  z-index: -1;
-  pointer-events: none;
-}
-
+/* Gradient endi butun sahifaning fon qatlami emas — faqat bosh
+   ekrandagi `.home-top` blokining o'zi (referensdagidek: sarlavha,
+   kunlar va halqa shu blok ichida, pastroqda sahifa oddiy tekis
+   fonga o'tadi). Qarang: Home.css */
 body {
   margin: 0;
   padding: 0;
   min-height: 100%;
-  /* Fon html da — bu yerda shaffof qoladi, aks holda body o'z fonini
-     gradient qatlami ustiga chizadi va gradient ko'rinmaydi. */
-  background: transparent;
+  background: var(--bg);
 }
-
-
 
 body {
   color: var(--ink);
@@ -341,13 +331,14 @@ textarea {
    shuning uchun to'qroq oltin ishlatiladi.
    ========================================================================== */
 html[data-theme='light'] {
-  /* Namuna dizayndagi kalit yechim: ekran bitta uzun gradient.
-     TEPASI to'q (kulrang-binafsha), PASTI och kulrang. Shuning uchun
-     yuqoridagi matn oq, pastdagisi qora — bu ikki xil tema emas,
-     bitta sahifaning ikki zonasi. */
-  --bg-top: #6a6470;
-  --bg-mid: #d6d3da;
-  --bg-bottom: #eeedf0;
+  /* Referensning aynan o'zi: --top-1/2/3/4 to'rt bosqichli gradient,
+     kulrang-binafshadan sahifa foniga (--bg) erib tugaydi. Faqat
+     `.home-top` blokida ishlatiladi — shuning uchun yuqoridagi matn
+     oq, sahifaning qolgan qismi esa qora matnli oq fonda. */
+  --top-1: #565060;
+  --top-2: #6b6672;
+  --top-3: #a8a5ac;
+  --top-4: #d9d8db;
   --bg: #eeedf0;
 
   --surface: #ffffff;
@@ -392,6 +383,7 @@ html[data-theme='light'] {
   --card-shadow: 0 6px 18px -8px rgba(30, 26, 40, 0.18);
   --bar-bg: #ffffff;
   --bar-edge: rgba(30, 26, 40, 0.08);
+  --bar-shadow: drop-shadow(0 -4px 14px rgba(30, 25, 35, 0.06));
 
   --fresh: var(--accent);
   --fresh-soft: var(--accent-soft);

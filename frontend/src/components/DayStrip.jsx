@@ -1,54 +1,41 @@
-import { useEffect, useMemo, useRef } from 'react'
+import { useMemo } from 'react'
 import { KUN_QISQA, birXilKun } from '../lib/format'
 import { haptic } from '../lib/telegram'
 import './DayStrip.css'
 
 /**
- * Gorizontal kun-tanlagich.
- *
- * Orqaga `kunlar` kun va oldinga `oldinga` kun ko'rsatiladi. Kelajakdagi
- * kunlar so'nik: ular hali kelmagan, lekin ko'rinib turgani yaxshi —
- * shunda tasma "kesilgan" bo'lib qolmaydi.
+ * Haftalik kun-tanlagich — referensdagi aynan o'zi: joriy haftaning
+ * Dushanba-Shanba kunlari (6 ustun, Yakshanba yo'q), skroll qilinmaydi.
  */
-export default function DayStrip({ selected, onSelect, kunlar = 14, oldinga = 3 }) {
-  const scrollerRef = useRef(null)
-  const activeRef = useRef(null)
-
+export default function DayStrip({ selected, onSelect }) {
   const bugun = useMemo(() => new Date(), [])
 
   const sanalar = useMemo(() => {
+    const dushanba = new Date(bugun)
+    const surilish = (bugun.getDay() + 6) % 7 // Dushanbagacha orqaga
+    dushanba.setDate(bugun.getDate() - surilish)
+
     const list = []
-    for (let i = kunlar - 1; i >= -oldinga; i--) {
-      const d = new Date(bugun)
-      d.setDate(d.getDate() - i)
+    for (let i = 0; i < 6; i++) {
+      const d = new Date(dushanba)
+      d.setDate(dushanba.getDate() + i)
       list.push(d)
     }
     return list
-  }, [bugun, kunlar, oldinga])
-
-  // Tanlangan kunni ko'rinish maydoniga suramiz.
-  useEffect(() => {
-    activeRef.current?.scrollIntoView({
-      behavior: 'smooth',
-      inline: 'center',
-      block: 'nearest',
-    })
-  }, [selected])
+  }, [bugun])
 
   return (
-    <div className="daystrip" ref={scrollerRef}>
+    <div className="daystrip">
       {sanalar.map((d) => {
         const tanlangan = birXilKun(d, selected)
         const shuBugun = birXilKun(d, bugun)
-        // Kelajak: bugundan keyingi kun (soatlarni hisobga olmasdan)
         const kelajak = d > bugun && !shuBugun
         return (
           <button
             key={d.toISOString()}
-            ref={tanlangan ? activeRef : null}
             className={`day ${tanlangan ? 'is-selected' : ''} ${
-              shuBugun ? 'is-today' : ''
-            } ${kelajak ? 'is-future' : ''}`}
+              kelajak ? 'is-future' : ''
+            }`}
             onClick={() => {
               if (kelajak) return
               haptic('select')
