@@ -14,11 +14,11 @@ import { haptic } from '../lib/telegram'
 import './TabBar.css'
 
 /**
- * Pastki panel: Asosiy | AI | + | Mashq | Sozlamalar.
+ * Pastki panel: Asosiy | Mashq | + | AI | Sozlamalar.
  *
  * DIQQAT: "+" tugmasi va yoyiluvchi menyu `.tabbar-inner` DAN TASHQARIDA
- * turadi. Sabab: o'yiq CSS mask bilan qilingan, mask esa ichidagi
- * hamma narsani qirqadi — tugma panel tepasiga chiqa olmasdi.
+ * turadi — svg fon boshqa qatlamda, bu esa tugmani panel tepasiga
+ * chiqishiga (notch ustiga suzishiga) imkon beradi.
  */
 const YOYILUVCHILAR = [
   { key: 'kamera', label: 'Kamera', Icon: CameraIcon },
@@ -74,11 +74,11 @@ export default function TabBar({ active, onNavigate, onAdd, premium, onPremium }
         </svg>
 
         <div className="tabbar-inner">
-          <Tab nom="AI" belgi="chat" Icon={AiIcon} />
           <Tab nom="Asosiy" belgi="home" Icon={HomeIcon} />
-          <div className="tab-add-slot" aria-hidden="true" />
-          <Tab nom="Sozlamalar" belgi="settings" Icon={GearIcon} />
           <Tab nom="Mashq" belgi="mashq" Icon={RunIcon} />
+          <div className="tab-add-slot" aria-hidden="true" />
+          <Tab nom="AI" belgi="chat" Icon={AiIcon} />
+          <Tab nom="Sozlamalar" belgi="settings" Icon={GearIcon} />
         </div>
 
         <div className="fan">
