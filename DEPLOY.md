@@ -477,3 +477,227 @@ docker compose logs -f backend        # loglar
 docker compose restart backend        # qayta ishga tushirish
 docker compose down                   # to'xtatish
 ```
+
+
+---
+
+## Zaxira nusxa (backup)
+
+SQLite bitta fayl — server o'chsa yoki disk buzilsa hamma foydalanuvchi
+ma'lumoti yo'qoladi. Kunlik nusxa olishni sozlang:
+
+```bash
+crontab -e
+# Har kuni soat 03:00 da:
+0 3 * * * /opt/luqma-ai/scripts/backup.sh >> /var/log/luqma-backup.log 2>&1
+```
+
+Skript `backups/` papkasiga `.db.gz` nusxa yozadi va 14 kundan eskisini
+o'chiradi. Muddatni `LUQMA_BACKUP_DAYS` bilan o'zgartirasiz.
+
+Nusxadan tiklash:
+
+```bash
+docker compose stop backend
+gunzip -c backups/luqma-20260806-030000.db.gz > data/luqma.db
+docker compose start backend
+```
+
+**Muhim:** nusxalarni boshqa joyga ham ko'chiring (masalan `rclone` bilan
+bulutga). Bitta serverda turgan nusxa server yo'qolsa birga yo'qoladi.
+
+## Vaqt zonasi
+
+`.env` da `TZ=Asia/Tashkent`. Busiz konteyner UTC da ishlaydi va kun soat
+05:00 da yangilanadi — yarim tundan keyin yegan ovqat kechagi kunga yoziladi.
+
+Tekshirish:
+
+```bash
+docker compose exec backend date
+```
+
+## Kunlik chegaralar
+
+Har AI chaqiruvi OpenAI hisobidan pul yechadi. `.env` da:
+
+```
+TAHLIL_KUNLIK_LIMIT=30   # rasm va matn tahlili
+CHAT_KUNLIK_LIMIT=30     # murabbiy savollari
+```
+
+Chegaraga yetgan foydalanuvchi 429 va tushunarli xabar oladi.
+
+## Admin panel
+
+Birinchi admin `.env` orqali beriladi — bazadan emas, aks holda hech kim
+panelga kira olmasdi:
+
+```
+ADMIN_IDS=123456789
+```
+
+Bu "asosiy admin". Uni panel orqali bloklab yoki adminlikdan chiqarib
+bo'lmaydi — shuning uchun adminlar bir-birini o'chirib, hamma kirishdan
+mahrum bo'lib qolmaydi.
+
+Keyin ilovada: Sozlamalar → **Admin panel**. U yerda:
+
+- **Statistika** — foydalanuvchilar, faollik, premium, bugungi AI xarajati
+- **Foydalanuvchilar** — ism, username yoki Telegram ID bo'yicha qidiruv,
+  premium/admin/bloklangan filtri
+- **Har bir foydalanuvchi ustida** — premium berish (30/90/365 kun yoki
+  muddatsiz), admin tayinlash, bloklash
+
+Admin tugmasi faqat adminlarga ko'rinadi, lekin bu shunchaki UI: backend
+har so'rovda huquqni qayta tekshiradi.
+
+**Premium** kunlik AI chegarasini kengaytiradi (default 30 → 200). To'lov
+tizimi hali yo'q — premium qo'lda beriladi.
+
+**Bloklangan** foydalanuvchi hech qaysi endpointdan foydalana olmaydi:
+tekshiruv autentifikatsiya bosqichida, shuning uchun yangi endpoint
+qo'shilganda ham unutilmaydi.
+
+## Bot buyruqlari
+
+`.env` da o'z Telegram ID ingizni yozing (bir nechta bo'lsa vergul bilan):
+
+```
+ADMIN_IDS=123456789
+```
+
+Keyin botda:
+
+- `/stat` — foydalanuvchilar soni, bugungi faollik
+- `/xabar Matn` — hamma foydalanuvchiga xabar yuborish
+
+Admin bo'lmagan odam bu buyruqlarni yozsa, bot javob bermaydi.
+
+## Rasmlarni tozalash
+
+Rasmlar `RASM_SAQLASH_KUNI` (default 60) kundan keyin avtomatik o'chiriladi.
+Ovqat yozuvi qoladi, faqat rasm yo'qoladi. `0` qo'ysangiz tozalash o'chadi —
+bu holda disk to'lishini o'zingiz kuzatishingiz kerak.
+
+
+## Baza migratsiyasi
+
+Yangi versiyada `users` jadvaliga ustunlar qo'shildi (is_admin, is_premium,
+is_blocked va h.k.). Ishlab turgan bazada bu ustunlar yo'q edi.
+
+Alohida ish qilish shart emas — ilova ishga tushganda yetishmagan ustunlarni
+o'zi qo'shadi (`db.py` dagi `_yetishmagan_ustunlarni_qosh`). Mavjud
+ma'lumot saqlanib qoladi.
+
+Baribir yangilashdan oldin zaxira oling:
+
+```bash
+bash scripts/backup.sh
+docker compose up -d --build
+docker compose logs -f backend   # xato yo'qligini tekshiring
+```
+
+
+## Premium va to'lov
+
+### Sozlash
+
+Admin panel → **To'lovlar**. Avval ikki narsa kerak:
+
+1. **Karta rekvizitlari** — karta raqami va egasining ismi. Ikkalasi ham
+   chekni tekshirishda ishlatiladi.
+2. **Tariflar** — nom, kun, narx. Admin paneldan qo'shiladi va tahrirlanadi.
+
+### Chek qanday tekshiriladi
+
+Foydalanuvchi pul o'tkazadi va chek rasmini yuboradi. AI rasmdagi barcha
+matnni o'qiydi, keyin quyidagilar solishtiriladi:
+
+| Nima | Qanday |
+|------|--------|
+| Karta | Oxirgi 4 raqam (chekda ko'pincha `8600 **** **** 1234` bo'ladi) |
+| Karta ko'rinmasa | Qabul qiluvchi ismi bo'yicha (bitta so'z mos kelsa yetarli) |
+| Summa | Tarif narxi, ±1000 so'm farq bilan |
+| Sana | `CHEK_AMAL_KUNI` (default 3) kun ichida, kelajakda emas |
+| Takror | Rasm hash'i va tranzaksiya ID ilgari ishlatilganmi |
+
+Hammasi mos kelsa **premium darhol ishga tushadi** va admin qaroriga qadar
+amal qiladi (muddat qo'yilmaydi). Ariza esa "kutilmoqda" holatida qoladi.
+
+Admin **tasdiqlasa** — tarif muddati shu paytdan boshlanadi. Agar premium
+allaqachon bor bo'lsa, qolgan muddat ustiga qo'shiladi.
+
+Admin **rad etsa** — avtomatik berilgan premium olib qo'yiladi. Qo'lda
+berilgan premiumga tegilmaydi.
+
+### Nima uchun admin baribir tekshiradi
+
+Avtomatik tekshiruv pul kelganini **isbotlamaydi**. Chekni tahrirlash,
+birovning chekini yuborish yoki soxta rasm yasash mumkin. Algoritm faqat
+arizani tez qabul qilish uchun — oxirgi qaror adminda.
+
+Shuning uchun admin panelida chek rasmi va AI o'qigan xom matn to'liq
+ko'rsatiladi: admin o'z ko'zi bilan tekshira oladi.
+
+Bank hisobingizni vaqti-vaqti bilan solishtirib turing.
+
+
+---
+
+## Mashq bo'limi
+
+Mashqlar admin paneldan boshqariladi. Video ilova ichida saqlanmaydi —
+faqat havola turadi (`video_url`). Shuning uchun:
+
+- ilova hajmi kichik qoladi
+- video almashtirilsa kod o'zgarmaydi
+- keyinchalik boshqa saqlashga ko'chirish oson
+
+### MVP uchun video saqlash
+
+Google Drive yetarli. Video yuklab, "havola orqali ko'rish" ruxsatini
+bering va to'g'ridan-to'g'ri havolani `video_url` ga yozing.
+
+**Muhim:** faqat o'zingiz suratga olgan yoki tarqatishga ruxsati bor
+videolarni ishlating. Internetdan olingan begona mashq videolarini
+tarqatish mualliflik huquqini buzadi.
+
+Foydalanuvchi soni o'sganda va Drive trafigi yetmay qolganda, video
+saqlashni obyekt saqlash/CDN ga ko'chiring — kodda faqat havolalar
+o'zgaradi.
+
+## Mahalliy ovqat bazasi
+
+`food_seed.py` da 66 ta ko'p ishlatiladigan taom bor (osh, manti, somsa,
+lag'mon va h.k.) — kaloriya va BJU bilan.
+
+Baza **bo'sh bo'lsagina** to'ldiriladi, shuning uchun admin o'zgartirgan
+qiymatlar ustidan yozilmaydi.
+
+Nima uchun muhim: har "osh" uchun AI chaqirish pul turadi va sekin
+ishlaydi. Bazadan qidiruv bir zumda javob beradi, **premium talab
+qilmaydi** va AI faqat notanish taomlar uchun kerak bo'ladi. Bu ham
+xarajatni, ham kutish vaqtini kamaytiradi.
+
+Yangi taom qo'shish: admin panel yoki to'g'ridan-to'g'ri `food_items`
+jadvaliga.
+
+## Eslatmalar
+
+Foydalanuvchi ilovada eslatma vaqtini sozlaydi, bot uni o'z vaqtida
+yuboradi. Eslatmalar **serverda** ishlaydi — foydalanuvchi ilovani
+ochmasa ham keladi va telefon sozlamalariga bog'liq emas.
+
+## Offline haqida — muhim cheklov
+
+Luqma AI Telegram Mini App. Ilova serverdan yuklanadigan veb-sahifa,
+shuning uchun **internet umuman bo'lmasa ilova ochilmaydi** — Telegram
+uni yuklay olmaydi.
+
+Ya'ni "internetsiz ovqat qo'shish" hozirgi shaklda mumkin emas. Buning
+uchun native ilova (APK) yoki PWA kerak, va u alohida mahsulot qarori.
+
+Hozir ishlaydigan narsa: **uzilib turadigan aloqa**. GET so'rovlar
+avtomatik qayta uriniladi, mahalliy ovqat bazasi tez javob beradi va
+seans o'rtasida aloqa yo'qolsa ilova xato bilan qulab tushmaydi.

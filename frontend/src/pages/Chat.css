@@ -1,0 +1,179 @@
+.chat {
+  position: fixed;
+  inset: 0;
+  max-width: 440px;
+  margin: 0 auto;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  z-index: 60;
+}
+
+/* --- Sarlavha ------------------------------------------------------------ */
+.chat-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: calc(var(--safe-top) + 14px) 20px 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+.chat-back {
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: -8px;
+  color: var(--ink);
+}
+
+.chat-head h1 {
+  font-family: var(--font-head);
+  font-size: 17px;
+  font-weight: var(--w-head);
+  letter-spacing: -0.1px;
+  margin: 0;
+}
+
+.chat-head p {
+  font-size: 12px;
+  color: var(--ink-3);
+  margin: -1px 0 0;
+}
+
+/* --- Xabarlar ------------------------------------------------------------ */
+.chat-msgs {
+  flex: 1;
+  overflow-y: auto;
+  padding: 18px 20px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.msg {
+  max-width: 82%;
+  padding: 11px 15px;
+  font-size: var(--t-body);
+  line-height: 1.45;
+  border-radius: 19px;
+  white-space: pre-wrap;
+  animation: fade-up 0.26s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.msg.is-ai {
+  align-self: flex-start;
+  background: var(--surface);
+  border-bottom-left-radius: 6px;
+}
+
+.msg.is-me {
+  align-self: flex-end;
+  /* Xabar — kontent, harakat emas. Shuning uchun to'q, oltin emas.
+     Oltin faqat yuborish tugmasida (u harakat). */
+  background: var(--ink);
+  color: var(--surface);
+  border-bottom-right-radius: 6px;
+}
+
+.msg-dots {
+  align-self: flex-start;
+  background: var(--surface);
+  padding: 14px 17px;
+  border-radius: 19px;
+  border-bottom-left-radius: 6px;
+  display: flex;
+  gap: 4px;
+}
+
+.msg-dots i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ink-3);
+  animation: pulse-soft 1.3s infinite;
+}
+
+.msg-dots i:nth-child(2) {
+  animation-delay: 0.18s;
+}
+
+.msg-dots i:nth-child(3) {
+  animation-delay: 0.36s;
+}
+
+.chat-error {
+  align-self: center;
+  font-size: var(--t-sub);
+  color: var(--over);
+  background: var(--over-soft);
+  padding: 9px 14px;
+  border-radius: 12px;
+}
+
+/* --- Tayyor savollar ----------------------------------------------------- */
+.chat-chips {
+  display: flex;
+  gap: 8px;
+  padding: 4px 20px 10px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.chat-chips::-webkit-scrollbar {
+  display: none;
+}
+
+.chip {
+  flex: none;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: 9px 15px;
+  border-radius: 99px;
+  font-size: 13.5px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.chip:active {
+  background: var(--surface-2);
+}
+
+/* --- Yozish maydoni ------------------------------------------------------ */
+.chat-compose {
+  display: flex;
+  gap: 9px;
+  align-items: flex-end;
+  padding: 10px 20px calc(12px + var(--safe-bottom));
+  border-top: 1px solid var(--line);
+  background: var(--bg);
+}
+
+.chat-compose textarea {
+  flex: 1;
+  background: var(--surface);
+  border: none;
+  outline: none;
+  border-radius: 21px;
+  padding: 11px 16px;
+  max-height: 104px;
+  resize: none;
+  line-height: 1.4;
+}
+
+.chat-send {
+  flex: none;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--btn);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.15s ease;
+}
+
+.chat-send:disabled {
+  opacity: 0.3;
+}

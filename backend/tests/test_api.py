@@ -1,9 +1,23 @@
 """API endpointlari uchun end-to-end testlar (AI mock qilingan)."""
 
 import io
-from datetime import date, timedelta
+from datetime import timedelta
 
 import pytest
+
+import timeutil
+
+from db import SessionLocal
+from models import User as _User
+
+
+async def _premium_qil(client):
+    """Tahlil endpointlari premium talab qiladi — testda uni yoqamiz."""
+    me = (await client.get("/api/user/me")).json()
+    async with SessionLocal() as session:
+        u = await session.get(_User, me["id"])
+        u.is_premium = True
+        await session.commit()
 
 import vision
 from schemas import MealAnalysis
@@ -75,7 +89,7 @@ async def test_notogri_qiymat_422(client):
 
 
 async def test_ovqat_saqlash_va_royxat(client):
-    bugun = date.today().isoformat()
+    bugun = timeutil.bugun().isoformat()
     r = await client.post(
         "/api/meals",
         json={
@@ -91,7 +105,7 @@ async def test_ovqat_saqlash_va_royxat(client):
     assert len(lst.json()) == 1
 
     # Boshqa kunda bo'sh
-    ertaga = (date.today() + timedelta(days=1)).isoformat()
+    ertaga = (timeutil.bugun() + timedelta(days=1)).isoformat()
     assert (await client.get(f"/api/meals?date={ertaga}")).json() == []
 
     upd = await client.put(
@@ -139,7 +153,7 @@ async def test_kunlik_summary(client):
 
 
 async def test_haftalik_statistika(client):
-    bugun = date.today()
+    bugun = timeutil.bugun()
     for i, kcal in enumerate([500, 800, 1200]):
         await client.post(
             "/api/meals",
@@ -155,7 +169,7 @@ async def test_haftalik_statistika(client):
 
 
 async def test_streak_uzilganda_qayta_boshlanadi(client):
-    bugun = date.today()
+    bugun = timeutil.bugun()
     for kun in (0, 1, 4):  # 2 va 3-kunlar tashlab ketilgan
         await client.post(
             "/api/meals",
@@ -174,7 +188,7 @@ async def test_suv_hisoblagichi(client):
 
 
 async def test_vazn_tarixi(client):
-    bugun = date.today()
+    bugun = timeutil.bugun()
     await client.post("/api/weight", json={"vazn_kg": 82.5, "sana": (bugun - timedelta(days=2)).isoformat()})
     await client.post("/api/weight", json={"vazn_kg": 81.0})
     # Bir kunda ikkinchi marta — yangilanadi, dublikat yaratmaydi
@@ -198,6 +212,7 @@ async def test_sevimli_taomlar(client):
 
 
 async def test_rasm_tahlili(client, monkeypatch):
+    await _premium_qil(client)
     async def fake(image_bytes, mime="image/jpeg"):
         assert image_bytes  # rasm haqiqatan yetib keldi
         return MealAnalysis(
@@ -217,6 +232,7 @@ async def test_rasm_tahlili(client, monkeypatch):
 
 
 async def test_rasm_bolmagan_fayl_rad_etiladi(client):
+    await _premium_qil(client)
     r = await client.post(
         "/api/meals/analyze",
         files={"rasm": ("virus.exe", io.BytesIO(b"MZ"), "application/octet-stream")},
@@ -225,6 +241,7 @@ async def test_rasm_bolmagan_fayl_rad_etiladi(client):
 
 
 async def test_ai_xatosi_502_qaytaradi(client, monkeypatch):
+    await _premium_qil(client)
     async def fail(*a, **kw):
         raise vision.VisionError("OpenAI javob bermadi")
 
@@ -237,6 +254,7 @@ async def test_ai_xatosi_502_qaytaradi(client, monkeypatch):
 
 
 async def test_matn_tahlili(client, monkeypatch):
+    await _premium_qil(client)
     async def fake(matn):
         assert matn == "150g osh"
         return MealAnalysis(

@@ -3,6 +3,7 @@ import Sheet from '../components/Sheet'
 import {
   CameraIcon,
   CheckIcon,
+  CloseIcon,
   GalleryIcon,
   PencilIcon,
   SparkIcon,
@@ -12,7 +13,13 @@ import { api, toApiDate } from '../lib/api'
 import { haptic, showAlert } from '../lib/telegram'
 import './AddMeal.css'
 
-const BOSQICH = { TANLASH: 'tanlash', MATN: 'matn', YUKLASH: 'yuklash', NATIJA: 'natija' }
+const BOSQICH = {
+  TANLASH: 'tanlash',
+  MATN: 'matn',
+  QIDIRUV: 'qidiruv',
+  YUKLASH: 'yuklash',
+  NATIJA: 'natija',
+}
 
 /** AI tahlil qilayotgan paytdagi holat. */
 function Loading({ rasmUrl }) {
@@ -94,9 +101,12 @@ function NumField({ label, value, onChange, unit, tur }) {
   )
 }
 
-export default function AddMeal({ open, onClose, onSaved, sana }) {
+export default function AddMeal({ open, usul, onClose, onSaved, sana }) {
   const [bosqich, setBosqich] = useState(BOSQICH.TANLASH)
   const [natija, setNatija] = useState(null)
+  const [qidiruv, setQidiruv] = useState('')
+  const [topilgan, setTopilgan] = useState([])
+  const [qidirilmoqda, setQidirilmoqda] = useState(false)
   const [rasmUrl, setRasmUrl] = useState(null)
   const [matn, setMatn] = useState('')
   const [saqlanmoqda, setSaqlanmoqda] = useState(false)
@@ -120,8 +130,26 @@ export default function AddMeal({ open, onClose, onSaved, sana }) {
       if (oldingi) URL.revokeObjectURL(oldingi)
       return null
     })
-    api.getFavorites().then(setFavorites).catch(() => {})
+    api
+      .getFavorites()
+      .then((r) => setFavorites(Array.isArray(r) ? r : []))
+      .catch(() => {})
   }, [open])
+
+  // Pastki paneldagi yoyiluvchi menyu usulni allaqachon tanlagan —
+  // tanlash bosqichini takrorlamaymiz va to'g'ridan-to'g'ri o'tamiz.
+  useEffect(() => {
+    if (!open || !usul) return
+    if (usul === 'matn') {
+      setBosqich(BOSQICH.MATN)
+    } else if (usul === 'qidiruv') {
+      setBosqich(BOSQICH.QIDIRUV)
+    } else if (usul === 'kamera') {
+      cameraRef.current?.click()
+    } else if (usul === 'galereya') {
+      galleryRef.current?.click()
+    }
+  }, [open, usul])
 
   // Sheet yopilganda blob URL ni bo'shatamiz.
   useEffect(() => () => rasmUrl && URL.revokeObjectURL(rasmUrl), [rasmUrl])
@@ -159,6 +187,37 @@ export default function AddMeal({ open, onClose, onSaved, sana }) {
       showAlert(e.message)
       setBosqich(BOSQICH.MATN)
     }
+  }
+
+  // Bazadan qidirish — AI chaqirilmaydi, shuning uchun tez va bepul.
+  useEffect(() => {
+    if (bosqich !== BOSQICH.QIDIRUV) return undefined
+
+    setQidirilmoqda(true)
+    const t = setTimeout(() => {
+      api
+        .searchFoods(qidiruv)
+        .then((r) => setTopilgan(Array.isArray(r) ? r : []))
+        .catch(() => setTopilgan([]))
+        .finally(() => setQidirilmoqda(false))
+    }, qidiruv ? 280 : 0)
+
+    return () => clearTimeout(t)
+  }, [bosqich, qidiruv])
+
+  function bazadanQosh(f) {
+    haptic('light')
+    setNatija({
+      taom_nomi: f.nom,
+      ulush: f.ulush,
+      kaloriya: f.kaloriya,
+      protein_g: f.protein_g,
+      yog_g: f.yog_g,
+      uglevod_g: f.uglevod_g,
+      rasm_yoli: null,
+      manba: 'database',
+    })
+    setBosqich(BOSQICH.NATIJA)
   }
 
   function favoritdanQosh(fav) {
@@ -224,6 +283,7 @@ export default function AddMeal({ open, onClose, onSaved, sana }) {
   const sarlavha = {
     [BOSQICH.TANLASH]: "Ovqat qo'shish",
     [BOSQICH.MATN]: 'Qo\'lda kiritish',
+    [BOSQICH.QIDIRUV]: 'Ovqat qidirish',
     [BOSQICH.YUKLASH]: 'Tahlil qilinmoqda',
     [BOSQICH.NATIJA]: 'Natijani tekshiring',
   }[bosqich]
@@ -239,6 +299,61 @@ export default function AddMeal({ open, onClose, onSaved, sana }) {
           </>
         )}
       </button>
+    ) : bosqich === BOSQICH.QIDIRUV ? (
+      <div className="search">
+        {/* Tozalash tugmasi o'zimizniki. Brauzerning ichki
+            (-webkit-search-cancel-button) tugmasi Chrome da KO'K "✕" bo'lib
+            chiqadi va ilova palitrasiga umuman mos kelmaydi — u CSS da
+            o'chirilgan. */}
+        <div className="search-box">
+          <input
+            className="search-input"
+            type="search"
+            autoFocus
+            placeholder="Masalan: osh, somsa, tuxum"
+            value={qidiruv}
+            onChange={(e) => setQidiruv(e.target.value)}
+          />
+          {qidiruv && (
+            <button
+              className="search-clear"
+              onClick={() => setQidiruv('')}
+              aria-label="Tozalash"
+            >
+              <CloseIcon size={15} />
+            </button>
+          )}
+        </div>
+
+        {qidirilmoqda && topilgan.length === 0 ? (
+          <p className="search-bosh">Qidirilmoqda…</p>
+        ) : topilgan.length === 0 ? (
+          <div className="search-bosh">
+            <p>Bazadan topilmadi.</p>
+            <button
+              className="btn btn-soft"
+              onClick={() => setBosqich(BOSQICH.MATN)}
+            >
+              AI bilan tahlil qilish
+            </button>
+          </div>
+        ) : (
+          <div className="search-list">
+            {topilgan.map((f) => (
+              <button key={f.id} className="search-row" onClick={() => bazadanQosh(f)}>
+                <span className="search-txt">
+                  <b>{f.nom}</b>
+                  <span>{f.ulush}</span>
+                </span>
+                <span className="search-kcal num">
+                  {f.kaloriya}
+                  <i>kcal</i>
+                </span>
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
     ) : bosqich === BOSQICH.MATN ? (
       <button
         className="btn btn-primary"
@@ -319,7 +434,7 @@ export default function AddMeal({ open, onClose, onSaved, sana }) {
           <input
             ref={cameraRef}
             type="file"
-            accept="image/*"
+            accept="image/jpeg,image/png,image/webp"
             capture="environment"
             hidden
             onChange={(e) => rasmniTahlilQil(e.target.files?.[0])}
@@ -327,7 +442,7 @@ export default function AddMeal({ open, onClose, onSaved, sana }) {
           <input
             ref={galleryRef}
             type="file"
-            accept="image/*"
+            accept="image/jpeg,image/png,image/webp"
             hidden
             onChange={(e) => rasmniTahlilQil(e.target.files?.[0])}
           />

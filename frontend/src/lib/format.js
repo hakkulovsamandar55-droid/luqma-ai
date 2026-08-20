@@ -64,6 +64,18 @@ export function raqam(n) {
   return yaxlit.toLocaleString('ru-RU').replace(/ /g, ' ')
 }
 
+/**
+ * Millilitrni litrga o'giradi: 1400 -> "1,4".
+ *
+ * Kichik halqa ichida "1 400" sig'maydi — raqam chetidan chiqib ketadi.
+ * Litrda esa qiymat hech qachon uch belgidan oshmaydi.
+ */
+export function litr(ml) {
+  const l = (ml || 0) / 1000
+  // Butun bo'lsa keraksiz nol yozilmaydi: 2 -> "2", 1.4 -> "1,4"
+  return (Math.round(l * 10) / 10).toLocaleString('ru-RU')
+}
+
 /** Manfiy bo'lsa 0 ga, 1 dan oshsa 1 ga qisadi. */
 export function nisbat(istemol, limit) {
   if (!limit || limit <= 0) return 0

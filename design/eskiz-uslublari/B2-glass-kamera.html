@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="uz"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>B · Glassmorphism — kamera</title>
+<link rel="stylesheet" href="./node_modules/@fontsource-variable/inter/index.css">
+<style>
+/* ============================================================
+   B — GLASSMORPHISM · kamera ekrani
+   Boshqaruvlar tasvir USTIDA suzadi: ular shaffof, ortidagi
+   rang ko'rinib turadi. Ramka yo'q — faqat yorug' burchak
+   belgilari va muzlatilgan shisha panel.
+   ============================================================ */
+*{box-sizing:border-box;margin:0;padding:0}
+/* ::before fonni chetga chiqaradi — hujjat kengaymasligi uchun */
+html{width:420px;overflow:hidden}
+:root{--g-bg:rgba(255,255,255,.10);--g-bg2:rgba(255,255,255,.18);
+  --g-br:rgba(255,255,255,.30);--ink:#fff;--ink2:rgba(255,255,255,.7)}
+body{width:420px;min-height:900px;color:var(--ink);
+  font-family:'Inter Variable',sans-serif;position:relative;overflow:hidden;background:#221541}
+body::before{content:'';position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(40% 30% at 20% 10%, #7b5cff 0%, transparent 62%),
+    radial-gradient(44% 32% at 86% 26%, #ff4fa3 0%, transparent 62%),
+    radial-gradient(48% 34% at 74% 78%, #22d3ee 0%, transparent 62%),
+    radial-gradient(40% 30% at 14% 84%, #37f6a4 0%, transparent 62%),
+    linear-gradient(160deg,#351a63,#130a26)}
+
+/* --- Tepa: suzuvchi shisha tugma --- */
+.top{position:relative;display:flex;justify-content:flex-end;padding:20px}
+.gear{width:50px;height:50px;border-radius:18px;border:none;color:#fff;
+  background:var(--g-bg2);border:1px solid var(--g-br);
+  backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.5);
+  display:flex;align-items:center;justify-content:center}
+
+/* --- Vizir: ramkasiz, faqat burchaklar --- */
+.finder{position:relative;margin:4px 20px 0;height:556px;border-radius:30px;overflow:hidden;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.2);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.35)}
+.mark{position:absolute;width:34px;height:34px;border:2.5px solid rgba(255,255,255,.85);
+  border-radius:4px}
+.mark.tl{left:18px;top:18px;border-right:none;border-bottom:none;border-radius:10px 0 0 0}
+.mark.tr{right:18px;top:18px;border-left:none;border-bottom:none;border-radius:0 10px 0 0}
+.mark.bl{left:18px;bottom:18px;border-right:none;border-top:none;border-radius:0 0 0 10px}
+.mark.br{right:18px;bottom:18px;border-left:none;border-top:none;border-radius:0 0 10px 0}
+.food{position:absolute;left:50%;top:48%;transform:translate(-50%,-50%)}
+
+/* Tasvir ustidagi shisha yorliq */
+.chip{position:absolute;left:50%;transform:translateX(-50%);bottom:22px;
+  padding:9px 18px;border-radius:99px;font-size:12.5px;font-weight:600;white-space:nowrap;
+  background:var(--g-bg2);border:1px solid var(--g-br);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.5)}
+
+/* --- Pastki boshqaruv: bitta shisha lavha --- */
+.deck{position:absolute;left:20px;right:20px;bottom:24px;height:124px;border-radius:34px;
+  display:flex;align-items:center;justify-content:space-around;
+  background:var(--g-bg);border:1px solid var(--g-br);
+  backdrop-filter:blur(28px) saturate(170%);-webkit-backdrop-filter:blur(28px) saturate(170%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 16px 40px rgba(0,0,0,.28)}
+.gal{width:68px;height:62px;border-radius:18px;border:1px solid var(--g-br);
+  background:var(--g-bg2);color:#fff;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:3px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.5)}
+.gal span{font-size:7.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink2)}
+
+/* Zatvor: ikki qatlamli shisha halqa */
+.shutter{width:86px;height:86px;border-radius:50%;border:2px solid rgba(255,255,255,.75);
+  background:transparent;position:relative;display:flex;align-items:center;justify-content:center}
+.shutter::after{content:'';width:66px;height:66px;border-radius:50%;
+  background:rgba(255,255,255,.9);
+  box-shadow:0 0 26px rgba(255,255,255,.45),inset 0 1px 0 rgba(255,255,255,1)}
+
+.search{width:58px;height:58px;border-radius:50%;border:1px solid var(--g-br);
+  background:var(--g-bg2);color:#fff;display:flex;align-items:center;justify-content:center;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.5)}
+</style></head>
+<body>
+
+<div class="top">
+  <button class="gear">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9.54,2.82 A9.5,9.5 0 0 1 14.46,2.82 L13.81,5.24 A7.0,7.0 0 0 1 16.95,7.05 L18.72,5.28 A9.5,9.5 0 0 1 21.18,9.54 L18.76,10.19 A7.0,7.0 0 0 1 18.76,13.81 L21.18,14.46 A9.5,9.5 0 0 1 18.72,18.72 L16.95,16.95 A7.0,7.0 0 0 1 13.81,18.76 L14.46,21.18 A9.5,9.5 0 0 1 9.54,21.18 L10.19,18.76 A7.0,7.0 0 0 1 7.05,16.95 L5.28,18.72 A9.5,9.5 0 0 1 2.82,14.46 L5.24,13.81 A7.0,7.0 0 0 1 5.24,10.19 L2.82,9.54 A9.5,9.5 0 0 1 5.28,5.28 L7.05,7.05 A7.0,7.0 0 0 1 10.19,5.24 Z"/><circle cx="12" cy="12" r="3.4"/></svg>
+  </button>
+</div>
+
+<div class="finder">
+  <i class="mark tl"></i><i class="mark tr"></i><i class="mark bl"></i><i class="mark br"></i>
+  <svg class="food" width="250" height="270" viewBox="0 0 240 260">
+    <defs>
+      <linearGradient id="meat" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#ffd7a1"/><stop offset="100%" stop-color="#e08a3c"/>
+      </linearGradient>
+      <linearGradient id="bone" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#ffffff"/><stop offset="100%" stop-color="#dcd3ee"/>
+      </linearGradient>
+    </defs>
+    <g transform="rotate(34 120 130)">
+      <rect x="106" y="120" width="28" height="86" rx="14" fill="url(#bone)"/>
+      <circle cx="102" cy="206" r="19" fill="url(#bone)"/>
+      <circle cx="138" cy="206" r="19" fill="url(#bone)"/>
+      <ellipse cx="120" cy="76" rx="56" ry="66" fill="url(#meat)"/>
+      <ellipse cx="104" cy="58" rx="20" ry="26" fill="rgba(255,255,255,.35)"/>
+    </g>
+  </svg>
+  <div class="chip">Ovqatni ramkaga joylang</div>
+</div>
+
+<div class="deck">
+  <button class="gal">
+    <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.75" y="4.75" width="16.5" height="14.5" rx="3.4"/><circle cx="8.9" cy="9.6" r="1.5"/><path d="M4.1 16.6l3.5-3.5a1.9 1.9 0 0 1 2.7 0l2.9 2.9m0 0 1.6-1.6a1.9 1.9 0 0 1 2.7 0l2.4 2.4"/></svg>
+    <span>Galereya</span>
+  </button>
+  <button class="shutter"></button>
+  <button class="search">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="10.9" cy="10.9" r="6.15"/><path d="m15.6 15.6 3.65 3.65"/></svg>
+  </button>
+</div>
+</body></html>

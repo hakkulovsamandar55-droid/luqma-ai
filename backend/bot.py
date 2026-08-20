@@ -21,6 +21,9 @@ from aiogram.types import (
 )
 from sqlalchemy import select
 
+import cleanup
+import logging_setup
+import timeutil
 from config import settings
 from db import SessionLocal, init_db
 from models import Meal, User
@@ -112,7 +115,7 @@ async def cmd_help(message: Message) -> None:
 async def cmd_bugun(message: Message) -> None:
     from sqlalchemy import func
 
-    bugun = datetime.now().date()
+    bugun = timeutil.bugun()
     async with SessionLocal() as session:
         user = await session.scalar(
             select(User).where(User.telegram_id == message.from_user.id)
@@ -173,13 +176,53 @@ async def photo_handler(message: Message) -> None:
     )
 
 
+ESLATMA_MATNI = {
+    "ovqat": "Ovqatlanish vaqti — nima yeganingizni qo'shib qo'ying.",
+    "suv": "Suv ichishni unutmang.",
+    "harakat": "Biroz harakatlaning — qisqa mashq ham foyda beradi.",
+    "uyqu": "Uxlash vaqti yaqinlashdi. Kunni yakunlang.",
+}
+
+
+async def _shaxsiy_eslatmalar(bot: Bot, now) -> None:
+    """Foydalanuvchi o'zi sozlagan eslatmalarni yuboradi.
+
+    Umumiy eslatmalardan farqi: har kimning o'z vaqti bor va u ilovada
+    sozlanadi. Eslatmalar serverda ishlaydi, shuning uchun foydalanuvchi
+    ilovani ochmasa ham keladi.
+    """
+    from models import Reminder
+
+    async with SessionLocal() as session:
+        rows = (
+            await session.execute(
+                select(Reminder, User)
+                .join(User, Reminder.user_id == User.id)
+                .where(
+                    Reminder.yoqilgan.is_(True),
+                    Reminder.soat == now.hour,
+                    Reminder.daqiqa == now.minute,
+                    User.is_blocked.is_(False),
+                )
+            )
+        ).all()
+
+    for r, u in rows:
+        matn = r.matn or ESLATMA_MATNI.get(r.tur, "Eslatma")
+        try:
+            await bot.send_message(u.telegram_id, matn)
+        except Exception:  # noqa: BLE001 — bloklagan foydalanuvchi normal holat
+            log.debug("Eslatma yetmadi: %s", u.telegram_id)
+        await asyncio.sleep(0.05)
+
+
 async def eslatmalar_sikli(bot: Bot) -> None:
     """Har daqiqada tekshirib, belgilangan vaqtlarda eslatma yuboradi."""
     yuborilgan: set[tuple[str, int, int]] = set()
 
     while True:
         try:
-            now = datetime.now()
+            now = timeutil.hozir()
             kalit_kun = now.strftime("%Y-%m-%d")
 
             for soat, daqiqa, matn in ESLATMALAR:
@@ -187,6 +230,8 @@ async def eslatmalar_sikli(bot: Bot) -> None:
                 if now.hour == soat and now.minute == daqiqa and kalit not in yuborilgan:
                     yuborilgan.add(kalit)
                     await _eslatma_yubor(bot, matn)
+
+            await _shaxsiy_eslatmalar(bot, now)
 
             # Eskirgan kalitlarni tozalaymiz.
             kecha = (now - timedelta(days=1)).strftime("%Y-%m-%d")
@@ -233,10 +278,93 @@ async def run_bot() -> None:
         log.exception("Menu tugmasini o'rnatib bo'lmadi")
 
     asyncio.create_task(eslatmalar_sikli(bot))
+    asyncio.create_task(cleanup.tozalash_sikli())
     log.info("Bot polling boshlandi")
     await dp.start_polling(bot)
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
+    logging_setup.sozla()
     asyncio.run(run_bot())
+
+
+# --------------------------------------------------------------------------- #
+# Admin buyruqlari
+# --------------------------------------------------------------------------- #
+def _adminmi(message: Message) -> bool:
+    return bool(message.from_user) and message.from_user.id in settings.admin_id_list
+
+
+@dp.message(Command("stat"))
+async def cmd_stat(message: Message) -> None:
+    """Qisqa statistika: nechta foydalanuvchi, bugun qancha faol."""
+    if not _adminmi(message):
+        return  # admin emas — buyruq umuman mavjud emasdek javobsiz qoladi
+
+    from sqlalchemy import func
+
+    bugun = timeutil.bugun()
+    hafta = bugun - timedelta(days=7)
+
+    async with SessionLocal() as session:
+        jami = await session.scalar(select(func.count(User.id))) or 0
+        yangi_hafta = (
+            await session.scalar(
+                select(func.count(User.id)).where(User.created_at >= hafta)
+            )
+            or 0
+        )
+        bugun_faol = (
+            await session.scalar(
+                select(func.count(func.distinct(Meal.user_id))).where(
+                    Meal.sana == bugun
+                )
+            )
+            or 0
+        )
+        bugun_ovqat = (
+            await session.scalar(
+                select(func.count(Meal.id)).where(Meal.sana == bugun)
+            )
+            or 0
+        )
+
+    await message.answer(
+        f"<b>Statistika</b>\n\n"
+        f"Jami foydalanuvchi: {jami}\n"
+        f"So'nggi 7 kunda yangi: {yangi_hafta}\n"
+        f"Bugun faol: {bugun_faol}\n"
+        f"Bugun qo'shilgan ovqat: {bugun_ovqat}"
+    )
+
+
+@dp.message(Command("xabar"))
+async def cmd_xabar(message: Message) -> None:
+    """Hamma foydalanuvchiga xabar yuboradi: /xabar Salom, yangilik bor!"""
+    if not _adminmi(message):
+        return
+
+    matn = (message.text or "").partition(" ")[2].strip()
+    if not matn:
+        await message.answer(
+            "Xabar matnini yozing:\n<code>/xabar Salom, yangilik bor!</code>"
+        )
+        return
+
+    async with SessionLocal() as session:
+        idlar = (await session.execute(select(User.telegram_id))).scalars().all()
+
+    await message.answer(f"Yuborilmoqda… ({len(idlar)} ta)")
+
+    yetdi = 0
+    yetmadi = 0
+    for tid in idlar:
+        try:
+            await message.bot.send_message(tid, matn)
+            yetdi += 1
+        except Exception:  # noqa: BLE001 — bloklagan foydalanuvchilar normal holat
+            yetmadi += 1
+        # Telegram sekundiga ~30 xabarga ruxsat beradi — chegaradan pastda turamiz.
+        await asyncio.sleep(0.05)
+
+    await message.answer(f"Tayyor.\nYetdi: {yetdi}\nYetmadi: {yetmadi}")

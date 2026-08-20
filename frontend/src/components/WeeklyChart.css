@@ -1,5 +1,8 @@
+/* Kartochka ichida bo'sh joy: .card klassi padding bermaydi, shuning
+   uchun sarlavha va ustunlar chegaraga tegib turardi. */
 .wchart {
   margin-top: 10px;
+  padding: 16px 18px 14px;
 }
 
 .wchart-head {
@@ -81,7 +84,8 @@
   height: var(--label-h);
   display: flex;
   align-items: center;
-  font-size: 10.5px;
+  font-size: 10px;
+  white-space: nowrap;
   color: var(--ink-3);
   font-weight: 600;
 }
@@ -95,9 +99,11 @@
   opacity: 0.5;
 }
 
+/* Yorliq chizig'ining o'ng uchida turadi. Ilgari right:0 edi va
+   kartochka chegarasidan chiqib ketardi — endi ichkariga suriladi. */
 .wchart-limit span {
   position: absolute;
-  right: 0;
+  right: 2px;
   top: -8px;
   font-size: 9.5px;
   font-weight: 700;

@@ -35,6 +35,14 @@ async def client():
         await conn.run_sync(Base.metadata.drop_all)
         await conn.run_sync(Base.metadata.create_all)
 
+    # Ovqat bazasi ham to'ldiriladi — prodakshinda init_db shuni qiladi,
+    # test ham xuddi shu holatdan boshlashi kerak.
+    import food_seed
+    from db import SessionLocal
+
+    async with SessionLocal() as session:
+        await food_seed.bazani_toldir(session)
+
     transport = ASGITransport(app=app)
     async with AsyncClient(transport=transport, base_url="http://test") as c:
         yield c

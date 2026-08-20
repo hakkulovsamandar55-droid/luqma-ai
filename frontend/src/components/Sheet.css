@@ -1,41 +1,50 @@
 .sheet-root {
   position: fixed;
   inset: 0;
-  z-index: 60;
+  z-index: 50;
   display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
+  align-items: flex-end;
+  justify-content: center;
 }
 
 .sheet-backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(17, 17, 22, 0.42);
-  animation: fade-in 0.2s ease both;
+  background: rgba(0, 0, 0, 0.62);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  animation: fade-in var(--dur) linear both;
+  transition: opacity var(--dur) var(--ease-out);
 }
 
 .sheet {
   position: relative;
   width: 100%;
-  max-width: 560px;
-  margin: 0 auto;
-  background: var(--bg);
-  border-radius: var(--r-xl) var(--r-xl) 0 0;
-  box-shadow: var(--shadow-lg);
-  max-height: 92vh;
+  max-width: 440px;
+  max-height: 88vh;
   display: flex;
   flex-direction: column;
-  animation: sheet-up 0.28s cubic-bezier(0.2, 0.8, 0.3, 1) both;
+  background: var(--surface);
+  border: 1px solid var(--line-2);
+  border-bottom: none;
+  border-radius: var(--r-lg) var(--r-lg) 0 0;
   padding-bottom: var(--safe-bottom);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  animation: sheet-up var(--dur-slow) var(--ease) both;
+  transition: transform var(--dur) var(--ease-out);
+  /* Yuqori qirrada yupqa yorug'lik — oyna "ko'tarilgandek" ko'rinadi */
+  box-shadow: 0 -1px 0 rgba(255, 255, 255, 0.06) inset,
+    0 -24px 60px rgba(0, 0, 0, 0.5);
 }
 
 .sheet-grip {
-  width: 38px;
+  width: 40px;
   height: 4px;
+  background: var(--line-2);
   border-radius: 99px;
-  background: var(--line);
-  margin: 8px auto 0;
-  flex: 0 0 auto;
+  margin: 10px auto 0;
+  flex: none;
 }
 
 .sheet-head {
@@ -43,38 +52,40 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 10px 16px 6px;
-  flex: 0 0 auto;
+  padding: 16px 20px 8px;
+  flex: none;
 }
 
 .sheet-title {
-  font-size: 19px;
-  font-weight: 750;
-  letter-spacing: -0.5px;
+  font-size: var(--t-lead);
+  font-weight: 700;
+  letter-spacing: -0.3px;
   margin: 0;
 }
 
 .sheet-close {
-  width: 32px;
-  height: 32px;
+  flex: none;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
-  display: grid;
-  place-items: center;
-  background: var(--surface);
+  background: var(--surface-2);
   color: var(--ink-2);
-  box-shadow: var(--shadow-sm);
-  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.sheet-close:active {
+  transform: scale(0.9);
 }
 
 .sheet-body {
-  padding: 8px 16px 16px;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+  padding: 4px 20px 20px;
 }
 
 .sheet-foot {
-  padding: 10px 16px calc(14px + var(--safe-bottom));
+  padding: 12px 20px 20px;
   border-top: 1px solid var(--line);
-  background: var(--surface);
-  flex: 0 0 auto;
+  flex: none;
 }

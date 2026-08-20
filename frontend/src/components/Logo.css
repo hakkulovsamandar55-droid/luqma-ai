@@ -1,0 +1,25 @@
+/* Ilova nomi — ekranning tepasida, markazda.
+
+   Namunadagidek QALIN va katta — bosh ekrandagi brend sarlavhasi
+   ("Eda AI" namunada 34px/600). Ingichka vazn bu yerda kuchsiz
+   ko'rinardi, referensda esa nom o'zi vizual langar. */
+.logo {
+  display: block;
+  width: 100%;
+  text-align: center;
+  color: var(--ink-top);
+  font-family: var(--font);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  user-select: none;
+}
+
+.logo-sm {
+  font-size: 22px;
+}
+.logo-md {
+  font-size: 32px;
+}
+.logo-lg {
+  font-size: 38px;
+}

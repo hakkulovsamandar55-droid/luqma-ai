@@ -1,44 +1,55 @@
+/* Asosiy halqa.
+
+   Namuna dizayndagidek: bitta INGICHKA halqa, ichida katta raqam va
+   ikki qatorli izoh. Foiz belgisi va ostidagi jumla olib tashlandi —
+   ular halqa bilan raqobat qilardi.
+
+   Halqa gradientning to'q zonasida turadi, shuning uchun oq rangda. */
+.ring-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 26px 0 22px;
+}
+
 .ring {
   position: relative;
-  margin: 6px auto 2px;
+  width: min(53vw, 226px);
+  aspect-ratio: 1;
 }
 
-/* Halqa ortidagi yumshoq nur — chuqurlik beradi */
-.ring::before {
-  content: '';
-  position: absolute;
-  inset: 14%;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle at 50% 45%,
-    rgba(107, 78, 255, 0.13) 0%,
-    rgba(107, 78, 255, 0) 68%
-  );
-  pointer-events: none;
+.ring svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
 }
 
-.ring.is-over::before {
-  background: radial-gradient(
-    circle at 50% 45%,
-    rgba(232, 71, 75, 0.14) 0%,
-    rgba(232, 71, 75, 0) 68%
-  );
-}
-
+/* Yo'l — halqaning ko'rinmas qismi. Namunada u YO'Q: butun aylana
+   bir xil qalinlikda va bir xil rangda. Shuning uchun juda kuchsiz. */
 .ring-track {
   fill: none;
-  stroke: var(--line);
+  stroke: rgba(255, 255, 255, 0.4);
 }
 
 .ring-bar {
   fill: none;
+  stroke: var(--ink-top);
   stroke-linecap: round;
-  transition: stroke-dashoffset 1.1s cubic-bezier(0.22, 0.75, 0.24, 1);
-  filter: drop-shadow(0 3px 8px rgba(107, 78, 255, 0.28));
+  transition: stroke-dashoffset var(--dur-ring) var(--ease-out);
 }
 
-.ring.is-over .ring-bar {
-  filter: drop-shadow(0 3px 8px rgba(232, 71, 75, 0.3));
+/* Progress uchidagi nuqta — namunadagi kichik oq doira */
+.ring-dot {
+  fill: var(--ink-top);
+  transition: transform var(--dur-ring) var(--ease-out),
+    opacity var(--dur) linear;
+}
+
+.ring-wrap.is-over .ring-bar,
+.ring-wrap.is-over .ring-dot {
+  stroke: var(--over);
+  fill: var(--over);
 }
 
 .ring-center {
@@ -48,67 +59,24 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-}
-
-/* Ikonka — raqam ustidagi kichik gradient nishon */
-.ring-badge {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  background: var(--grad-accent);
-  color: #fff;
-  box-shadow: 0 4px 12px rgba(107, 78, 255, 0.35);
-  margin-bottom: 8px;
-}
-
-.ring.is-over .ring-badge {
-  background: var(--grad-danger);
-  box-shadow: 0 4px 12px rgba(232, 71, 75, 0.35);
+  gap: 4px;
+  color: var(--ink-top);
 }
 
 .ring-value {
-  display: flex;
-  align-items: baseline;
-  font-size: var(--t-hero);
-  font-weight: 820;
-  letter-spacing: -3px;
+  font-size: clamp(38px, 9.5vw, 50px);
+  font-weight: 600;
+  letter-spacing: -0.01em;
   line-height: 1;
   font-variant-numeric: tabular-nums;
-  background: var(--grad-accent);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
 }
 
-.ring.is-over .ring-value {
-  background: var(--grad-danger);
-  -webkit-background-clip: text;
-  background-clip: text;
-}
-
-.ring-plus {
-  font-size: 34px;
-  letter-spacing: -1px;
-}
-
+/* Ikki qatorli izoh — namunada aynan shunday sindirilgan */
 .ring-label {
-  font-size: 17px;
-  font-weight: 700;
-  color: var(--ink);
-  letter-spacing: -0.3px;
-  margin-top: 9px;
-}
-
-.ring-sub {
-  font-size: var(--t-mini);
-  color: var(--ink-3);
-  margin-top: 3px;
-  font-variant-numeric: tabular-nums;
-}
-
-.ring-sub b {
-  color: var(--ink-2);
-  font-weight: 700;
+  max-width: 76%;
+  text-align: center;
+  font-size: clamp(13px, 3.3vw, 15px);
+  font-weight: 400;
+  line-height: 1.25;
+  color: var(--ink-top-2);
 }

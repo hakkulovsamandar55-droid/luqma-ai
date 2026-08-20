@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import useSheetGesture from '../lib/useSheetGesture'
 import { CloseIcon } from './Icons'
 import './Sheet.css'
 
@@ -21,12 +22,19 @@ export default function Sheet({ open, title, onClose, children, footer }) {
     return () => window.removeEventListener('keydown', onKey)
   }, [open, onClose])
 
+  // Barmoq bilan pastga surib yopish — telefonda o'rganilgan harakat.
+  const gesture = useSheetGesture(onClose, { enabled: open })
+
   if (!open) return null
 
   return (
     <div className="sheet-root" role="dialog" aria-modal="true" aria-label={title}>
-      <div className="sheet-backdrop" onClick={onClose} />
-      <div className="sheet">
+      <div
+        className="sheet-backdrop"
+        style={gesture.veilStyle}
+        onClick={onClose}
+      />
+      <div className="sheet" ref={gesture.ref} style={gesture.style}>
         <div className="sheet-grip" />
         <header className="sheet-head">
           <h2 className="sheet-title">{title}</h2>
